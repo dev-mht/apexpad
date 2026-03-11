@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ApexPad — The Summit of DeFi Launchpads</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+:root {
+  --apex-red: #ff2d2d;
+  --apex-orange: #ff6b00;
+  --apex-fire: #ff9500;
+  --apex-dark: #080808;
+  --apex-dark2: #0f0f0f;
+  --apex-card: #111111;
+  --apex-border: rgba(255,45,45,0.2);
+  --apex-text: #f0f0f0;
+  --apex-muted: #666;
+  --gradient-fire: linear-gradient(135deg, #ff2d2d, #ff6b00, #ff9500);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--apex-dark);
+  color: var(--apex-text);
+  font-family: 'Rajdhani', sans-serif;
+  overflow-x: hidden;
+  cursor: default;
+}
+
+/* NOISE OVERLAY */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1000;
+  opacity: 0.4;
+}
+
+/* ANIMATED BACKGROUND */
+.bg-grid {
+  position: fixed;
+  inset: 0;
+  background-image: 
+    linear-gradient(rgba(255,45,45,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,45,45,0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+  animation: gridPulse 8s ease-in-out infinite;
+}
+
+@keyframes gridPulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+.bg-glow {
+  position: fixed;
+  width: 800px;
+  height: 800px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,45,45,0.08) 0%, transparent 70%);
+  top: -200px;
+  left: -200px;
+  pointer-events: none;
+  animation: glowMove 15s ease-in-out infinite;
+}
+
+.bg-glow2 {
+  position: fixed;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,107,0,0.06) 0%, transparent 70%);
+  bottom: -100px;
+  right: -100px;
+  pointer-events: none;
+  animation: glowMove2 12s ease-in-out infinite;
+}
+
+@keyframes glowMove {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(100px, 100px); }
+}
+
+@keyframes glowMove2 {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(-80px, -80px); }
+}
+
+/* NAV */
+nav {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 100;
+  padding: 20px 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(8,8,8,0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--apex-border);
+}
+
+.nav-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2rem;
+  letter-spacing: 3px;
+  background: var(--gradient-fire);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.nav-logo span {
+  -webkit-text-fill-color: #666;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+  font-family: 'Share Tech Mono', monospace;
+  margin-left: 8px;
+}
+
+.nav-links {
+  display: flex;
+  gap: 40px;
+  list-style: none;
+}
+
+.nav-links a {
+  color: #888;
+  text-decoration: none;
+  font-size: 0.85rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-weight: 600;
+  transition: color 0.3s;
+}
+
+.nav-links a:hover { color: var(--apex-red); }
+
+.nav-cta {
+  background: var(--gradient-fire);
+  color: white !important;
+  padding: 10px 24px;
+  clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+  font-weight: 700 !important;
+  letter-spacing: 2px !important;
+  transition: opacity 0.3s !important;
+}
+
+.nav-cta:hover { opacity: 0.85; color: white !important; }
+
+/* HERO */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 120px 60px 80px;
+  position: relative;
+  text-align: center;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255,45,45,0.1);
+  border: 1px solid rgba(255,45,45,0.3);
+  padding: 8px 20px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.75rem;
+  letter-spacing: 3px;
+  color: var(--apex-red);
+  margin-bottom: 30px;
+  clip-path: polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%);
+  animation: fadeInDown 0.8s ease both;
+}
+
+.hero-badge::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  background: var(--apex-red);
+  border-radius: 50%;
+  animation: blink 1.5s infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.2; }
+}
+
+.hero-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(5rem, 12vw, 11rem);
+  line-height: 0.9;
+  letter-spacing: 4px;
+  margin-bottom: 20px;
+  animation: fadeInUp 0.8s ease 0.2s both;
+}
+
+.hero-title .fire {
+  background: var(--gradient-fire);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  display: block;
+}
+
+.hero-title .white {
+  color: white;
+  display: block;
+}
+
+.hero-subtitle {
+  font-size: 1.2rem;
+  color: #888;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 50px;
+  font-weight: 500;
+  animation: fadeInUp 0.8s ease 0.4s both;
+}
+
+.hero-subtitle span {
+  color: var(--apex-orange);
+}
+
+.hero-btns {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+  animation: fadeInUp 0.8s ease 0.6s both;
+}
+
+.btn-primary {
+  background: var(--gradient-fire);
+  color: white;
+  padding: 16px 40px;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  text-decoration: none;
+  clip-path: polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%);
+  transition: all 0.3s;
+  box-shadow: 0 0 30px rgba(255,45,45,0.3);
+}
+
+.btn-primary:hover {
+  box-shadow: 0 0 50px rgba(255,45,45,0.5);
+  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--apex-text);
+  padding: 16px 40px;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  text-decoration: none;
+  border: 1px solid rgba(255,255,255,0.2);
+  clip-path: polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%);
+  transition: all 0.3s;
+}
+
+.btn-secondary:hover {
+  border-color: var(--apex-red);
+  color: var(--apex-red);
+}
+
+/* STATS BAR */
+.stats-bar {
+  background: var(--apex-card);
+  border-top: 1px solid var(--apex-border);
+  border-bottom: 1px solid var(--apex-border);
+  padding: 30px 60px;
+  display: flex;
+  justify-content: center;
+  gap: 80px;
+  flex-wrap: wrap;
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2.5rem;
+  letter-spacing: 2px;
+  background: var(--gradient-fire);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  display: block;
+}
+
+.stat-label {
+  font-size: 0.7rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #555;
+  font-weight: 600;
+}
+
+/* CHAINS */
+.chains-section {
+  padding: 60px;
+  text-align: center;
+}
+
+.section-tag {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 4px;
+  color: var(--apex-red);
+  text-transform: uppercase;
+  margin-bottom: 15px;
+}
+
+.section-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  letter-spacing: 3px;
+  margin-bottom: 50px;
+}
+
+.chains-grid {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.chain-card {
+  background: var(--apex-card);
+  border: 1px solid var(--apex-border);
+  padding: 24px 32px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
+  transition: all 0.3s;
+  cursor: pointer;
+}
+
+.chain-card:hover {
+  border-color: var(--apex-red);
+  background: rgba(255,45,45,0.05);
+  transform: translateY(-4px);
+}
+
+.chain-icon {
+  font-size: 2rem;
+}
+
+.chain-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.3rem;
+  letter-spacing: 2px;
+}
+
+.chain-status {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--apex-orange);
+  letter-spacing: 2px;
+}
+
+.chain-status.soon {
+  color: #555;
+}
+
+/* FEATURES */
+.features-section {
+  padding: 80px 60px;
+  background: var(--apex-dark2);
+  border-top: 1px solid var(--apex-border);
+  border-bottom: 1px solid var(--apex-border);
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2px;
+  margin-top: 50px;
+}
+
+.feature-card {
+  background: var(--apex-card);
+  padding: 40px 35px;
+  border: 1px solid rgba(255,255,255,0.04);
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+
+.feature-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 0;
+  background: var(--gradient-fire);
+  transition: height 0.4s;
+}
+
+.feature-card:hover::before {
+  height: 100%;
+}
+
+.feature-card:hover {
+  background: rgba(255,45,45,0.03);
+}
+
+.feature-icon {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  display: block;
+}
+
+.feature-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.5rem;
+  letter-spacing: 2px;
+  margin-bottom: 12px;
+  color: white;
+}
+
+.feature-desc {
+  color: #666;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  font-weight: 400;
+}
+
+/* HOW IT WORKS */
+.how-section {
+  padding: 80px 60px;
+  text-align: center;
+}
+
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 30px;
+  margin-top: 60px;
+  position: relative;
+}
+
+.steps-grid::before {
+  content: '';
+  position: absolute;
+  top: 40px;
+  left: 10%;
+  width: 80%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--apex-red), transparent);
+  pointer-events: none;
+}
+
+.step-card {
+  position: relative;
+  padding: 40px 20px;
+}
+
+.step-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 5rem;
+  line-height: 1;
+  background: var(--gradient-fire);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  opacity: 0.3;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.step-icon {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  display: block;
+  position: relative;
+  z-index: 1;
+  margin-top: 30px;
+}
+
+.step-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.3rem;
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+}
+
+.step-desc {
+  color: #666;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+/* LAUNCH CTA */
+.launch-section {
+  padding: 100px 60px;
+  background: var(--apex-dark2);
+  border-top: 1px solid var(--apex-border);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.launch-section::before {
+  content: 'APEX';
+  position: absolute;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 25vw;
+  color: rgba(255,45,45,0.03);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  letter-spacing: 10px;
+  pointer-events: none;
+}
+
+.launch-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(3rem, 7vw, 6rem);
+  letter-spacing: 4px;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.launch-title span {
+  background: var(--gradient-fire);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.launch-desc {
+  color: #666;
+  font-size: 1.1rem;
+  letter-spacing: 2px;
+  margin-bottom: 50px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+}
+
+/* FIRST PROJECT BANNER */
+.first-project {
+  background: rgba(255,45,45,0.05);
+  border: 1px solid rgba(255,45,45,0.2);
+  padding: 30px 40px;
+  max-width: 700px;
+  margin: 0 auto 50px;
+  clip-path: polygon(15px 0%, 100% 0%, calc(100% - 15px) 100%, 0% 100%);
+  position: relative;
+}
+
+.first-project-tag {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 4px;
+  color: var(--apex-orange);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.first-project-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2rem;
+  letter-spacing: 3px;
+  background: var(--gradient-fire);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.first-project-desc {
+  color: #888;
+  font-size: 0.9rem;
+  margin-top: 8px;
+  letter-spacing: 1px;
+}
+
+/* FEES */
+.fees-section {
+  padding: 80px 60px;
+  text-align: center;
+}
+
+.fees-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2px;
+  margin-top: 50px;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.fee-card {
+  background: var(--apex-card);
+  padding: 40px;
+  border: 1px solid rgba(255,255,255,0.04);
+  text-align: center;
+}
+
+.fee-card.featured {
+  border-color: var(--apex-red);
+  background: rgba(255,45,45,0.05);
+  position: relative;
+}
+
+.fee-card.featured::before {
+  content: 'BEST VALUE';
+  position: absolute;
+  top: -1px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--gradient-fire);
+  color: white;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 3px;
+  padding: 4px 16px;
+  clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
+}
+
+.fee-amount {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 3.5rem;
+  letter-spacing: 2px;
+  background: var(--gradient-fire);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+  margin-bottom: 5px;
+}
+
+.fee-type {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 3px;
+  color: #555;
+  margin-bottom: 20px;
+}
+
+.fee-desc {
+  color: #888;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+/* FOOTER */
+footer {
+  background: #050505;
+  border-top: 1px solid var(--apex-border);
+  padding: 40px 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: gap;
+  gap: 20px;
+}
+
+.footer-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.8rem;
+  letter-spacing: 3px;
+  background: var(--gradient-fire);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.footer-text {
+  color: #333;
+  font-size: 0.8rem;
+  letter-spacing: 2px;
+  font-family: 'Share Tech Mono', monospace;
+}
+
+.footer-links {
+  display: flex;
+  gap: 30px;
+}
+
+.footer-links a {
+  color: #444;
+  text-decoration: none;
+  font-size: 0.8rem;
+  letter-spacing: 2px;
+  transition: color 0.3s;
+}
+
+.footer-links a:hover { color: var(--apex-red); }
+
+/* ANIMATIONS */
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* FIRE LINE DIVIDER */
+.fire-divider {
+  height: 2px;
+  background: var(--gradient-fire);
+  opacity: 0.4;
+}
+
+/* COMING SOON BADGE */
+.coming-soon {
+  display: inline-block;
+  background: rgba(255,149,0,0.1);
+  border: 1px solid rgba(255,149,0,0.3);
+  color: var(--apex-fire);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 3px;
+  padding: 3px 10px;
+  margin-left: 10px;
+  vertical-align: middle;
+}
+
+/* TICKER */
+.ticker {
+  background: rgba(255,45,45,0.08);
+  border-top: 1px solid var(--apex-border);
+  border-bottom: 1px solid var(--apex-border);
+  padding: 10px 0;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.ticker-inner {
+  display: inline-block;
+  animation: ticker 20s linear infinite;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.75rem;
+  letter-spacing: 3px;
+  color: var(--apex-red);
+}
+
+.ticker-inner span {
+  margin: 0 40px;
+  color: #444;
+}
+
+@keyframes ticker {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@media (max-width: 768px) {
+  nav { padding: 15px 20px; }
+  .nav-links { display: none; }
+  .hero { padding: 100px 20px 60px; }
+  .stats-bar { padding: 30px 20px; gap: 30px; }
+  .chains-section, .features-section, .how-section, .launch-section, .fees-section { padding: 60px 20px; }
+  footer { padding: 30px 20px; flex-direction: column; text-align: center; }
+  .steps-grid::before { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="bg-grid"></div>
+<div class="bg-glow"></div>
+<div class="bg-glow2"></div>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-inner">
+    🔥 APEXPAD — THE SUMMIT OF DEFI LAUNCHPADS <span>///</span> MULTI-CHAIN PRESALE PLATFORM <span>///</span> BSC • ETH • AVAX • BASE • SOL <span>///</span> LAUNCH YOUR PROJECT TODAY <span>///</span> 🔥 APEXPAD — THE SUMMIT OF DEFI LAUNCHPADS <span>///</span> MULTI-CHAIN PRESALE PLATFORM <span>///</span> BSC • ETH • AVAX • BASE • SOL <span>///</span> LAUNCH YOUR PROJECT TODAY <span>///</span>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">ApexPad <span>// LAUNCHPAD</span></div>
+  <ul class="nav-links">
+    <li><a href="#chains">Chains</a></li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#how">How It Works</a></li>
+    <li><a href="#fees">Fees</a></li>
+    <li><a href="#launch" class="nav-cta">Launch Project</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div>
+    <div class="hero-badge">🔥 THE SUMMIT OF DEFI LAUNCHPADS</div>
+    <h1 class="hero-title">
+      <span class="fire">APEX</span>
+      <span class="white">PAD</span>
+    </h1>
+    <p class="hero-subtitle">Multi-Chain Presale Platform — <span>BSC • ETH • AVAX • BASE • SOL</span></p>
+    <div class="hero-btns">
+      <a href="#launch" class="btn-primary">🚀 Launch Your Project</a>
+      <a href="#features" class="btn-secondary">Explore Features</a>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stat-item">
+    <span class="stat-num">$0</span>
+    <span class="stat-label">Listing Fee</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-num">2%</span>
+    <span class="stat-label">Success Fee Only</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-num">5</span>
+    <span class="stat-label">Chains Supported</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-num">24/7</span>
+    <span class="stat-label">Support</span>
+  </div>
+</div>
+
+<div class="fire-divider"></div>
+
+<!-- CHAINS -->
+<section class="chains-section" id="chains">
+  <div class="section-tag">// MULTI-CHAIN</div>
+  <h2 class="section-title">SUPPORTED NETWORKS</h2>
+  <div class="chains-grid">
+    <div class="chain-card">
+      <span class="chain-icon">🟡</span>
+      <div>
+        <div class="chain-name">BNB CHAIN</div>
+        <div class="chain-status">● LIVE</div>
+      </div>
+    </div>
+    <div class="chain-card">
+      <span class="chain-icon">🔷</span>
+      <div>
+        <div class="chain-name">ETHEREUM</div>
+        <div class="chain-status soon">● COMING SOON</div>
+      </div>
+    </div>
+    <div class="chain-card">
+      <span class="chain-icon">🔺</span>
+      <div>
+        <div class="chain-name">AVALANCHE</div>
+        <div class="chain-status soon">● COMING SOON</div>
+      </div>
+    </div>
+    <div class="chain-card">
+      <span class="chain-icon">🔵</span>
+      <div>
+        <div class="chain-name">BASE</div>
+        <div class="chain-status soon">● COMING SOON</div>
+      </div>
+    </div>
+    <div class="chain-card">
+      <span class="chain-icon">🟣</span>
+      <div>
+        <div class="chain-name">SOLANA</div>
+        <div class="chain-status soon">● COMING SOON</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features-section" id="features">
+  <div class="section-tag" style="text-align:center">// FEATURES</div>
+  <h2 class="section-title" style="text-align:center">WHY APEXPAD ?</h2>
+  <div class="features-grid">
+    <div class="feature-card">
+      <span class="feature-icon">⚡</span>
+      <div class="feature-title">Instant Deployment</div>
+      <p class="feature-desc">Launch your presale in minutes with our automated smart contract deployment system.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">🔒</span>
+      <div class="feature-title">Liquidity Locking</div>
+      <p class="feature-desc">Automatic LP token locking after presale — builds investor trust from day one.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">🛡️</span>
+      <div class="feature-title">Anti-Rug Protection</div>
+      <p class="feature-desc">Smart contract enforced refunds if softcap is not reached. 100% investor safe.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">📊</span>
+      <div class="feature-title">Live Analytics</div>
+      <p class="feature-desc">Real-time dashboard with presale progress, contributor stats and market data.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">🤖</span>
+      <div class="feature-title">AI Assistant</div>
+      <p class="feature-desc">24/7 AI-powered support bot for your community — answers questions automatically.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">🔗</span>
+      <div class="feature-title">Chainlink Ready</div>
+      <p class="feature-desc">Native Chainlink oracle integration for price feeds and automation.</p>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how-section" id="how">
+  <div class="section-tag">// PROCESS</div>
+  <h2 class="section-title">HOW IT WORKS</h2>
+  <div class="steps-grid">
+    <div class="step-card">
+      <div class="step-num">01</div>
+      <span class="step-icon">📋</span>
+      <div class="step-title">Submit Project</div>
+      <p class="step-desc">Fill in your project details, tokenomics and presale parameters.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num">02</div>
+      <span class="step-icon">✅</span>
+      <div class="step-title">Get Approved</div>
+      <p class="step-desc">Our team reviews your project within 24h to ensure quality standards.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num">03</div>
+      <span class="step-icon">🚀</span>
+      <div class="step-title">Go Live</div>
+      <p class="step-desc">Your presale page goes live with automatic smart contract deployment.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num">04</div>
+      <span class="step-icon">💰</span>
+      <div class="step-title">Raise & Launch</div>
+      <p class="step-desc">Collect funds, auto-add liquidity and launch on DEX automatically.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FEES -->
+<section class="fees-section" id="fees">
+  <div class="section-tag">// TRANSPARENT PRICING</div>
+  <h2 class="section-title">LOWEST FEES IN THE GAME</h2>
+  <p style="color:#555;letter-spacing:2px;margin-bottom:20px;font-size:0.9rem;">Compare with PinkSale: 1 BNB + 5% — We charge ZERO listing fee.</p>
+  <div class="fees-grid">
+    <div class="fee-card">
+      <div class="fee-amount">$0</div>
+      <div class="fee-type">// LISTING FEE</div>
+      <p class="fee-desc">Zero upfront cost to list your presale on ApexPad.</p>
+    </div>
+    <div class="fee-card featured">
+      <div class="fee-amount">2%</div>
+      <div class="fee-type">// SUCCESS FEE</div>
+      <p class="fee-desc">We only earn when YOU succeed. 2% of BNB raised — that's it.</p>
+    </div>
+    <div class="fee-card">
+      <div class="fee-amount">FREE</div>
+      <div class="fee-type">// LP LOCKING</div>
+      <p class="fee-desc">Liquidity locking included at no extra charge.</p>
+    </div>
+  </div>
+</section>
+
+<!-- LAUNCH CTA -->
+<section class="launch-section" id="launch">
+  <div class="section-tag">// FIRST LAUNCH</div>
+  <h2 class="launch-title">READY TO REACH THE <span>APEX</span> ?</h2>
+  <p class="launch-desc">Join the next generation of DeFi projects launching on ApexPad</p>
+
+  <div class="first-project">
+    <div class="first-project-tag">⚡ FIRST PROJECT ON APEXPAD — LIVE NOW</div>
+    <div class="first-project-name">MILESTONE HODL TOKEN — $MHT</div>
+    <div class="first-project-desc">The first milestone-based reward token on BSC • Presale coming soon</div>
+  </div>
+
+  <div class="hero-btns">
+    <a href="https://dev-mht.github.io/milestone-hodl-web/" target="_blank" class="btn-primary">🔥 View $MHT Presale</a>
+    <a href="mailto:apexpad@gmail.com" class="btn-secondary">📩 Apply to Launch</a>
+  </div>
+</section>
+
+<div class="fire-divider"></div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">ApexPad</div>
+  <div class="footer-text">© 2026 APEXPAD — THE SUMMIT OF DEFI // ALL RIGHTS RESERVED</div>
+  <div class="footer-links">
+    <a href="#">Telegram</a>
+    <a href="#">Twitter</a>
+    <a href="#">Docs</a>
+  </div>
+</footer>
+
+</body>
+</html>
