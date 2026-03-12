@@ -276,16 +276,22 @@ async function runSecurityTests() {
     log('', 'info');
     log('TEST 1 — Access Control', 'section');
     setTest('t1', 'running');
-    // Non-owner should not be able to cancel
-    await expectRevert(
-      async () => {
-        // Simulate another wallet — we test by calling cancel before any state
-        // Just verify owner is set correctly
-        const owner = await presale.apexFeeWallet();
-        if (owner === ethers.ZeroAddress) throw new Error("Invalid owner");
-      },
-      't1', 'Access Control', ''
-    );
+    try {
+      const presaleOwner = await presale.projectOwner();
+      log('Project owner: ' + presaleOwner, 'info');
+      if (presaleOwner.toLowerCase() !== wallet.toLowerCase()) {
+        await fail('t1', 'Owner mismatch! VULNERABILITY!');
+      } else {
+        try {
+          await factory.setFeeWallet(ethers.ZeroAddress);
+          await fail('t1', 'Zero address accepted as feeWallet — VULNERABILITY!');
+        } catch(e) {
+          await pass('t1', 'Access control OK — owner correct, zero address rejected');
+        }
+      }
+    } catch(e) {
+      await fail('t1', 'Access control check failed: ' + e.message);
+    }
 
     // ─── TEST 2: REENTRANCY ───
     log('', 'info');
