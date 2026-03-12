@@ -241,7 +241,7 @@ async function setupPresale() {
     ethers.parseEther('1'),      // hardCap
     ethers.parseEther('0.01'),   // minContrib
     ethers.parseEther('0.5'),    // maxContrib
-    BigInt(now - 3600),          // startTime: 1h ago
+    BigInt(now - 7200),          // startTime: 2h ago
     BigInt(now + 86400),         // endTime: 24h from now
     60n                          // lpPercent
   ];
@@ -364,7 +364,7 @@ async function runSecurityTests() {
       ethers.parseEther('1'),
       ethers.parseEther('0.01'),
       ethers.parseEther('0.5'),
-      BigInt(now2 - 3600),
+      BigInt(now2 - 7200),
       BigInt(now2 + 86400),
       60n
     ];
