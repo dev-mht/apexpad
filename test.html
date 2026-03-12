@@ -385,6 +385,8 @@ async function runSecurityTests() {
     presale = new ethers.Contract(presaleAddr, PRESALE_ABI, signer);
     await (await token.transfer(presaleAddr, ethers.parseEther('10000000'))).wait();
     log(`Fresh presale: ${presaleAddr}`, 'success');
+    await (await token.transfer(presaleAddr, ethers.parseEther('10000000'))).wait();
+    log('Fresh presale funded 10M tokens', 'success');
 
     // ─── TEST 6: SOFTCAP LOGIC ───
     log('', 'info');
