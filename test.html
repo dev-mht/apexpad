@@ -396,8 +396,8 @@ async function runAllTests() {
     log(`TX: ${tx3.hash}`, 'pending');
     await tx3.wait();
     
-    const contribution = await presaleContract.getContribution(wallet);
-    log(`Contribution recorded: ${ethers.formatEther(contribution)} BNB`, 'success');
+    const totalAfterContrib = await presaleContract.totalRaised();
+    log(`Total raised: ${ethers.formatEther(totalAfterContrib)} BNB`, "success");
     setStep(4, 'done');
     testsPassed = 4;
 
