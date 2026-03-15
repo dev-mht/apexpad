@@ -306,6 +306,8 @@ const PRESALE_ABI = [
   "function isActive() view returns (bool)",
   "function projectOwner() view returns (address)",
   "function tokenPrice() view returns (uint256)",
+  "function startTime() view returns (uint256)",
+  "function endTime() view returns (uint256)",
 ];
 
 const MHT_ABI = [
@@ -653,7 +655,11 @@ async function deployPresale(softBNB = '0.02', hardBNB = '0.1', minBNB = '0.005'
   const min   = ethers.parseEther(minBNB);
   const max   = ethers.parseEther(maxBNB);
   const start = BigInt(now + 5);
-  const end   = BigInt(now + 3600);
+  // ── FIX v3.1 : endTime court (75s) pour éviter evm_increaseTime ──
+  // Le nœud BSC testnet public ne supporte pas evm_increaseTime.
+  // On déploie avec une presale de 75s — assez pour les contributions
+  // de la Phase 1, et la Phase 2 attend l'expiration naturelle avant finalize().
+  const end   = BigInt(now + 75);
   const lp    = 60n; // 60% LP
   const nums  = [price, soft, hard, min, max, start, end, lp];
   log('Déploiement presale via Factory...', 'pending');
@@ -860,20 +866,21 @@ async function runIntegrationTest() {
       const finF    = await presale.finalized();
       if (!finF && raisedF >= softF) {
         log('Finalisation de la presale...', 'pending');
-        // ── FIX v3 : avancer le temps testnet pour dépasser endTime ──
+        // ── FIX v3.1 : attendre l'expiration naturelle du endTime ──
+        // La presale est déployée avec endTime = now+75s (voir deployPresale).
+        // Le nœud BSC testnet public ne supporte pas evm_increaseTime,
+        // donc on attend simplement que le timestamp on-chain dépasse endTime.
         try {
           const endTime = await presale.endTime();
           const nowTs   = BigInt(Math.floor(Date.now() / 1000));
           if (endTime > nowTs) {
-            const delta = Number(endTime - nowTs) + 10;
-            log(`Avance du timestamp testnet de ${delta}s (evm_increaseTime)...`, 'pending');
-            await provider.send('evm_increaseTime', [delta]);
-            await provider.send('evm_mine', []);
-            log('Timestamp avancé ✓', 'data');
+            const waitMs = Number(endTime - nowTs) * 1000 + 4000; // +4s marge
+            log(`Attente expiration presale : ${Math.ceil(waitMs/1000)}s restantes...`, 'pending');
+            await sleep(waitMs);
+            log('Presale expirée ✓', 'data');
           }
         } catch(evm) {
-          log(`evm_increaseTime non disponible sur ce nœud : ${evm.message}`, 'warning');
-          log('Tentative de finalize() sans avance de temps...', 'pending');
+          log(`Lecture endTime échouée : ${evm.message} — tentative finalize() immédiate`, 'warning');
         }
         const txF = await presale.finalize();
         await txF.wait();
