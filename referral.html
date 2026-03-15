@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Get Your Referral Link — ApexPad × $MHT</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LJQ14ER06M"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-LJQ14ER06M');
+</script>
+<style>
+:root {
+  --red:#FF2D2D; --orange:#FF6B00; --fire:#FF9500;
+  --dark:#080808; --card:#111111; --card2:#181818;
+  --white:#F0F0F0; --muted:#888; --muted2:#555;
+  --green:#22C55E; --border:rgba(255,45,45,0.25);
+  --grad:linear-gradient(135deg,#FF2D2D,#FF6B00,#FF9500);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--dark);color:var(--white);font-family:'Rajdhani',sans-serif;overflow-x:hidden;min-height:100vh;}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:1000;opacity:0.4;}
+.bg-grid{position:fixed;inset:0;background-image:linear-gradient(rgba(255,45,45,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,45,45,0.03) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;animation:gridPulse 8s ease-in-out infinite;}
+@keyframes gridPulse{0%,100%{opacity:.5}50%{opacity:1}}
+
+nav{position:fixed;top:0;width:100%;z-index:100;padding:20px 60px;display:flex;align-items:center;justify-content:space-between;background:rgba(8,8,8,0.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
+.nav-logo{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:3px;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none;}
+.nav-logo span{-webkit-text-fill-color:#666;font-size:0.9rem;letter-spacing:1px;font-family:'Share Tech Mono',monospace;margin-left:8px;}
+.nav-back{color:#888;text-decoration:none;font-size:0.85rem;letter-spacing:2px;text-transform:uppercase;font-weight:600;transition:color 0.3s;}
+.nav-back:hover{color:var(--red);}
+
+.ticker-wrap{position:fixed;top:80px;width:100%;background:rgba(255,45,45,0.08);border-bottom:1px solid var(--border);padding:8px 0;overflow:hidden;z-index:99;}
+.ticker-inner{display:inline-flex;white-space:nowrap;animation:ticker 35s linear infinite;font-family:'Share Tech Mono',monospace;font-size:0.7rem;letter-spacing:2px;color:var(--red);}
+.ticker-inner span{margin:0 20px;color:var(--orange);}
+@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+.main{padding:160px 60px 80px;max-width:780px;margin:0 auto;position:relative;z-index:1;}
+
+.page-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,45,45,0.1);border:1px solid rgba(255,45,45,0.3);padding:8px 20px;font-family:'Share Tech Mono',monospace;font-size:0.7rem;letter-spacing:3px;color:var(--red);margin-bottom:24px;clip-path:polygon(12px 0%,100% 0%,calc(100% - 12px) 100%,0% 100%);animation:fadeInDown 0.6s ease both;}
+.page-badge::before{content:'';width:6px;height:6px;background:var(--red);border-radius:50%;animation:blink 1.5s infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.2}}
+@keyframes fadeInDown{from{opacity:0;transform:translateY(-16px)}to{opacity:1;transform:translateY(0)}}
+
+.page-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,5vw,4rem);letter-spacing:4px;line-height:1;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:12px;}
+.page-subtitle{font-size:1rem;color:var(--muted);letter-spacing:0.5px;line-height:1.6;margin-bottom:40px;}
+
+.section-tag{background:rgba(255,45,45,0.08);border-left:3px solid var(--red);padding:6px 14px;margin:28px 0 16px;font-family:'Share Tech Mono',monospace;font-size:0.75rem;color:var(--red);letter-spacing:1px;}
+
+/* STEP 1 — FORM */
+.form-card{background:var(--card);border:1px solid var(--border);padding:32px;clip-path:polygon(0 0,calc(100% - 16px) 0,100% 16px,100% 100%,16px 100%,0 calc(100% - 16px));margin-bottom:20px;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;}
+.form-group{display:flex;flex-direction:column;gap:8px;}
+.form-group.full{grid-column:1/-1;}
+label{font-size:0.85rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:#ccc;}
+label .req{color:var(--red);margin-left:4px;}
+input,select{background:rgba(255,255,255,0.04);border:1px solid rgba(255,45,45,0.2);color:var(--white);padding:12px 16px;font-family:'Rajdhani',sans-serif;font-size:1rem;font-weight:500;outline:none;transition:border-color 0.3s;width:100%;clip-path:polygon(0 0,calc(100% - 6px) 0,100% 6px,100% 100%,6px 100%,0 calc(100% - 6px));}
+input::placeholder{color:var(--muted);font-weight:400;}
+input:focus,select:focus{border-color:var(--red);background:rgba(255,45,45,0.05);}
+select{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23ff2d2d' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px;}
+select option{background:#111;color:var(--white);}
+
+.btn-generate{width:100%;background:var(--grad);border:none;color:white;padding:16px;font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:4px;cursor:pointer;clip-path:polygon(12px 0%,100% 0%,calc(100% - 12px) 100%,0% 100%);transition:opacity 0.3s,transform 0.2s;}
+.btn-generate:hover{opacity:0.85;transform:translateY(-2px);}
+.btn-generate:active{transform:scale(0.98);}
+
+/* STEP 2 — RESULT */
+#result-section{display:none;}
+.result-card{background:rgba(34,197,94,0.06);border:1px solid rgba(34,197,94,0.3);padding:28px 32px;margin-bottom:20px;clip-path:polygon(0 0,calc(100% - 16px) 0,100% 16px,100% 100%,16px 100%,0 calc(100% - 16px));}
+.result-title{font-family:'Share Tech Mono',monospace;font-size:0.75rem;letter-spacing:3px;color:var(--green);margin-bottom:16px;}
+
+.link-box{background:rgba(0,0,0,0.4);border:1px solid rgba(255,149,0,0.3);padding:14px 16px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;gap:12px;clip-path:polygon(0 0,calc(100% - 6px) 0,100% 6px,100% 100%,6px 100%,0 calc(100% - 6px));}
+.link-url{font-family:'Share Tech Mono',monospace;font-size:0.75rem;color:var(--fire);word-break:break-all;flex:1;}
+.btn-copy{background:rgba(255,45,45,0.15);border:1px solid rgba(255,45,45,0.4);color:var(--red);padding:8px 16px;font-family:'Share Tech Mono',monospace;font-size:0.7rem;letter-spacing:1px;cursor:pointer;transition:all 0.2s;white-space:nowrap;clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);}
+.btn-copy:hover{background:rgba(255,45,45,0.25);}
+.btn-copy.copied{background:rgba(34,197,94,0.2);border-color:rgba(34,197,94,0.4);color:var(--green);}
+
+.link-label{font-size:0.8rem;color:var(--muted);margin-bottom:12px;letter-spacing:0.5px;}
+
+/* REWARD TABLE */
+.reward-box{background:var(--card2);border:1px solid var(--border);padding:20px;margin-bottom:20px;}
+.reward-title{font-family:'Share Tech Mono',monospace;font-size:0.7rem;letter-spacing:2px;color:var(--orange);margin-bottom:14px;}
+.reward-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:0.3px solid rgba(255,45,45,0.1);font-size:0.9rem;}
+.reward-row:last-child{border-bottom:none;}
+.reward-row .tier{color:var(--muted);}
+.reward-row .pct{color:var(--green);font-weight:700;font-family:'Share Tech Mono',monospace;}
+
+/* NOTE */
+.note{background:rgba(255,149,0,0.07);border-left:3px solid var(--fire);padding:10px 14px;font-size:0.85rem;color:var(--white);line-height:1.6;margin-bottom:16px;}
+.note strong{color:var(--fire);}
+
+/* ID CARD */
+.id-card{background:var(--card);border:1px solid rgba(255,149,0,0.3);border-top:3px solid var(--orange);padding:20px 24px;margin-top:20px;}
+.id-title{font-family:'Share Tech Mono',monospace;font-size:0.7rem;letter-spacing:2px;color:var(--orange);margin-bottom:12px;}
+.id-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.id-item .lbl{font-size:0.75rem;color:var(--muted);letter-spacing:0.5px;}
+.id-item .val{font-size:0.9rem;color:var(--white);font-weight:600;margin-top:2px;}
+
+footer{background:rgba(0,0,0,0.6);border-top:1px solid var(--border);padding:24px 60px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;position:relative;z-index:1;margin-top:60px;}
+.footer-logo{font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:3px;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.footer-text{font-family:'Share Tech Mono',monospace;font-size:0.6rem;letter-spacing:2px;color:var(--muted2);}
+
+@media(max-width:768px){
+  nav{padding:16px 24px;}
+  .main{padding:140px 20px 60px;}
+  .form-row{grid-template-columns:1fr;}
+  .id-grid{grid-template-columns:1fr;}
+  footer{padding:20px 24px;flex-direction:column;text-align:center;}
+}
+</style>
+</head>
+<body>
+<div class="bg-grid"></div>
+
+<div class="ticker-wrap">
+  <div class="ticker-inner">
+    🤝 AMBASSADOR PROGRAM <span>///</span> GET YOUR REFERRAL LINK <span>///</span> EARN MHT TOKENS <span>///</span> $MHT PRESALE ON APEXPAD <span>///</span> BSC MAINNET LIVE <span>///</span> ETH • AVAX • BASE • SOL COMING SOON <span>///</span> 🤝 AMBASSADOR PROGRAM <span>///</span> GET YOUR REFERRAL LINK <span>///</span> EARN MHT TOKENS <span>///</span> $MHT PRESALE ON APEXPAD <span>///</span> BSC MAINNET LIVE <span>///</span> ETH • AVAX • BASE • SOL COMING SOON <span>///</span>
+  </div>
+</div>
+
+<nav>
+  <a href="index.html" class="nav-logo">ApexPad <span>// LAUNCHPAD</span></a>
+  <a href="ambassador.html" class="nav-back">← Ambassador Program</a>
+</nav>
+
+<main class="main">
+
+  <div class="page-badge">🔗 GET YOUR REFERRAL LINK</div>
+  <h1 class="page-title">YOUR PERSONAL<br>REFERRAL LINK</h1>
+  <p class="page-subtitle">Fill in your info below — get your unique referral links for $MHT presale AND ApexPad projects instantly.<br>Share them. Track them. Earn MHT.</p>
+
+  <div class="section-tag">// 01 — YOUR INFORMATION</div>
+
+  <div class="form-card">
+    <div class="form-row">
+      <div class="form-group">
+        <label>Your Name / Handle <span class="req">*</span></label>
+        <input type="text" id="inputName" placeholder="Ex: CryptoJohn or @cryptojohn" maxlength="30">
+      </div>
+      <div class="form-group">
+        <label>Platform <span class="req">*</span></label>
+        <select id="inputPlatform">
+          <option value="" disabled selected>Select your main platform</option>
+          <option value="YouTube">YouTube</option>
+          <option value="TikTok">TikTok</option>
+          <option value="X">X / Twitter</option>
+          <option value="Telegram">Telegram</option>
+          <option value="Instagram">Instagram</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Estimated Audience Size</label>
+        <select id="inputAudience">
+          <option value="micro">Under 1,000</option>
+          <option value="small">1,000 — 10,000</option>
+          <option value="mid" selected>10,000 — 50,000</option>
+          <option value="large">50,000 — 200,000</option>
+          <option value="mega">200,000+</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Contact (Email or Telegram)</label>
+        <input type="text" id="inputContact" placeholder="your@email.com or @handle">
+      </div>
+    </div>
+    <button class="btn-generate" onclick="generateLinks()">🚀 GENERATE MY REFERRAL LINKS</button>
+  </div>
+
+  <!-- RESULT -->
+  <div id="result-section">
+
+    <div class="section-tag">// 02 — YOUR REFERRAL LINKS</div>
+
+    <div class="result-card">
+      <div class="result-title">✅ YOUR LINKS ARE READY — SHARE THEM NOW</div>
+
+      <div class="link-label">🪙 Link 1 — $MHT Presale (earn 3% to 7% in MHT)</div>
+      <div class="link-box">
+        <span class="link-url" id="link-mht"></span>
+        <button class="btn-copy" onclick="copyLink('link-mht', this)">COPY</button>
+      </div>
+
+      <div class="link-label" style="margin-top:16px;">🚀 Link 2 — ApexPad Projects (earn up to 5,000,000 MHT)</div>
+      <div class="link-box">
+        <span class="link-url" id="link-apex"></span>
+        <button class="btn-copy" onclick="copyLink('link-apex', this)">COPY</button>
+      </div>
+    </div>
+
+    <div class="section-tag">// 03 — YOUR REWARD TIERS</div>
+
+    <div class="reward-box">
+      <div class="reward-title">// $MHT PRESALE REFERRAL</div>
+      <div class="reward-row"><span class="tier">Contributions up to $1,000</span><span class="pct">3% in MHT</span></div>
+      <div class="reward-row"><span class="tier">Contributions $1,000 — $5,000</span><span class="pct">5% in MHT</span></div>
+      <div class="reward-row"><span class="tier">Contributions over $5,000</span><span class="pct">7% in MHT + Priority Access</span></div>
+    </div>
+
+    <div class="reward-box">
+      <div class="reward-title">// APEXPAD PROJECT REFERRAL</div>
+      <div class="reward-row"><span class="tier">1 project launched</span><span class="pct">500,000 MHT</span></div>
+      <div class="reward-row"><span class="tier">3 projects launched</span><span class="pct">2,000,000 MHT</span></div>
+      <div class="reward-row"><span class="tier">5+ projects launched</span><span class="pct">5,000,000 MHT + Partner Badge</span></div>
+    </div>
+
+    <div class="note">
+      Rewards paid in MHT at presale price (<strong>$0.0002</strong>) within 7 days after presale ends.<br>
+      Minimum payout: $50 equivalent. BSC wallet required.
+    </div>
+
+    <div class="section-tag">// 04 — WHAT TO PROMOTE</div>
+
+    <div class="note">
+      <strong>For $MHT :</strong> Presale at $0.0002 — Hard Cap $20,000 — 0% buy tax during presale — SolidProof audit 80/100<br><br>
+      <strong>For ApexPad :</strong> $0 listing fee — 2% success fee only — LP lock enforced on-chain — BSC Mainnet LIVE ✅<br>
+      <strong style="color:var(--muted);">ETH • AVAX • BASE • SOL — Coming Soon</strong>
+    </div>
+
+    <div class="id-card">
+      <div class="id-title">// YOUR AMBASSADOR ID CARD</div>
+      <div class="id-grid">
+        <div class="id-item"><div class="lbl">Name / Handle</div><div class="val" id="id-name">—</div></div>
+        <div class="id-item"><div class="lbl">Platform</div><div class="val" id="id-platform">—</div></div>
+        <div class="id-item"><div class="lbl">Referral Code</div><div class="val" id="id-code" style="color:var(--fire);">—</div></div>
+        <div class="id-item"><div class="lbl">Contact</div><div class="val" id="id-contact">—</div></div>
+      </div>
+      <div style="margin-top:16px;padding-top:12px;border-top:0.5px solid rgba(255,45,45,0.2);font-family:'Share Tech Mono',monospace;font-size:0.7rem;color:var(--muted);letter-spacing:1px;">
+        Questions? → <span style="color:var(--fire);">milestonehodl.contact@proton.me</span>
+      </div>
+    </div>
+
+  </div>
+
+</main>
+
+<footer>
+  <div class="footer-logo">ApexPad</div>
+  <div class="footer-text">© 2026 APEXPAD × $MHT — AMBASSADOR PROGRAM</div>
+  <a href="ambassador.html" style="color:var(--orange);text-decoration:none;font-family:'Share Tech Mono',monospace;font-size:0.65rem;letter-spacing:1px;">← Program Details</a>
+</footer>
+
+<script>
+function slugify(name) {
+  return name.trim()
+    .toLowerCase()
+    .replace(/^@/, '')
+    .replace(/[^a-z0-9]/g, '')
+    .substring(0, 20);
+}
+
+function generateLinks() {
+  const name     = document.getElementById('inputName').value.trim();
+  const platform = document.getElementById('inputPlatform').value;
+  const contact  = document.getElementById('inputContact').value.trim();
+
+  if (!name) { alert('Please enter your name or handle!'); return; }
+  if (!platform) { alert('Please select your platform!'); return; }
+
+  const code = slugify(name);
+  if (!code) { alert('Please use letters or numbers in your name!'); return; }
+
+  const mhtLink  = `https://dev-mht.github.io/apexpad?ref=${code}&utm_source=${platform.toLowerCase()}&utm_campaign=mht_presale`;
+  const apexLink = `https://dev-mht.github.io/apexpad?ref=${code}&utm_source=${platform.toLowerCase()}&utm_campaign=apexpad_projects`;
+
+  document.getElementById('link-mht').textContent  = mhtLink;
+  document.getElementById('link-apex').textContent = apexLink;
+  document.getElementById('id-name').textContent     = name;
+  document.getElementById('id-platform').textContent = platform;
+  document.getElementById('id-code').textContent     = code;
+  document.getElementById('id-contact').textContent  = contact || '—';
+
+  document.getElementById('result-section').style.display = 'block';
+  document.getElementById('result-section').scrollIntoView({ behavior: 'smooth' });
+
+  // Track dans GA
+  gtag('event', 'referral_link_generated', {
+    event_category: 'Ambassador',
+    event_label: code,
+    custom_platform: platform,
+  });
+}
+
+function copyLink(id, btn) {
+  const text = document.getElementById(id).textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = '✅ COPIED!';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = 'COPY';
+      btn.classList.remove('copied');
+    }, 2000);
+  });
+}
+
+// Tracking visiteurs référés
+(function() {
+  const params = new URLSearchParams(window.location.search);
+  const ref = params.get('ref');
+  if (ref) {
+    gtag('event', 'referral_visit', {
+      event_category: 'Ambassador',
+      event_label: ref,
+      referral_code: ref,
+    });
+    localStorage.setItem('mht_ref', ref);
+    localStorage.setItem('mht_ref_ts', Date.now());
+  }
+})();
+</script>
+</body>
+</html>
