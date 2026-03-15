@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>MHT — Presale Recovery Tool</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.7.0/ethers.umd.min.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #070707; color: #e0e0e0; font-family: 'Courier New', monospace; padding: 32px; max-width: 700px; margin: 0 auto; }
+h1 { color: #ff4500; font-size: 1.4rem; letter-spacing: 3px; margin-bottom: 4px; }
+.sub { color: #444; font-size: 0.7rem; letter-spacing: 2px; margin-bottom: 28px; }
+.card { background: #0f0f0f; border: 1px solid #1a1a1a; border-radius: 6px; padding: 20px; margin-bottom: 16px; }
+.card h2 { color: #ff4500; font-size: 0.8rem; letter-spacing: 2px; margin-bottom: 14px; }
+label { display: block; color: #444; font-size: 0.68rem; letter-spacing: 1px; margin-bottom: 4px; }
+input { width: 100%; background: #111; border: 1px solid #2a2a2a; color: #e0e0e0; padding: 9px 13px; border-radius: 4px; font-family: 'Courier New', monospace; font-size: 0.78rem; margin-bottom: 12px; }
+input:focus { outline: none; border-color: #ff4500; }
+.btn { background: linear-gradient(135deg, #cc2200, #ff6b00); color: #fff; border: none; padding: 12px 24px; border-radius: 4px; cursor: pointer; font-family: 'Courier New', monospace; font-size: 0.82rem; font-weight: bold; letter-spacing: 2px; width: 100%; margin-bottom: 10px; transition: opacity .2s; }
+.btn:hover { opacity: .82; }
+.btn:disabled { opacity: .3; cursor: not-allowed; }
+.btn-sec { background: #111; border: 1px solid #ff4500; color: #ff4500; }
+.btn-sec:hover { background: rgba(255,69,0,.08); opacity: 1; }
+.btn-green { background: linear-gradient(135deg, #15803d, #22c55e); }
+.log { background: #030303; border: 1px solid #111; border-radius: 4px; padding: 14px; min-height: 160px; max-height: 320px; overflow-y: auto; font-size: 0.72rem; line-height: 1.9; margin-top: 14px; }
+.ok  { color: #22c55e; font-weight: bold; }
+.err { color: #ef4444; font-weight: bold; }
+.inf { color: #3b82f6; }
+.dat { color: #888; }
+.warn { color: #f59e0b; }
+.status { padding: 12px 16px; border-radius: 4px; font-size: 0.8rem; margin-bottom: 14px; display: none; }
+.status.ok-s  { border: 1px solid #22c55e; background: rgba(34,197,94,.05); color: #22c55e; }
+.status.err-s { border: 1px solid #ef4444; background: rgba(239,68,68,.05); color: #ef4444; }
+</style>
+</head>
+<body>
+
+<h1>🔧 MHT PRESALE RECOVERY</h1>
+<p class="sub">// RÉCUPÉRATION TOKENS BLOQUÉS — BSC TESTNET</p>
+
+<div class="card">
+  <h2>📋 CONFIGURATION</h2>
+  <label>CONTRAT PRESALE (adresse à récupérer)</label>
+  <input id="presaleAddr" value="0x082abeEFDB1AA0Ad4A7F15AC2eE69760699dc4da" />
+  <label>MHT TOKEN (testnet)</label>
+  <input id="mhtAddr" value="0x22E0fcEc929c4F38c8D8c03B2B2F225E98F133fa" />
+  <button class="btn btn-sec" onclick="connectWallet()">🦊 CONNECT METAMASK (BSC TESTNET)</button>
+</div>
+
+<div id="statusBox" class="status"></div>
+
+<div class="card">
+  <h2>🔍 ÉTAPE 1 — VÉRIFIER L'ÉTAT</h2>
+  <button class="btn btn-sec" id="btnCheck" onclick="checkState()" disabled>🔍 VÉRIFIER ÉTAT DU CONTRAT</button>
+</div>
+
+<div class="card">
+  <h2>❌ ÉTAPE 2 — ANNULER LA PRESALE</h2>
+  <p style="color:#666;font-size:0.72rem;margin-bottom:12px;">Appelle cancel() pour marquer la presale comme annulée — nécessaire avant recoverUnsoldTokens().</p>
+  <button class="btn" id="btnCancel" onclick="cancelPresale()" disabled>❌ APPELER cancel()</button>
+</div>
+
+<div class="card">
+  <h2>💰 ÉTAPE 3 — RÉCUPÉRER LES TOKENS</h2>
+  <p style="color:#666;font-size:0.72rem;margin-bottom:12px;">Récupère les MHT bloqués dans le contrat presale → wallet owner.</p>
+  <button class="btn btn-green" id="btnRecover" onclick="recoverTokens()" disabled>💰 APPELER recoverUnsoldTokens()</button>
+</div>
+
+<div class="card">
+  <h2>📟 LOGS</h2>
+  <div class="log" id="logs"></div>
+</div>
+
+<script>
+const PRESALE_ABI = [
+  "function cancel() external",
+  "function recoverUnsoldTokens() external",
+  "function finalized() view returns (bool)",
+  "function cancelled() view returns (bool)",
+  "function isActive() view returns (bool)",
+  "function totalRaised() view returns (uint256)",
+  "function tokensForBuyers() view returns (uint256)",
+  "function totalTokensClaimed() view returns (uint256)",
+  "function projectOwner() view returns (address)",
+  "function startTime() view returns (uint256)",
+  "function endTime() view returns (uint256)",
+];
+const ERC20_ABI = [
+  "function balanceOf(address) view returns (uint256)",
+];
+
+let provider, signer, signerAddr, presale, mht;
+
+function log(msg, type = 'inf') {
+  const d = document.getElementById('logs');
+  const now = new Date().toLocaleTimeString('fr-FR');
+  d.innerHTML += `<div class="${type}">[${now}] ${msg}</div>`;
+  d.scrollTop = d.scrollHeight;
+}
+
+function setStatus(msg, type) {
+  const b = document.getElementById('statusBox');
+  b.style.display = 'block';
+  b.className = `status ${type}`;
+  b.textContent = msg;
+}
+
+async function connectWallet() {
+  try {
+    if (!window.ethereum) { alert('MetaMask requis'); return; }
+    await window.ethereum.request({ method: 'eth_requestAccounts' });
+    provider = new ethers.BrowserProvider(window.ethereum);
+    signer   = await provider.getSigner();
+    signerAddr = await signer.getAddress();
+    const network = await provider.getNetwork();
+    if (network.chainId !== 97n) {
+      setStatus('⛔ Mauvais réseau — connecte-toi sur BSC TESTNET (ChainID 97)', 'err-s');
+      log('Mauvais réseau détecté — ChainID ' + network.chainId, 'err');
+      return;
+    }
+    presale = new ethers.Contract(document.getElementById('presaleAddr').value, PRESALE_ABI, signer);
+    mht     = new ethers.Contract(document.getElementById('mhtAddr').value, ERC20_ABI, signer);
+    log(`Wallet connecté : ${signerAddr}`, 'ok');
+    log(`Réseau : BSC Testnet (ChainID 97) ✓`, 'ok');
+    document.getElementById('btnCheck').disabled   = false;
+    document.getElementById('btnCancel').disabled  = false;
+    document.getElementById('btnRecover').disabled = false;
+    setStatus('✅ Wallet connecté — BSC Testnet', 'ok-s');
+    await checkState();
+  } catch(e) { log(`Erreur connexion : ${e.message}`, 'err'); }
+}
+
+async function checkState() {
+  try {
+    log('─── Vérification état presale ───', 'inf');
+    const presaleAddr = document.getElementById('presaleAddr').value;
+    const finalized  = await presale.finalized();
+    const cancelled  = await presale.cancelled();
+    const isActive   = await presale.isActive();
+    const raised     = await presale.totalRaised();
+    const owner      = await presale.projectOwner();
+    const mhtBal     = await mht.balanceOf(presaleAddr);
+    const ownerBal   = await mht.balanceOf(signerAddr);
+
+    let endTimeStr = '—';
+    try {
+      const et = await presale.endTime();
+      const now = BigInt(Math.floor(Date.now()/1000));
+      const expired = et <= now;
+      endTimeStr = `${new Date(Number(et)*1000).toLocaleTimeString('fr-FR')} ${expired ? '(expirée ✓)' : '(active ⏳)'}`;
+    } catch(e) { endTimeStr = 'non disponible'; }
+
+    log(`finalized   : ${finalized}`, 'dat');
+    log(`cancelled   : ${cancelled}`, 'dat');
+    log(`isActive    : ${isActive}`, 'dat');
+    log(`endTime     : ${endTimeStr}`, 'dat');
+    log(`totalRaised : ${ethers.formatEther(raised)} BNB`, 'dat');
+    log(`MHT bloqués : ${ethers.formatEther(mhtBal)} MHT`, 'dat');
+    log(`Owner wallet: ${ethers.formatEther(ownerBal)} MHT`, 'dat');
+    log(`projectOwner: ${owner}`, 'dat');
+
+    if (mhtBal === 0n) {
+      log('ℹ️ Aucun MHT dans ce contrat — déjà récupérés ?', 'warn');
+      setStatus('ℹ️ Contrat vide — tokens déjà récupérés ou mauvaise adresse', 'err-s');
+    } else if (cancelled) {
+      log('Presale annulée ✓ — tu peux appeler recoverUnsoldTokens()', 'ok');
+      setStatus('✅ Presale annulée — appelle recoverUnsoldTokens() (Étape 3)', 'ok-s');
+    } else if (!finalized && !cancelled) {
+      log('Presale non finalisée et non annulée → appelle cancel() d\'abord', 'warn');
+      setStatus('⚠️ Presale active — appelle cancel() (Étape 2) puis recoverUnsoldTokens() (Étape 3)', 'err-s');
+    }
+  } catch(e) { log(`Erreur vérification : ${e.message}`, 'err'); }
+}
+
+async function cancelPresale() {
+  try {
+    log('─── Appel cancel() ───', 'inf');
+    const cancelled = await presale.cancelled();
+    if (cancelled) { log('Presale déjà annulée ✓', 'ok'); return; }
+    log('Envoi transaction cancel()...', 'inf');
+    const tx = await presale.cancel();
+    log(`Tx envoyée : ${tx.hash}`, 'dat');
+    log('Attente confirmation...', 'inf');
+    await tx.wait();
+    log('cancel() confirmé ✓', 'ok');
+    setStatus('✅ Presale annulée — passe à l\'Étape 3', 'ok-s');
+    await checkState();
+  } catch(e) {
+    log(`cancel() échoué : ${e.message}`, 'err');
+    if (e.message.includes('owner') || e.message.includes('Owner')) {
+      log('→ Seul le projectOwner peut annuler la presale', 'warn');
+    }
+  }
+}
+
+async function recoverTokens() {
+  try {
+    log('─── Appel recoverUnsoldTokens() ───', 'inf');
+    const presaleAddr = document.getElementById('presaleAddr').value;
+    const balBefore = await mht.balanceOf(signerAddr);
+    log('Envoi transaction recoverUnsoldTokens()...', 'inf');
+    const tx = await presale.recoverUnsoldTokens();
+    log(`Tx envoyée : ${tx.hash}`, 'dat');
+    log('Attente confirmation...', 'inf');
+    await tx.wait();
+    const balAfter = await mht.balanceOf(signerAddr);
+    const received = balAfter - balBefore;
+    const presaleBal = await mht.balanceOf(presaleAddr);
+    log(`recoverUnsoldTokens() confirmé ✓`, 'ok');
+    log(`MHT reçus sur owner wallet : ${ethers.formatEther(received)} MHT`, 'ok');
+    log(`MHT restants dans presale  : ${ethers.formatEther(presaleBal)} MHT`, 'dat');
+    log(`Nouveau solde owner : ${ethers.formatEther(balAfter)} MHT`, 'ok');
+    setStatus(`✅ ${ethers.formatEther(received)} MHT récupérés → wallet owner`, 'ok-s');
+  } catch(e) {
+    log(`recoverUnsoldTokens() échoué : ${e.message}`, 'err');
+    if (e.message.includes('finalized') || e.message.includes('cancelled')) {
+      log('→ Appelle d\'abord cancel() (Étape 2)', 'warn');
+    }
+  }
+}
+</script>
+</body>
+</html>
