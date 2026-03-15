@@ -121,7 +121,11 @@ tbody td strong { color: var(--green); }
 .note strong { color: var(--fire); }
 
 /* CTA */
-<a href="referral.html" class="btn-cta">🔗 GET MY REFERRAL LINK</a>
+.cta-box { background: var(--card); border: 1.5px solid var(--red); border-top: 4px solid var(--orange); padding: 36px 40px; text-align: center; clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px)); margin-top: 40px; }
+.cta-title { font-family: 'Bebas Neue', sans-serif; font-size: 2.5rem; letter-spacing: 3px; background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 12px; }
+.cta-sub { color: var(--muted); font-size: 1rem; margin-bottom: 24px; letter-spacing: 0.5px; }
+.btn-cta { display: inline-block; background: var(--grad); color: white; padding: 16px 48px; font-family: 'Bebas Neue', sans-serif; font-size: 1.3rem; letter-spacing: 3px; text-decoration: none; clip-path: polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%); transition: opacity 0.3s, transform 0.2s; }
+.btn-cta:hover { opacity: 0.85; transform: translateY(-2px); }
 
 /* FOOTER */
 footer { background: rgba(0,0,0,0.6); border-top: 1px solid var(--border); padding: 30px 60px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; position: relative; z-index: 1; }
@@ -287,9 +291,7 @@ footer { background: rgba(0,0,0,0.6); border-top: 1px solid var(--border); paddi
   <!-- CTA commun -->
   <div class="cta-box">
     <div class="cta-title">READY TO REACH THE APEX?</div>
-    <div class="cta-sub">Contact us now — get your referral link within 24h<br>Contacte-nous maintenant — reçois ton lien referral sous 24h</div>
-    <a href="mailto:milestonehodl.contact@proton.me?subject=Ambassador Program Application" class="btn-cta">✉️ APPLY NOW</a>
-    <div style="margin-top:16px; font-family:'Share Tech Mono',monospace; font-size:0.75rem; color:var(--muted);">milestonehodl.contact@proton.me</div>
+   <a href="referral.html" class="btn-cta">🔗 GET MY REFERRAL LINK</a>
   </div>
 
 </main>
