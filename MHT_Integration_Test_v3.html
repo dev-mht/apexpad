@@ -1231,17 +1231,23 @@ async function runIntegrationTest() {
     // N5B — Anti-whale
     setT('n5b', 'running');
     try {
-      const maxTx = await mht.maxTxAmount();
+      const maxTx   = await mht.maxTxAmount();
       const overMax = maxTx + ethers.parseEther('1');
       log(`maxTxAmount: ${ethers.formatEther(maxTx)} MHT`, 'data');
-      const currentPair = await mht.pancakePair();
-      if (currentPair !== '0x0000000000000000000000000000000000000000') {
+      // ── FIX v3.2 : la paire PancakeSwap est exclue de maxTx par design (setPancakePair).
+      // Tester avec une adresse tierce neutre non-exclue pour valider la vraie protection.
+      const neutralAddr = '0x1111111111111111111111111111111111111111';
+      const isExcluded  = await mht.isExcludedFromMaxTx(neutralAddr);
+      log(`Adresse test neutre: ${neutralAddr}`, 'data');
+      log(`isExcludedFromMaxTx[neutre]: ${isExcluded}`, 'data');
+      if (!isExcluded) {
+        log(`Test transfert ${ethers.formatEther(overMax)} MHT → adresse neutre non-exclue`, 'data');
         await shouldRevert(
-          () => mht.transfer(currentPair, overMax),
-          'n5b', `Anti-whale bloqué — transfert ${ethers.formatEther(overMax)} MHT > maxTx`
+          () => mht.transfer(neutralAddr, overMax),
+          'n5b', `Anti-whale bloqué ✓ — ${ethers.formatEther(overMax)} MHT > maxTx vers adresse non-exclue → revert correct`
         );
       } else {
-        log(`Anti-whale actif — maxTxAmount: ${ethers.formatEther(maxTx)} MHT = 1% supply`, 'data');
+        log(`Adresse neutre déjà exclue — vérification config uniquement`, 'data');
         await ok('n5b', `Anti-whale configuré ✓ — maxTxAmount: ${ethers.formatEther(maxTx)} MHT (1% supply)`);
       }
     } catch(e) { await ko('n5b', `Anti-whale check échoué : ${e.message}`); }
