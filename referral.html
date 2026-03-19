@@ -230,7 +230,7 @@ footer{background:rgba(0,0,0,0.6);border-top:1px solid var(--border);padding:24p
         <div class="id-item"><div class="lbl">Contact</div><div class="val" id="id-contact">—</div></div>
       </div>
       <div style="margin-top:16px;padding-top:12px;border-top:0.5px solid rgba(255,45,45,0.2);font-family:'Share Tech Mono',monospace;font-size:0.7rem;color:var(--muted);letter-spacing:1px;">
-        Questions? → <span style="color:var(--fire);">milestonehodl.contact@proton.me</span>
+        Questions? → <span style="color:var(--fire);"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="bdd0d4d1d8cec9d2d3d8d5d2d9d193ded2d3c9dcdec9fdcdcfd2c9d2d393d0d8">[email&#160;protected]</a></span>
       </div>
     </div>
 
@@ -244,7 +244,7 @@ footer{background:rgba(0,0,0,0.6);border-top:1px solid var(--border);padding:24p
   <a href="ambassador.html" style="color:var(--orange);text-decoration:none;font-family:'Share Tech Mono',monospace;font-size:0.65rem;letter-spacing:1px;">← Program Details</a>
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 function slugify(name) {
   return name.trim()
     .toLowerCase()
@@ -264,8 +264,8 @@ function generateLinks() {
   const code = slugify(name);
   if (!code) { alert('Please use letters or numbers in your name!'); return; }
 
-  const mhtLink  = `https://dev-mht.github.io/apexpad?ref=${code}&utm_source=${platform.toLowerCase()}&utm_campaign=mht_presale`;
-  const apexLink = `https://dev-mht.github.io/apexpad?ref=${code}&utm_source=${platform.toLowerCase()}&utm_campaign=apexpad_projects`;
+  const mhtLink  = `https://apexpad.io?ref=${code}&utm_source=${platform.toLowerCase()}&utm_campaign=mht_presale`;
+  const apexLink = `https://apexpad.io?ref=${code}&utm_source=${platform.toLowerCase()}&utm_campaign=apexpad_projects`;
 
   document.getElementById('link-mht').textContent  = mhtLink;
   document.getElementById('link-apex').textContent = apexLink;
@@ -276,6 +276,24 @@ function generateLinks() {
 
   document.getElementById('result-section').style.display = 'block';
   document.getElementById('result-section').scrollIntoView({ behavior: 'smooth' });
+
+  // ═══ ENVOI AUTOMATIQUE GOOGLE SHEETS ═══
+  const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbzt5uvgWQ6ItWIqdTcWm3-1iKmbz5EIbMrC05f1TM_eO5nuPi1EQR01bcsw_SMPtskHbQ/exec';
+  const audience = document.getElementById('inputAudience') ? document.getElementById('inputAudience').value : '';
+  fetch(SHEETS_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      name: name,
+      code: code,
+      platform: platform,
+      contact: contact || '',
+      audience: audience,
+      ref: mhtLink,
+      source: 'referral_page'
+    })
+  }).catch(err => console.log('Sheet log:', err));
 
   // Track dans GA
   gtag('event', 'referral_link_generated', {
@@ -302,15 +320,4 @@ function copyLink(id, btn) {
   const params = new URLSearchParams(window.location.search);
   const ref = params.get('ref');
   if (ref) {
-    gtag('event', 'referral_visit', {
-      event_category: 'Ambassador',
-      event_label: ref,
-      referral_code: ref,
-    });
-    localStorage.setItem('mht_ref', ref);
-    localStorage.setItem('mht_ref_ts', Date.now());
-  }
-})();
-</script>
-</body>
-</html>
+    gtag('event', 'r
