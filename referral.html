@@ -320,4 +320,12 @@ function copyLink(id, btn) {
   const params = new URLSearchParams(window.location.search);
   const ref = params.get('ref');
   if (ref) {
-    gtag('event', 'r
+    gtag('event', 'referral_visit', {
+      event_category: 'Ambassador',
+      event_label: ref
+    });
+  }
+})();
+</script>
+</body>
+</html>
