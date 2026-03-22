@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
 <title>Apply to Launch — ApexPad</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <!-- Google tag (gtag.js) -->
@@ -702,7 +703,7 @@ footer {
       <!-- SUBMIT -->
       <div class="submit-area">
         <button type="submit" class="btn-submit">🚀 SUBMIT APPLICATION</button>
-        <p class="submit-note">// Applications reviewed within 48h — Contact: milestonehodl.contact@proton.me</p>
+        <p class="submit-note">// Applications reviewed within 48h — Contact: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="412c282d2432352e2f24292e252d6f222e2f352022350131332e352e2f6f2c24">[email&#160;protected]</a></p>
       </div>
 
     </form>
@@ -725,7 +726,7 @@ footer {
   <div class="footer-contract">Factory Contract: <a href="https://bscscan.com/address/0x96c32Ee9ea339e09cdEC3BaF9CDdc29F0898B2Da" target="_blank">0x96c32Ee9ea339e09cdEC3BaF9CDdc29F0898B2Da</a></div>
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 const form = document.getElementById('applyForm');
 const successMsg = document.getElementById('success-msg');
 
@@ -745,17 +746,4 @@ form.addEventListener('submit', async function(e) {
     if (response.ok) {
       form.style.display = 'none';
       successMsg.style.display = 'block';
-      successMsg.scrollIntoView({ behavior: 'smooth' });
-    } else {
-      btn.textContent = '❌ ERROR — TRY AGAIN';
-      btn.disabled = false;
-    }
-  } catch (err) {
-    btn.textContent = '❌ ERROR — TRY AGAIN';
-    btn.disabled = false;
-  }
-});
-</script>
-
-</body>
-</html>
+      successMsg.scrollIntoView({ behavio

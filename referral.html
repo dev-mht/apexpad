@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
 <title>Get Your Referral Link — ApexPad × $MHT</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-LJQ14ER06M"></script>
@@ -230,7 +231,7 @@ footer{background:rgba(0,0,0,0.6);border-top:1px solid var(--border);padding:24p
         <div class="id-item"><div class="lbl">Contact</div><div class="val" id="id-contact">—</div></div>
       </div>
       <div style="margin-top:16px;padding-top:12px;border-top:0.5px solid rgba(255,45,45,0.2);font-family:'Share Tech Mono',monospace;font-size:0.7rem;color:var(--muted);letter-spacing:1px;">
-        Questions? → <span style="color:var(--fire);"><span style="color:var(--fire);">milestonehodl.contact@proton.me</span></span>
+        Questions? → <span style="color:var(--fire);"><span style="color:var(--fire);"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="5f3236333a2c2b30313a37303b33713c30312b3e3c2b1f2f2d302b303171323a">[email&#160;protected]</a></span></span>
       </div>
     </div>
 
@@ -244,7 +245,7 @@ footer{background:rgba(0,0,0,0.6);border-top:1px solid var(--border);padding:24p
   <a href="ambassador.html" style="color:var(--orange);text-decoration:none;font-family:'Share Tech Mono',monospace;font-size:0.65rem;letter-spacing:1px;">← Program Details</a>
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 function slugify(name) {
   return name.trim()
     .toLowerCase()
@@ -317,15 +318,4 @@ function copyLink(id, btn) {
 
 // Tracking visiteurs référés
 (function() {
-  const params = new URLSearchParams(window.location.search);
-  const ref = params.get('ref');
-  if (ref) {
-    gtag('event', 'referral_visit', {
-      event_category: 'Ambassador',
-      event_label: ref
-    });
-  }
-})();
-</script>
-</body>
-</html>
+  cons
