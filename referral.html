@@ -231,7 +231,7 @@ footer{background:rgba(0,0,0,0.6);border-top:1px solid var(--border);padding:24p
         <div class="id-item"><div class="lbl">Contact</div><div class="val" id="id-contact">—</div></div>
       </div>
       <div style="margin-top:16px;padding-top:12px;border-top:0.5px solid rgba(255,45,45,0.2);font-family:'Share Tech Mono',monospace;font-size:0.7rem;color:var(--muted);letter-spacing:1px;">
-        Questions? → <span style="color:var(--fire);"><span style="color:var(--fire);"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="5f3236333a2c2b30313a37303b33713c30312b3e3c2b1f2f2d302b303171323a">[email&#160;protected]</a></span></span>
+        Questions? → <span style="color:var(--fire);"><span style="color:var(--fire);"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="036e6a6f6670776c6d666b6c676f2d606c6d776260774373716c776c6d2d6e66">[email&#160;protected]</a></span></span>
       </div>
     </div>
 
@@ -318,4 +318,28 @@ function copyLink(id, btn) {
 
 // Tracking visiteurs référés
 (function() {
-  cons
+  const params = new URLSearchParams(window.location.search);
+  const ref = params.get('ref');
+  if (ref) {
+    // Log referral visit to Google Sheets
+    const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbzt5uvgWQ6ItWIqdTcWm3-1iKmbz5EIbMrC05f1TM_eO5nuPi1EQR01bcsw_SMPtskHbQ/exec';
+    fetch(SHEETS_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        type: 'visit',
+        ref: ref,
+        page: window.location.pathname,
+        utm_source: params.get('utm_source') || '',
+        utm_campaign: params.get('utm_campaign') || '',
+        timestamp: new Date().toISOString(),
+        source: 'referral_tracking'
+      })
+    }).catch(err => console.log('Visit track:', err));
+  }
+})();
+</script>
+
+</body>
+</html>
