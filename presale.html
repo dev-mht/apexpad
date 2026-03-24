@@ -664,11 +664,7 @@ async function registerReferral() {
       timestamp: new Date().toISOString()
     };
 
-    await fetch(GOOGLE_SCRIPT_URL, {
-      method: 'POST',
-      body: JSON.stringify(payload),
-      headers: { 'Content-Type': 'application/json' }
-    });
+    await postToSheet(payload);
 
     localStorage.setItem('mht_ref_registered', '1');
     localStorage.setItem('mht_ref_code', refCode);
@@ -866,37 +862,23 @@ async function buyTokens() {
 // ============================================================
 async function logWalletConnection(wallet, ref) {
   try {
-    await fetch(GOOGLE_SCRIPT_URL, {
-      method: 'POST',
-      body: JSON.stringify({
-        secret: SECRET_TOKEN,
-        type: 'wallet_connected',
-        wallet: wallet,
-        ref: ref,
-        source: 'presale_page',
-        timestamp: new Date().toISOString()
-      }),
-      headers: { 'Content-Type': 'application/json' }
+    await postToSheet({
+      secret: SECRET_TOKEN, type: 'wallet_connected',
+      wallet, ref, source: 'presale_page',
+      timestamp: new Date().toISOString()
     });
   } catch(e) {}
 }
 
 async function logPurchase(wallet, bnbAmount, ref) {
   try {
-    await fetch(GOOGLE_SCRIPT_URL, {
-      method: 'POST',
-      body: JSON.stringify({
-        secret: SECRET_TOKEN,
-        type: 'purchase',
-        wallet: wallet,
-        bnb_amount: bnbAmount,
-        mht_amount: bnbAmount * 5000000,
-        usd_amount: (bnbAmount * BNB_PRICE_USD).toFixed(2),
-        ref: ref || 'direct',
-        source: 'presale_page',
-        timestamp: new Date().toISOString()
-      }),
-      headers: { 'Content-Type': 'application/json' }
+    await postToSheet({
+      secret: SECRET_TOKEN, type: 'purchase',
+      wallet, bnb_amount: bnbAmount,
+      mht_amount: bnbAmount * 5000000,
+      usd_amount: (bnbAmount * BNB_PRICE_USD).toFixed(2),
+      ref: ref || 'direct', source: 'presale_page',
+      timestamp: new Date().toISOString()
     });
   } catch(e) {}
 }
@@ -904,6 +886,18 @@ async function logPurchase(wallet, bnbAmount, ref) {
 // ============================================================
 // UTILS
 // ============================================================
+
+// Helper anti-CORS pour Google Apps Script
+async function postToSheet(payload) {
+  const form = new FormData();
+  form.append('data', JSON.stringify(payload));
+  await fetch(GOOGLE_SCRIPT_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    body: form
+  });
+}
+
 function setTxStatus(type, msg) {
   const el = document.getElementById('txStatus');
   el.className = 'tx-status ' + type;
