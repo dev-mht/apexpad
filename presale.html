@@ -887,15 +887,12 @@ async function logPurchase(wallet, bnbAmount, ref) {
 // UTILS
 // ============================================================
 
-// Helper anti-CORS pour Google Apps Script
+// Helper anti-CORS — GET params (le plus fiable avec Apps Script)
 async function postToSheet(payload) {
-  const form = new FormData();
-  form.append('data', JSON.stringify(payload));
-  await fetch(GOOGLE_SCRIPT_URL, {
-    method: 'POST',
-    mode: 'no-cors',
-    body: form
-  });
+  const params = new URLSearchParams();
+  Object.keys(payload).forEach(k => params.append(k, String(payload[k])));
+  const url = GOOGLE_SCRIPT_URL + "?" + params.toString();
+  await fetch(url, { method: "GET", mode: "no-cors" });
 }
 
 function setTxStatus(type, msg) {
