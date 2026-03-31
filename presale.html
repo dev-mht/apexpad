@@ -436,7 +436,7 @@ footer {
     </div>
     <div class="info-card">
       <div class="info-label">// Smart Contract</div>
-      <div class="info-value"><a href="https://bscscan.com/address/0xCFfFAEbeBe52eC88564F93FE5dfF2F629828b935" target="_blank">View on BSCScan ↗</a></div>
+      <div class="info-value"><a href="https://bscscan.com/address/0x0247ad28486992fe9cf08d0c8c4c08baf13f6b6a" target="_blank">View on BSCScan ↗</a></div>
     </div>
     <div class="info-card">
       <div class="info-label">// Audit Report</div>
@@ -462,7 +462,7 @@ footer {
 <footer>
   <div class="footer-logo">ApexPad</div>
   <div style="color:#444">© 2026 APEXPAD — ALL RIGHTS RESERVED</div>
-  <div class="footer-contract">Presale: <a href="https://bscscan.com/address/0xCFfFAEbeBe52eC88564F93FE5dfF2F629828b935" target="_blank">0xCFfFA...b935</a></div>
+  <div class="footer-contract">Presale: <a href="https://bscscan.com/address/0x0247ad28486992fe9cf08d0c8c4c08baf13f6b6a" target="_blank">0x0247...6b6a</a></div>
 </footer>
 
 <!-- Web3 -->
@@ -472,7 +472,7 @@ footer {
 // ============================================================
 // CONFIG
 // ============================================================
-const PRESALE_ADDRESS = '0xCFfFAEbeBe52eC88564F93FE5dfF2F629828b935';
+const PRESALE_ADDRESS = '0x0247ad28486992fe9cf08d0c8c4c08baf13f6b6a';
 const BSC_RPC = 'https://bsc-dataseed.binance.org/';
 const BNB_PRICE_USD = 651;
 const PRESALE_START = new Date('2026-03-30T16:00:00Z').getTime();   // ← CORRIGÉ
@@ -490,7 +490,12 @@ const PRESALE_ABI = [
   {"inputs":[],"name":"isActive","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},
   {"inputs":[],"name":"endTime","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},
   {"inputs":[],"name":"totalTokensSold","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},
-  {"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"contributions","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"}
+  {"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"contributions","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},
+  {"inputs":[],"name":"paused","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},
+  {"inputs":[{"internalType":"address","name":"wallet","type":"address"}],"name":"isBlacklisted","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},
+  {"inputs":[{"internalType":"bool","name":"_paused","type":"bool"}],"name":"setPaused","outputs":[],"stateMutability":"nonpayable","type":"function"},
+  {"inputs":[{"internalType":"address","name":"_addr","type":"address"},{"internalType":"bool","name":"_status","type":"bool"}],"name":"setBlacklist","outputs":[],"stateMutability":"nonpayable","type":"function"},
+  {"inputs":[{"internalType":"address[]","name":"_addrs","type":"address[]"},{"internalType":"bool","name":"_status","type":"bool"}],"name":"setBlacklistBatch","outputs":[],"stateMutability":"nonpayable","type":"function"}
 ];
 
 // ============================================================
