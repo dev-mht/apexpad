@@ -233,7 +233,18 @@ nav {
 .hero-subtitle span {
   color: var(--apex-orange);
 }
-
+.hero-slogan {
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: #FF6B35;
+  margin-top: 10px;
+  animation: sloganBlink 2s ease-in-out infinite;
+}
+@keyframes sloganBlink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.25; }
+}
 .hero-btns {
   display: flex;
   gap: 20px;
@@ -954,7 +965,8 @@ footer {
       <span class="fire">APEX</span>
       <span class="white">PAD</span>
     </h1>
-    <p class="hero-subtitle">Multi-Chain Presale Platform — <span>BSC • ETH • AVAX • BASE • SOL</span></p>
+    <p class="hero-subtitle">Multi-Chain Presale Platform — <span>BSC • ETH • AVAX • BASE • SOL</span></p> 
+      <p class="hero-slogan">Fair launch. Fair fees. 🏔️</p>
     <div class="hero-btns">
       <a href="#launch" class="btn-primary">🚀 Launch Your Project</a>
       <a href="#features" class="btn-secondary">Explore Features</a>
