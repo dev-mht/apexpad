@@ -843,40 +843,7 @@ footer {
 <div class="bg-glow"></div>
 <div class="bg-glow2"></div>
 
-
-  <!-- Titre -->
-  <div style="font-family:'Bebas Neue',sans-serif; font-size:clamp(1.2rem,3vw,1.8rem); letter-spacing:4px; color:white; margin-bottom:4px;">
-    ⚡ FIRST PROJECT ON APEXPAD
-  </div>
-  <div style="font-family:'Bebas Neue',sans-serif; font-size:clamp(1.8rem,5vw,3rem); letter-spacing:3px; background:linear-gradient(135deg,#ff2d2d,#ff6b00,#ff9500); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; margin-bottom:12px;">
-    $MHT PRESALE — APRIL 1st 2026 — 12:00 UTC
-  </div>
-
-  <!-- Countdown cliquable -->
-  <a href="presale.html" style="text-decoration:none; display:inline-block; margin-bottom:16px;">
-    <div id="apex-cd" style="display:flex; justify-content:center; align-items:center; gap:10px; flex-wrap:wrap;">
-      <div style="display:flex;flex-direction:column;align-items:center;background:rgba(255,45,45,0.15);border:1px solid rgba(255,45,45,0.4);border-radius:8px;padding:10px 20px;min-width:75px;">
-        <span id="acd-days" style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,5vw,3rem);color:#ff9500;line-height:1;">00</span>
-        <span style="font-size:0.55rem;letter-spacing:2px;color:rgba(255,255,255,0.7);text-transform:uppercase;margin-top:2px;">Days</span>
-      </div>
-      <span style="font-family:'Bebas Neue',sans-serif;font-size:3rem;color:rgba(255,255,255,0.3);align-self:flex-start;padding-top:6px;">:</span>
-      <div style="display:flex;flex-direction:column;align-items:center;background:rgba(255,45,45,0.15);border:1px solid rgba(255,45,45,0.4);border-radius:8px;padding:10px 20px;min-width:75px;">
-        <span id="acd-hours" style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,5vw,3rem);color:#ff9500;line-height:1;">00</span>
-        <span style="font-size:0.55rem;letter-spacing:2px;color:rgba(255,255,255,0.7);text-transform:uppercase;margin-top:2px;">Hours</span>
-      </div>
-      <span style="font-family:'Bebas Neue',sans-serif;font-size:3rem;color:rgba(255,255,255,0.3);align-self:flex-start;padding-top:6px;">:</span>
-      <div style="display:flex;flex-direction:column;align-items:center;background:rgba(255,45,45,0.15);border:1px solid rgba(255,45,45,0.4);border-radius:8px;padding:10px 20px;min-width:75px;">
-        <span id="acd-minutes" style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,5vw,3rem);color:#ff9500;line-height:1;">00</span>
-        <span style="font-size:0.55rem;letter-spacing:2px;color:rgba(255,255,255,0.7);text-transform:uppercase;margin-top:2px;">Min</span>
-      </div>
-      <span style="font-family:'Bebas Neue',sans-serif;font-size:3rem;color:rgba(255,255,255,0.3);align-self:flex-start;padding-top:6px;">:</span>
-      <div style="display:flex;flex-direction:column;align-items:center;background:rgba(255,45,45,0.15);border:1px solid rgba(255,45,45,0.4);border-radius:8px;padding:10px 20px;min-width:75px;">
-        <span id="acd-seconds" style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,5vw,3rem);color:#ff9500;line-height:1;">00</span>
-        <span style="font-size:0.55rem;letter-spacing:2px;color:rgba(255,255,255,0.7);text-transform:uppercase;margin-top:2px;">Sec</span>
-      </div>
-    </div>
-  </a>
-
+  
   <!-- Infos + Boutons -->
   <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-bottom:16px;">
     <span style="font-family:'Share Tech Mono',monospace;font-size:0.75rem;color:rgba(255,255,255,0.7);background:rgba(255,45,45,0.1);border:1px solid rgba(255,45,45,0.2);padding:5px 12px;border-radius:4px;">💰 $0.0002 / MHT</span>
@@ -899,27 +866,6 @@ footer {
     </a>
   </div>
 </div>
-
-<!-- ═══ COUNTDOWN SCRIPT ═══ -->
-<script>
-  const _ps = new Date('2026-04-01T12:00:00Z').getTime();
-  const _pe = new Date('2026-04-15T12:00:00Z').getTime();
-  function _pad(n){return String(n).padStart(2,'0');}
-  function _updateACD(){
-    const now=Date.now();
-    const cd=document.getElementById('apex-cd');
-    if(!cd)return;
-    if(now>=_pe){cd.innerHTML='<span style="font-family:Bebas Neue,sans-serif;font-size:2rem;color:#ff9500;letter-spacing:3px;">🎉 PRESALE ENDED</span>';return;}
-    const t=now<_ps?_ps:_pe;
-    const d=t-now;
-    document.getElementById('acd-days').textContent=_pad(Math.floor(d/86400000));
-    document.getElementById('acd-hours').textContent=_pad(Math.floor((d%86400000)/3600000));
-    document.getElementById('acd-minutes').textContent=_pad(Math.floor((d%3600000)/60000));
-    document.getElementById('acd-seconds').textContent=_pad(Math.floor((d%60000)/1000));
-  }
-  _updateACD();setInterval(_updateACD,1000);
-</script>
-
 
 
 <!-- NAV -->
