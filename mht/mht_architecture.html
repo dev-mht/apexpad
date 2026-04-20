@@ -887,7 +887,7 @@ function buildChart(type, ctx) {
     return new Chart(ctx, { type: 'doughnut', data: {
       labels: ['Smart-Vault','LP Pool','Marketing','Founder','Bonus V1'],
       datasets: [{ data: [500,250,100,50,50], backgroundColor: ['#0C447C','#085041','#712B13','#2C2C2A','#633806'], borderColor: ['#378ADD','#1D9E75','#D85A30','#888780','#BA7517'], borderWidth: 1.5 }]
-    }, options: { responsive: true, plugins: { legend: { display: true, position: 'right', labels: { color: '#e2e8f0', font: { family: 'JetBrains Mono', size: 11 }, padding: 12 } }, tooltip: { backgroundColor: '#0e1420', borderColor: 'rgba(249,115,22,0.3)', borderWidth: 1, titleColor: '#f97316', bodyColor: '#e2e8f0' } }, cutout: '65%' } });
+    }, options: { responsive: true, plugins: { legend: { display: true, position: 'right', labels: { color: '#e2e8f0', font: { family: 'JetBrains Mono', size: 11 }, padding: 12 } }, tooltip: { backgroundColor: '#0e1420', borderColor: 'rgba(249,115,22,0.3)', borderWidth: 1, titleColor: '#f97316', bodyColor: '#e2e8f0' } }, cutout: '65%' , rotation: -90} });
   }
 
   if (type === 'vault' || type === 'release') {
