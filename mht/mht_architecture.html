@@ -201,6 +201,118 @@ h1 span { color: var(--orange); }
 .stat-value { font-size: 22px; font-weight: 800; color: var(--text); }
 .stat-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
 
+/* Clickable stat cards */
+.stat-card {
+  cursor: pointer;
+  position: relative;
+}
+.stat-card::after {
+  content: '→';
+  position: absolute;
+  bottom: 12px;
+  right: 14px;
+  font-size: 14px;
+  color: var(--orange);
+  opacity: 0;
+  transition: opacity 0.2s, transform 0.2s;
+}
+.stat-card:hover::after { opacity: 1; transform: translateX(3px); }
+.stat-card:hover { border-color: rgba(249,115,22,0.5); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(249,115,22,0.1); }
+
+/* Modal overlay */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  backdrop-filter: blur(4px);
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: #0e1420;
+  border: 1px solid rgba(249,115,22,0.25);
+  border-radius: 20px;
+  padding: 36px;
+  max-width: 700px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  animation: modalIn 0.25s ease;
+}
+@keyframes modalIn { from { opacity:0; transform:translateY(20px) scale(0.97); } to { opacity:1; transform:none; } }
+.modal-close {
+  position: absolute;
+  top: 16px; right: 20px;
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-size: 24px;
+  cursor: pointer;
+  transition: color 0.2s;
+  font-family: 'Syne', sans-serif;
+}
+.modal-close:hover { color: var(--orange); }
+.modal-badge {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--orange);
+  border: 1px solid rgba(249,115,22,0.3);
+  background: var(--orange-dim);
+  padding: 4px 12px;
+  border-radius: 20px;
+  margin-bottom: 16px;
+}
+.modal h2 {
+  font-size: 26px;
+  font-weight: 800;
+  margin-bottom: 8px;
+  letter-spacing: -0.5px;
+}
+.modal h2 span { color: var(--orange); }
+.modal p {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.7;
+  margin-bottom: 12px;
+  font-weight: 400;
+}
+.modal-highlight {
+  background: var(--orange-dim);
+  border: 1px solid rgba(249,115,22,0.2);
+  border-radius: 10px;
+  padding: 14px 18px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--orange);
+  margin: 16px 0;
+  line-height: 1.8;
+}
+.modal canvas { width: 100% !important; margin-top: 20px; border-radius: 10px; }
+.modal-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 20px;
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: 1px solid rgba(249,115,22,0.3);
+  background: var(--orange-dim);
+  color: var(--orange);
+  font-family: 'Syne', sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.modal-btn:hover { background: rgba(249,115,22,0.2); }
+
 /* Footer */
 footer {
   margin-top: 64px;
@@ -237,36 +349,44 @@ footer .mono { font-family: 'JetBrains Mono', monospace; font-size: 11px; }
 
 <!-- Stats -->
 <div class="stats">
-  <div class="stat-card">
+  <div class="stat-card" onclick="openModal('supply')">
     <div class="stat-label">TOTAL SUPPLY</div>
     <div class="stat-value">1B</div>
     <div class="stat-sub">MHT — fixed forever</div>
   </div>
-  <div class="stat-card">
+  <div class="stat-card" onclick="openModal('vault')">
     <div class="stat-label">SMART-VAULT</div>
     <div class="stat-value">500M</div>
     <div class="stat-sub">50% — asymptotic release</div>
   </div>
-  <div class="stat-card">
+  <div class="stat-card" onclick="openModal('release')">
     <div class="stat-label">MILESTONE RELEASE</div>
     <div class="stat-value">5%</div>
     <div class="stat-sub">Floor 1M / Cap 20M MHT</div>
   </div>
-  <div class="stat-card">
+  <div class="stat-card" onclick="openModal('trigger')">
     <div class="stat-label">MILESTONE TRIGGER</div>
     <div class="stat-value">$1M</div>
     <div class="stat-sub">MCap growth via Chainlink</div>
   </div>
-  <div class="stat-card">
+  <div class="stat-card" onclick="openModal('bonus')">
     <div class="stat-label">V1 BONUS POOL</div>
     <div class="stat-value">50M</div>
     <div class="stat-sub">100 steps x $100K MCap</div>
   </div>
-  <div class="stat-card">
+  <div class="stat-card" onclick="openModal('renounce')">
     <div class="stat-label">OWNERSHIP</div>
     <div class="stat-value">0x0</div>
     <div class="stat-sub">renounced at launch</div>
   </div>
+</div>
+
+<!-- MODALS -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModalOutside(event)">
+<div class="modal" id="modal-box">
+  <button class="modal-close" onclick="closeModal()">×</button>
+  <div id="modal-content"></div>
+</div>
 </div>
 
 <!-- Tabs -->
@@ -638,6 +758,7 @@ footer .mono { font-family: 'JetBrains Mono', monospace; font-size: 11px; }
 
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script>
 function showTab(idx) {
   document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', i===idx));
@@ -660,6 +781,159 @@ function downloadSVG(idx) {
   a.download = names[idx] + '.svg';
   a.click();
   URL.revokeObjectURL(url);
+}
+
+/* ── MODAL CONTENT DEFINITIONS ─────────────────────────── */
+const modals = {
+  supply: {
+    badge: 'TOKENOMICS',
+    title: '<span>1,000,000,000</span> MHT',
+    body: `The total supply is fixed forever at 1 billion MHT. No minting function exists after deploy — the constructor mints everything in one shot and that's it. The effective circulating supply decreases over time as tokens are burned via transaction taxes.`,
+    highlight: `TOTAL_SUPPLY = 1,000,000,000 MHT\nFixed at deploy — no mint function\nBurn address: 0x000...dEaD`,
+    chart: 'supply',
+    btn: { label: 'See allocation overview', tab: 0 }
+  },
+  vault: {
+    badge: 'SMART-VAULT',
+    title: '<span>500M MHT</span> Smart-Vault',
+    body: `500 million MHT — 50% of total supply — are locked inside the contract at deploy. They are released automatically by Chainlink Automation every time the market cap grows by $1M. The release is asymptotic: 5% of what remains, meaning the vault mathematically never fully empties.`,
+    highlight: `Vault at deploy:  500,000,000 MHT\nMilestone 1:     -20,000,000 (cap)\nMilestone 2:     -19,000,000\nMilestone 3:     -18,050,000\n... asymptotic forever`,
+    chart: 'vault',
+    btn: { label: 'See milestone flow', tab: 1 }
+  },
+  release: {
+    badge: 'RELEASE MECHANISM',
+    title: '<span>5%</span> per milestone',
+    body: `Each milestone releases exactly 5% of the remaining vault — not a fixed amount. This creates an asymptotic curve: releases start large and get progressively smaller, meaning the vault theoretically never reaches zero. A floor of 1M MHT ensures minimum distribution even when the vault is nearly empty. A cap of 20M prevents over-distribution early on.`,
+    highlight: `release = vault × 5%\nif release < 1,000,000 → release = 1,000,000\nif release > 20,000,000 → release = 20,000,000`,
+    chart: 'release',
+    btn: { label: 'See milestone flow', tab: 1 }
+  },
+  trigger: {
+    badge: 'CHAINLINK ORACLE',
+    title: 'Trigger at <span>$1M MCap</span>',
+    body: `Every milestone is triggered when the market cap grows by $1M. The market cap is calculated using Chainlink's BNB/USD price feed — not a manual input. Formula: (TOTAL_SUPPLY - burned) × MHT price. This means the founder cannot manipulate the trigger. It's fully trustless.`,
+    highlight: `MCap = (TOTAL_SUPPLY - balanceOf(BURN_ADDRESS)) × price\nChainlink feed: 0x0567F2...42aeE\nStale check: < 3600 seconds\nCooldown between milestones: 24h`,
+    chart: 'trigger',
+    btn: { label: 'See milestone flow', tab: 1 }
+  },
+  bonus: {
+    badge: 'V1 HOLDER REWARD',
+    title: '<span>50M MHT</span> Bonus Pool',
+    body: `50 million MHT are reserved for V1 holders as a reward for early belief. The distribution happens over 100 steps: every time the market cap grows by $100K (from $100K to $10M), 500,000 MHT are distributed pro-rata to everyone in the V1 snapshot — including the founder. Hold V1 now to be in the snapshot.`,
+    highlight: `100 steps × 500,000 MHT = 50,000,000 total\nStep 1:  MCap $100K → distribute 500K\nStep 2:  MCap $200K → distribute 500K\n...\nStep 100: MCap $10M → distribute 500K`,
+    chart: 'bonus',
+    btn: { label: 'See Bonus V1 & LP diagram', tab: 3 }
+  },
+  renounce: {
+    badge: 'TRUSTLESS',
+    title: 'owner() = <span>address(0)</span>',
+    body: `After all setup is complete, the owner calls renounceOwnership() — an irreversible action that sets the owner to address(0). From that point, no admin function can ever be called again. The contract runs entirely on Chainlink Automation. No rug pull possible. No parameter changes. No emergency stop. Truly decentralized.`,
+    highlight: `Before renounce (required):\n1. setV1Snapshot()       ← once only\n2. setBlacklistBatch()   ← scammers\n3. releaseLPTranche1()  ← 80M + BNB\n4. setAutomationRegistry()\n\nThen: renounceOwnership() — FOREVER`,
+    chart: null,
+    btn: { label: 'See deploy sequence', tab: 0 }
+  }
+};
+
+let activeChart = null;
+
+function openModal(key) {
+  const m = modals[key];
+  const content = document.getElementById('modal-content');
+  content.innerHTML = `
+    <div class="modal-badge">${m.badge}</div>
+    <h2>${m.title}</h2>
+    <p>${m.body}</p>
+    <div class="modal-highlight"><pre style="font-family:inherit;white-space:pre-wrap">${m.highlight}</pre></div>
+    ${m.chart ? `<canvas id="modal-chart" height="200"></canvas>` : ''}
+    <button class="modal-btn" onclick="closeModal();showTab(${m.btn.tab});document.querySelector('.tabs').scrollIntoView({behavior:'smooth'})">${m.btn.label} →</button>
+  `;
+  document.getElementById('modal-overlay').classList.add('open');
+
+  if (activeChart) { activeChart.destroy(); activeChart = null; }
+
+  if (m.chart) {
+    setTimeout(() => {
+      const ctx = document.getElementById('modal-chart');
+      if (!ctx) return;
+      activeChart = buildChart(m.chart, ctx);
+    }, 50);
+  }
+}
+
+function closeModal() {
+  document.getElementById('modal-overlay').classList.remove('open');
+  if (activeChart) { activeChart.destroy(); activeChart = null; }
+}
+function closeModalOutside(e) {
+  if (e.target === document.getElementById('modal-overlay')) closeModal();
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+/* ── CHART BUILDERS ─────────────────────────────────────── */
+function buildChart(type, ctx) {
+  const gridColor = 'rgba(255,255,255,0.05)';
+  const tickColor = '#64748b';
+  const defaults = {
+    responsive: true,
+    plugins: { legend: { display: false }, tooltip: { backgroundColor: '#0e1420', borderColor: 'rgba(249,115,22,0.3)', borderWidth: 1, titleColor: '#f97316', bodyColor: '#e2e8f0' } },
+    scales: {
+      x: { grid: { color: gridColor }, ticks: { color: tickColor, font: { family: 'JetBrains Mono', size: 10 } } },
+      y: { grid: { color: gridColor }, ticks: { color: tickColor, font: { family: 'JetBrains Mono', size: 10 } } }
+    }
+  };
+
+  if (type === 'supply') {
+    return new Chart(ctx, { type: 'doughnut', data: {
+      labels: ['Smart-Vault','LP Pool','Marketing','Founder','Bonus V1'],
+      datasets: [{ data: [500,250,100,50,50], backgroundColor: ['#0C447C','#085041','#712B13','#2C2C2A','#633806'], borderColor: ['#378ADD','#1D9E75','#D85A30','#888780','#BA7517'], borderWidth: 1.5 }]
+    }, options: { responsive: true, plugins: { legend: { display: true, position: 'right', labels: { color: '#e2e8f0', font: { family: 'JetBrains Mono', size: 11 }, padding: 12 } }, tooltip: { backgroundColor: '#0e1420', borderColor: 'rgba(249,115,22,0.3)', borderWidth: 1, titleColor: '#f97316', bodyColor: '#e2e8f0' } }, cutout: '65%' } });
+  }
+
+  if (type === 'vault' || type === 'release') {
+    let vault = 500, labels = [], vaultData = [], releaseData = [];
+    for (let i = 0; i <= 40; i++) {
+      labels.push(`M${i}`);
+      vaultData.push(parseFloat(vault.toFixed(2)));
+      let rel = vault * 0.05;
+      if (rel < 1) rel = 1;
+      if (rel > 20) rel = 20;
+      releaseData.push(parseFloat(rel.toFixed(2)));
+      vault -= rel;
+      if (vault < 0) vault = 0;
+    }
+    if (type === 'vault') {
+      return new Chart(ctx, { type: 'line', data: {
+        labels,
+        datasets: [{ label: 'Vault remaining (M MHT)', data: vaultData, borderColor: '#378ADD', backgroundColor: 'rgba(55,138,221,0.1)', fill: true, tension: 0.4, pointRadius: 2 }]
+      }, options: { ...defaults, plugins: { ...defaults.plugins, tooltip: { ...defaults.plugins.tooltip, callbacks: { label: c => `${c.raw}M MHT remaining` } } } } });
+    } else {
+      return new Chart(ctx, { type: 'bar', data: {
+        labels,
+        datasets: [{ label: 'Release per milestone (M MHT)', data: releaseData, backgroundColor: releaseData.map(v => v >= 20 ? '#f97316' : v <= 1 ? '#e24b4a' : '#1D9E75'), borderRadius: 4 }]
+      }, options: { ...defaults, plugins: { ...defaults.plugins, tooltip: { ...defaults.plugins.tooltip, callbacks: { label: c => `${c.raw}M MHT released` } } } } });
+    }
+  }
+
+  if (type === 'trigger') {
+    const steps = Array.from({length: 10}, (_,i) => `$${i+1}M`);
+    return new Chart(ctx, { type: 'line', data: {
+      labels: steps,
+      datasets: [{ label: 'MCap (USD)', data: [1,2,3,4,5,6,7,8,9,10].map(v=>v*1000000), borderColor: '#7F77DD', backgroundColor: 'rgba(127,119,221,0.1)', fill: true, tension: 0.4, pointBackgroundColor: '#f97316', pointRadius: 5 }]
+    }, options: { ...defaults, plugins: { ...defaults.plugins, tooltip: { ...defaults.plugins.tooltip, callbacks: { label: c => `MCap: $${(c.raw/1000000).toFixed(0)}M — Milestone triggered` } } }, scales: { ...defaults.scales, y: { ...defaults.scales.y, ticks: { ...defaults.scales.y.ticks, callback: v => `$${v/1000000}M` } } } } });
+  }
+
+  if (type === 'bonus') {
+    const steps = Array.from({length: 10}, (_,i) => `$${(i+1)*100}K`);
+    const cumul = steps.map((_,i) => (i+1) * 0.5);
+    return new Chart(ctx, { type: 'bar', data: {
+      labels: steps,
+      datasets: [
+        { label: 'Per step (M MHT)', data: Array(10).fill(0.5), backgroundColor: '#633806', borderColor: '#BA7517', borderWidth: 1, borderRadius: 4 },
+        { label: 'Cumulative (M MHT)', data: cumul, type: 'line', borderColor: '#f97316', backgroundColor: 'transparent', tension: 0.4, pointRadius: 3, yAxisID: 'y2' }
+      ]
+    }, options: { ...defaults, scales: { ...defaults.scales, y2: { position: 'right', grid: { display: false }, ticks: { color: '#f97316', font: { family: 'JetBrains Mono', size: 10 }, callback: v => `${v}M` } } } } });
+  }
 }
 </script>
 </body>
