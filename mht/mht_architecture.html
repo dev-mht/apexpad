@@ -402,7 +402,7 @@ footer .mono { font-family: 'JetBrains Mono', monospace; font-size: 11px; }
   <div class="panel-header">
     <div>
       <div class="panel-title">Token allocations & deploy sequence</div>
-      <div class="panel-desc">1B MHT distributed across 5 allocations at deploy. Owner must complete 4 actions before calling renounceOwnership().</div>
+      <div class="panel-desc">1B MHT distributed across 6 allocations at deploy. Owner must complete 4 actions before calling renounceOwnership().</div>
     </div>
     <button class="btn-download" onclick="downloadSVG(0)">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
@@ -410,7 +410,7 @@ footer .mono { font-family: 'JetBrains Mono', monospace; font-size: 11px; }
     </button>
   </div>
   <div class="svg-container" id="svg-0">
-    <svg width="100%" viewBox="0 0 680 580" role="img">
+    <svg width="100%" viewBox="0 0 780 580" role="img">
 <title>MHT V2 — Token allocation overview</title>
 <desc>1 billion MHT distributed across 5 allocations at deploy, each with dedicated wallet and role</desc>
 <defs>
@@ -419,79 +419,88 @@ footer .mono { font-family: 'JetBrains Mono', monospace; font-size: 11px; }
   </marker>
 </defs>
 <!-- Constructor -->
-<rect x="215" y="20" width="250" height="56" rx="8" fill="#1a1040" stroke="#534AB7" stroke-width="0.5"/>
-<text font-family="JetBrains Mono" font-size="14" font-weight="600" fill="#AFA9EC" x="340" y="44" text-anchor="middle" dominant-baseline="central">Constructor</text>
-<text font-family="JetBrains Mono" font-size="11" fill="#7F77DD" x="340" y="62" text-anchor="middle" dominant-baseline="central">1,000,000,000 MHT — deploy unique</text>
-<!-- Fan arrows -->
-<path d="M260 76 L100 150" stroke="#444441" stroke-width="1" fill="none" marker-end="url(#arr0)"/>
-<path d="M300 76 L210 150" stroke="#444441" stroke-width="1" fill="none" marker-end="url(#arr0)"/>
-<path d="M340 76 L340 150" stroke="#444441" stroke-width="1" fill="none" marker-end="url(#arr0)"/>
-<path d="M380 76 L470 150" stroke="#444441" stroke-width="1" fill="none" marker-end="url(#arr0)"/>
-<path d="M420 76 L578 150" stroke="#444441" stroke-width="1" fill="none" marker-end="url(#arr0)"/>
-<!-- Allocation boxes -->
-<rect x="37" y="150" width="110" height="56" rx="8" fill="#0C447C" stroke="#378ADD" stroke-width="0.5"/>
-<text font-family="JetBrains Mono" font-size="12" font-weight="600" fill="#B5D4F4" x="92" y="173" text-anchor="middle" dominant-baseline="central">Smart-Vault</text>
-<text font-family="JetBrains Mono" font-size="11" fill="#378ADD" x="92" y="191" text-anchor="middle" dominant-baseline="central">500M — 50%</text>
-<rect x="161" y="150" width="110" height="56" rx="8" fill="#085041" stroke="#1D9E75" stroke-width="0.5"/>
-<text font-family="JetBrains Mono" font-size="12" font-weight="600" fill="#9FE1CB" x="216" y="173" text-anchor="middle" dominant-baseline="central">LP pool</text>
-<text font-family="JetBrains Mono" font-size="11" fill="#1D9E75" x="216" y="191" text-anchor="middle" dominant-baseline="central">250M — 25%</text>
-<rect x="285" y="150" width="110" height="56" rx="8" fill="#633806" stroke="#BA7517" stroke-width="0.5"/>
-<text font-family="JetBrains Mono" font-size="12" font-weight="600" fill="#FAC775" x="340" y="173" text-anchor="middle" dominant-baseline="central">Bonus V1</text>
-<text font-family="JetBrains Mono" font-size="11" fill="#BA7517" x="340" y="191" text-anchor="middle" dominant-baseline="central">50M — 5%</text>
-<rect x="409" y="150" width="110" height="56" rx="8" fill="#712B13" stroke="#D85A30" stroke-width="0.5"/>
-<text font-family="JetBrains Mono" font-size="12" font-weight="600" fill="#F5C4B3" x="464" y="173" text-anchor="middle" dominant-baseline="central">Marketing</text>
-<text font-family="JetBrains Mono" font-size="11" fill="#D85A30" x="464" y="191" text-anchor="middle" dominant-baseline="central">100M — 10%</text>
-<rect x="533" y="150" width="110" height="56" rx="8" fill="#2C2C2A" stroke="#888780" stroke-width="0.5"/>
-<text font-family="JetBrains Mono" font-size="12" font-weight="600" fill="#D3D1C7" x="588" y="173" text-anchor="middle" dominant-baseline="central">Founder</text>
-<text font-family="JetBrains Mono" font-size="11" fill="#888780" x="588" y="191" text-anchor="middle" dominant-baseline="central">50M — 5%</text>
+<rect x="265" y="20" width="250" height="56" rx="8" fill="#1a1040" stroke="#534AB7" stroke-width="0.5"/>
+<text font-family="JetBrains Mono" font-size="14" font-weight="600" fill="#AFA9EC" x="390" y="44" text-anchor="middle" dominant-baseline="central">Constructor</text>
+<text font-family="JetBrains Mono" font-size="11" fill="#7F77DD" x="390" y="62" text-anchor="middle" dominant-baseline="central">1,000,000,000 MHT — deploy unique — 6 mints</text>
+<!-- Fan arrows — 6 branches -->
+<path d="M360 76 L90 150" stroke="#444441" stroke-width="1" fill="none" marker-end="url(#arr0)"/>
+<path d="M375 76 L200 150" stroke="#444441" stroke-width="1" fill="none" marker-end="url(#arr0)"/>
+<path d="M385 76 L310 150" stroke="#444441" stroke-width="1" fill="none" marker-end="url(#arr0)"/>
+<path d="M395 76 L420 150" stroke="#444441" stroke-width="1" fill="none" marker-end="url(#arr0)"/>
+<path d="M405 76 L530 150" stroke="#444441" stroke-width="1" fill="none" marker-end="url(#arr0)"/>
+<path d="M415 76 L640 150" stroke="#444441" stroke-width="1" fill="none" marker-end="url(#arr0)"/>
+<!-- Allocation boxes — 6 allocations -->
+<rect x="35" y="150" width="110" height="56" rx="8" fill="#0C447C" stroke="#378ADD" stroke-width="0.5"/>
+<text font-family="JetBrains Mono" font-size="11" font-weight="600" fill="#B5D4F4" x="90" y="173" text-anchor="middle" dominant-baseline="central">Smart-Vault</text>
+<text font-family="JetBrains Mono" font-size="10" fill="#378ADD" x="90" y="191" text-anchor="middle" dominant-baseline="central">500M — 50%</text>
+<rect x="145" y="150" width="110" height="56" rx="8" fill="#085041" stroke="#1D9E75" stroke-width="0.5"/>
+<text font-family="JetBrains Mono" font-size="11" font-weight="600" fill="#9FE1CB" x="200" y="173" text-anchor="middle" dominant-baseline="central">LP Pool</text>
+<text font-family="JetBrains Mono" font-size="10" fill="#1D9E75" x="200" y="191" text-anchor="middle" dominant-baseline="central">200M — 20%</text>
+<rect x="255" y="150" width="110" height="56" rx="8" fill="#0a2a1a" stroke="#1D9E75" stroke-width="0.5" stroke-dasharray="3 2"/>
+<text font-family="JetBrains Mono" font-size="11" font-weight="600" fill="#9FE1CB" x="310" y="173" text-anchor="middle" dominant-baseline="central">Ex-Presale</text>
+<text font-family="JetBrains Mono" font-size="10" fill="#1D9E75" x="310" y="191" text-anchor="middle" dominant-baseline="central">100M — 10%</text>
+<rect x="365" y="150" width="110" height="56" rx="8" fill="#633806" stroke="#BA7517" stroke-width="0.5"/>
+<text font-family="JetBrains Mono" font-size="11" font-weight="600" fill="#FAC775" x="420" y="173" text-anchor="middle" dominant-baseline="central">Bonus V1</text>
+<text font-family="JetBrains Mono" font-size="10" fill="#BA7517" x="420" y="191" text-anchor="middle" dominant-baseline="central">50M — 5%</text>
+<rect x="475" y="150" width="110" height="56" rx="8" fill="#712B13" stroke="#D85A30" stroke-width="0.5"/>
+<text font-family="JetBrains Mono" font-size="11" font-weight="600" fill="#F5C4B3" x="530" y="173" text-anchor="middle" dominant-baseline="central">Marketing</text>
+<text font-family="JetBrains Mono" font-size="10" fill="#D85A30" x="530" y="191" text-anchor="middle" dominant-baseline="central">100M — 10%</text>
+<rect x="585" y="150" width="110" height="56" rx="8" fill="#2C2C2A" stroke="#888780" stroke-width="0.5"/>
+<text font-family="JetBrains Mono" font-size="11" font-weight="600" fill="#D3D1C7" x="640" y="173" text-anchor="middle" dominant-baseline="central">Founder</text>
+<text font-family="JetBrains Mono" font-size="10" fill="#888780" x="640" y="191" text-anchor="middle" dominant-baseline="central">50M — 5%</text>
 <!-- Down arrows -->
-<line x1="92" y1="206" x2="92" y2="278" stroke="#378ADD" stroke-width="1" fill="none" marker-end="url(#arr0)"/>
-<line x1="216" y1="206" x2="216" y2="278" stroke="#1D9E75" stroke-width="1" fill="none" marker-end="url(#arr0)"/>
-<line x1="340" y1="206" x2="340" y2="278" stroke="#BA7517" stroke-width="1" fill="none" marker-end="url(#arr0)"/>
-<line x1="464" y1="206" x2="464" y2="278" stroke="#D85A30" stroke-width="1" fill="none" marker-end="url(#arr0)"/>
-<line x1="588" y1="206" x2="588" y2="278" stroke="#888780" stroke-width="1" fill="none" marker-end="url(#arr0)"/>
+<line x1="90" y1="206" x2="90" y2="278" stroke="#378ADD" stroke-width="1" fill="none" marker-end="url(#arr0)"/>
+<line x1="200" y1="206" x2="200" y2="278" stroke="#1D9E75" stroke-width="1" fill="none" marker-end="url(#arr0)"/>
+<line x1="310" y1="206" x2="310" y2="278" stroke="#1D9E75" stroke-width="1" fill="none" marker-end="url(#arr0)"/>
+<line x1="420" y1="206" x2="420" y2="278" stroke="#BA7517" stroke-width="1" fill="none" marker-end="url(#arr0)"/>
+<line x1="530" y1="206" x2="530" y2="278" stroke="#D85A30" stroke-width="1" fill="none" marker-end="url(#arr0)"/>
+<line x1="640" y1="206" x2="640" y2="278" stroke="#888780" stroke-width="1" fill="none" marker-end="url(#arr0)"/>
 <!-- Wallet boxes -->
-<rect x="37" y="278" width="110" height="56" rx="8" fill="#0C447C" stroke="#378ADD" stroke-width="0.5"/>
-<text font-family="JetBrains Mono" font-size="11" font-weight="600" fill="#B5D4F4" x="92" y="298" text-anchor="middle" dominant-baseline="central">address(this)</text>
-<text font-family="JetBrains Mono" font-size="10" fill="#378ADD" x="92" y="316" text-anchor="middle" dominant-baseline="central">Contrat — locked</text>
-<rect x="161" y="278" width="110" height="56" rx="8" fill="#085041" stroke="#1D9E75" stroke-width="0.5"/>
-<text font-family="JetBrains Mono" font-size="11" font-weight="600" fill="#9FE1CB" x="216" y="298" text-anchor="middle" dominant-baseline="central">address(this)</text>
-<text font-family="JetBrains Mono" font-size="10" fill="#1D9E75" x="216" y="316" text-anchor="middle" dominant-baseline="central">Contrat — tracké</text>
-<rect x="285" y="278" width="110" height="56" rx="8" fill="#633806" stroke="#BA7517" stroke-width="0.5"/>
-<text font-family="JetBrains Mono" font-size="11" font-weight="600" fill="#FAC775" x="340" y="298" text-anchor="middle" dominant-baseline="central">address(this)</text>
-<text font-family="JetBrains Mono" font-size="10" fill="#BA7517" x="340" y="316" text-anchor="middle" dominant-baseline="central">Contrat — locked</text>
-<rect x="409" y="278" width="110" height="56" rx="8" fill="#712B13" stroke="#D85A30" stroke-width="0.5"/>
-<text font-family="JetBrains Mono" font-size="11" font-weight="600" fill="#F5C4B3" x="464" y="298" text-anchor="middle" dominant-baseline="central">marketingWallet</text>
-<text font-family="JetBrains Mono" font-size="10" fill="#D85A30" x="464" y="316" text-anchor="middle" dominant-baseline="central">Immutable</text>
-<rect x="533" y="278" width="110" height="56" rx="8" fill="#2C2C2A" stroke="#888780" stroke-width="0.5"/>
-<text font-family="JetBrains Mono" font-size="11" font-weight="600" fill="#D3D1C7" x="588" y="298" text-anchor="middle" dominant-baseline="central">founderWallet</text>
-<text font-family="JetBrains Mono" font-size="10" fill="#888780" x="588" y="316" text-anchor="middle" dominant-baseline="central">Immutable</text>
+<rect x="35" y="278" width="110" height="56" rx="8" fill="#0C447C" stroke="#378ADD" stroke-width="0.5"/>
+<text font-family="JetBrains Mono" font-size="10" font-weight="600" fill="#B5D4F4" x="90" y="298" text-anchor="middle" dominant-baseline="central">address(this)</text>
+<text font-family="JetBrains Mono" font-size="9" fill="#378ADD" x="90" y="316" text-anchor="middle" dominant-baseline="central">Contrat — locked</text>
+<rect x="145" y="278" width="110" height="56" rx="8" fill="#085041" stroke="#1D9E75" stroke-width="0.5"/>
+<text font-family="JetBrains Mono" font-size="10" font-weight="600" fill="#9FE1CB" x="200" y="298" text-anchor="middle" dominant-baseline="central">address(this)</text>
+<text font-family="JetBrains Mono" font-size="9" fill="#1D9E75" x="200" y="316" text-anchor="middle" dominant-baseline="central">Contrat — tracké</text>
+<rect x="255" y="278" width="110" height="56" rx="8" fill="#0a2a1a" stroke="#1D9E75" stroke-width="0.5" stroke-dasharray="3 2"/>
+<text font-family="JetBrains Mono" font-size="10" font-weight="600" fill="#9FE1CB" x="310" y="298" text-anchor="middle" dominant-baseline="central">owner()</text>
+<text font-family="JetBrains Mono" font-size="9" fill="#1D9E75" x="310" y="316" text-anchor="middle" dominant-baseline="central">Migration V1</text>
+<rect x="365" y="278" width="110" height="56" rx="8" fill="#633806" stroke="#BA7517" stroke-width="0.5"/>
+<text font-family="JetBrains Mono" font-size="10" font-weight="600" fill="#FAC775" x="420" y="298" text-anchor="middle" dominant-baseline="central">address(this)</text>
+<text font-family="JetBrains Mono" font-size="9" fill="#BA7517" x="420" y="316" text-anchor="middle" dominant-baseline="central">Contrat — locked</text>
+<rect x="475" y="278" width="110" height="56" rx="8" fill="#712B13" stroke="#D85A30" stroke-width="0.5"/>
+<text font-family="JetBrains Mono" font-size="10" font-weight="600" fill="#F5C4B3" x="530" y="298" text-anchor="middle" dominant-baseline="central">marketingWallet</text>
+<text font-family="JetBrains Mono" font-size="9" fill="#D85A30" x="530" y="316" text-anchor="middle" dominant-baseline="central">Immutable</text>
+<rect x="585" y="278" width="110" height="56" rx="8" fill="#2C2C2A" stroke="#888780" stroke-width="0.5"/>
+<text font-family="JetBrains Mono" font-size="10" font-weight="600" fill="#D3D1C7" x="640" y="298" text-anchor="middle" dominant-baseline="central">founderWallet</text>
+<text font-family="JetBrains Mono" font-size="9" fill="#888780" x="640" y="316" text-anchor="middle" dominant-baseline="central">Immutable</text>
 <!-- Separator -->
-<line x1="40" y1="378" x2="640" y2="378" stroke="rgba(255,255,255,0.07)" stroke-width="0.5"/>
-<text font-family="JetBrains Mono" font-size="11" fill="#64748b" x="340" y="396" text-anchor="middle">Before renounceOwnership() — owner actions required</text>
+<line x1="40" y1="378" x2="740" y2="378" stroke="rgba(255,255,255,0.07)" stroke-width="0.5"/>
+<text font-family="JetBrains Mono" font-size="11" fill="#64748b" x="390" y="396" text-anchor="middle">Before renounceOwnership() — owner actions required</text>
 <!-- Pre-renounce steps -->
-<rect x="40" y="412" width="140" height="44" rx="8" fill="#1a1040" stroke="#534AB7" stroke-width="0.5"/>
-<text font-family="JetBrains Mono" font-size="11" font-weight="600" fill="#AFA9EC" x="110" y="430" text-anchor="middle" dominant-baseline="central">setV1Snapshot()</text>
-<text font-family="JetBrains Mono" font-size="10" fill="#7F77DD" x="110" y="448" text-anchor="middle" dominant-baseline="central">Once only</text>
-<rect x="194" y="412" width="140" height="44" rx="8" fill="#1a1040" stroke="#534AB7" stroke-width="0.5"/>
-<text font-family="JetBrains Mono" font-size="11" font-weight="600" fill="#AFA9EC" x="264" y="430" text-anchor="middle" dominant-baseline="central">setBlacklistBatch()</text>
-<text font-family="JetBrains Mono" font-size="10" fill="#7F77DD" x="264" y="448" text-anchor="middle" dominant-baseline="central">CryptoPanda</text>
-<rect x="348" y="412" width="148" height="44" rx="8" fill="#1a1040" stroke="#534AB7" stroke-width="0.5"/>
-<text font-family="JetBrains Mono" font-size="11" font-weight="600" fill="#AFA9EC" x="422" y="430" text-anchor="middle" dominant-baseline="central">releaseLPTranche1()</text>
-<text font-family="JetBrains Mono" font-size="10" fill="#7F77DD" x="422" y="448" text-anchor="middle" dominant-baseline="central">80M + addLiquidity</text>
-<rect x="510" y="412" width="140" height="44" rx="8" fill="#1a1040" stroke="#534AB7" stroke-width="0.5"/>
-<text font-family="JetBrains Mono" font-size="11" font-weight="600" fill="#AFA9EC" x="580" y="430" text-anchor="middle" dominant-baseline="central">setAutomation()</text>
-<text font-family="JetBrains Mono" font-size="10" fill="#7F77DD" x="580" y="448" text-anchor="middle" dominant-baseline="central">Chainlink registry</text>
+<rect x="90" y="412" width="140" height="44" rx="8" fill="#1a1040" stroke="#534AB7" stroke-width="0.5"/>
+<text font-family="JetBrains Mono" font-size="11" font-weight="600" fill="#AFA9EC" x="160" y="430" text-anchor="middle" dominant-baseline="central">setV1Snapshot()</text>
+<text font-family="JetBrains Mono" font-size="10" fill="#7F77DD" x="160" y="448" text-anchor="middle" dominant-baseline="central">Once only</text>
+<rect x="244" y="412" width="140" height="44" rx="8" fill="#1a1040" stroke="#534AB7" stroke-width="0.5"/>
+<text font-family="JetBrains Mono" font-size="11" font-weight="600" fill="#AFA9EC" x="314" y="430" text-anchor="middle" dominant-baseline="central">setBlacklistBatch()</text>
+<text font-family="JetBrains Mono" font-size="10" fill="#7F77DD" x="314" y="448" text-anchor="middle" dominant-baseline="central">CryptoPanda</text>
+<rect x="398" y="412" width="148" height="44" rx="8" fill="#1a1040" stroke="#534AB7" stroke-width="0.5"/>
+<text font-family="JetBrains Mono" font-size="11" font-weight="600" fill="#AFA9EC" x="472" y="430" text-anchor="middle" dominant-baseline="central">releaseLPTranche1()</text>
+<text font-family="JetBrains Mono" font-size="10" fill="#7F77DD" x="472" y="448" text-anchor="middle" dominant-baseline="central">80M + addLiquidity</text>
+<rect x="560" y="412" width="140" height="44" rx="8" fill="#1a1040" stroke="#534AB7" stroke-width="0.5"/>
+<text font-family="JetBrains Mono" font-size="11" font-weight="600" fill="#AFA9EC" x="630" y="430" text-anchor="middle" dominant-baseline="central">setAutomation()</text>
+<text font-family="JetBrains Mono" font-size="10" fill="#7F77DD" x="630" y="448" text-anchor="middle" dominant-baseline="central">Chainlink registry</text>
 <!-- Final arrow -->
-<line x1="340" y1="456" x2="340" y2="500" stroke="#E24B4A" stroke-width="1.5" fill="none" marker-end="url(#arr0)"/>
-<rect x="190" y="500" width="300" height="56" rx="8" fill="#501313" stroke="#E24B4A" stroke-width="1"/>
-<text font-family="JetBrains Mono" font-size="14" font-weight="600" fill="#F7C1C1" x="340" y="520" text-anchor="middle" dominant-baseline="central">renounceOwnership()</text>
-<text font-family="JetBrains Mono" font-size="11" fill="#E24B4A" x="340" y="538" text-anchor="middle" dominant-baseline="central">Irréversible — owner() = address(0) — forever</text>
+<line x1="390" y1="456" x2="390" y2="500" stroke="#E24B4A" stroke-width="1.5" fill="none" marker-end="url(#arr0)"/>
+<rect x="240" y="500" width="300" height="56" rx="8" fill="#501313" stroke="#E24B4A" stroke-width="1"/>
+<text font-family="JetBrains Mono" font-size="14" font-weight="600" fill="#F7C1C1" x="390" y="520" text-anchor="middle" dominant-baseline="central">renounceOwnership()</text>
+<text font-family="JetBrains Mono" font-size="11" fill="#E24B4A" x="390" y="538" text-anchor="middle" dominant-baseline="central">Irréversible — owner() = address(0) — forever</text>
     </svg>
   </div>
   <div class="legend">
     <div class="legend-item"><span class="legend-dot" style="background:#378ADD"></span>Smart-Vault</div>
-    <div class="legend-item"><span class="legend-dot" style="background:#1D9E75"></span>LP pool</div>
+    <div class="legend-item"><span class="legend-dot" style="background:#1D9E75"></span>LP pool (200M)</div>
+    <div class="legend-item"><span class="legend-dot" style="background:#1D9E75; opacity:0.5; border: 1px dashed #1D9E75"></span>Ex-Presale (100M)</div>
     <div class="legend-item"><span class="legend-dot" style="background:#BA7517"></span>Bonus V1</div>
     <div class="legend-item"><span class="legend-dot" style="background:#D85A30"></span>Marketing</div>
     <div class="legend-item"><span class="legend-dot" style="background:#888780"></span>Founder</div>
@@ -704,7 +713,7 @@ footer .mono { font-family: 'JetBrains Mono', monospace; font-size: 11px; }
 <text font-family="JetBrains Mono" font-size="10" fill="#639922" x="180" y="594" text-anchor="middle" dominant-baseline="central">Holder pull — nonReentrant</text>
 <!-- RIGHT: LP Tranches -->
 <rect x="360" y="20" width="280" height="44" rx="8" fill="#085041" stroke="#1D9E75" stroke-width="0.5"/>
-<text font-family="JetBrains Mono" font-size="12" font-weight="600" fill="#9FE1CB" x="500" y="36" text-anchor="middle" dominant-baseline="central">LP Progressive — 250M MHT</text>
+<text font-family="JetBrains Mono" font-size="12" font-weight="600" fill="#9FE1CB" x="500" y="36" text-anchor="middle" dominant-baseline="central">LP Progressive — 200M MHT</text>
 <text font-family="JetBrains Mono" font-size="10" fill="#1D9E75" x="500" y="54" text-anchor="middle" dominant-baseline="central">Locked in address(this)</text>
 <line x1="500" y1="64" x2="500" y2="108" stroke="#1D9E75" stroke-width="1" fill="none" marker-end="url(#arr3)"/>
 <rect x="360" y="108" width="280" height="56" rx="8" fill="#085041" stroke="#1D9E75" stroke-width="0.5"/>
@@ -788,7 +797,7 @@ const modals = {
   supply: {
     badge: 'TOKENOMICS',
     title: '<span>1,000,000,000</span> MHT',
-    body: `The total supply is fixed forever at 1 billion MHT. No minting function exists after deploy — the constructor mints everything in one shot and that's it. The effective circulating supply decreases over time as tokens are burned via transaction taxes.`,
+    body: `The total supply is fixed forever at 1 billion MHT. No minting function exists after deploy — the constructor performs 6 mints in one shot and that's it. The effective circulating supply decreases over time as tokens are burned via transaction taxes.`,
     highlight: `TOTAL_SUPPLY = 1,000,000,000 MHT\nFixed at deploy — no mint function\nBurn address: 0x000...dEaD`,
     chart: 'supply',
     btn: { label: 'See allocation overview', tab: 0 }
@@ -885,9 +894,9 @@ function buildChart(type, ctx) {
 
   if (type === 'supply') {
     return new Chart(ctx, { type: 'doughnut', data: {
-      labels: ['Smart-Vault','LP Pool','Marketing','Founder','Bonus V1'],
-      datasets: [{ data: [500,250,100,50,50], backgroundColor: ['#0C447C','#085041','#712B13','#2C2C2A','#633806'], borderColor: ['#378ADD','#1D9E75','#D85A30','#888780','#BA7517'], borderWidth: 1.5 }]
-    }, options: { responsive: true, plugins: { legend: { display: true, position: 'right', labels: { color: '#e2e8f0', font: { family: 'JetBrains Mono', size: 11 }, padding: 12 } }, tooltip: { backgroundColor: '#0e1420', borderColor: 'rgba(249,115,22,0.3)', borderWidth: 1, titleColor: '#f97316', bodyColor: '#e2e8f0' } }, cutout: '65%' , rotation: -90} });
+      labels: ['Smart-Vault','LP Pool','Ex-Presale','Marketing','Founder','Bonus V1'],
+      datasets: [{ data: [500,200,100,100,50,50], backgroundColor: ['#0C447C','#085041','#0a2a1a','#712B13','#2C2C2A','#633806'], borderColor: ['#378ADD','#1D9E75','#1D9E75','#D85A30','#888780','#BA7517'], borderWidth: 1.5 }]
+    }, options: { responsive: true, plugins: { legend: { display: true, position: 'right', labels: { color: '#e2e8f0', font: { family: 'JetBrains Mono', size: 11 }, padding: 12 } }, tooltip: { backgroundColor: '#0e1420', borderColor: 'rgba(249,115,22,0.3)', borderWidth: 1, titleColor: '#f97316', bodyColor: '#e2e8f0' } }, cutout: '65%' } });
   }
 
   if (type === 'vault' || type === 'release') {
