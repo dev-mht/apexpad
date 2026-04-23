@@ -4,6 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>$MHT V2 — Smart Contract Architecture</title>
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-55GLFJLMM8"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-55GLFJLMM8');
+</script>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -336,7 +344,7 @@ footer .mono { font-family: 'JetBrains Mono', monospace; font-size: 11px; }
 <div class="wrapper">
 
 <header>
-  <div class="badge">SMART CONTRACT ARCHITECTURE — V2.0</div>
+  <div class="badge">SMART CONTRACT ARCHITECTURE — V2.1</div>
   <h1>$MHT <span>Smart-Vault</span><br>Architecture</h1>
   <p class="subtitle">Complete visual documentation of the MHT V2 smart contract — fully automated, trustless after renounceOwnership().</p>
   <div class="meta-row">
@@ -372,7 +380,7 @@ footer .mono { font-family: 'JetBrains Mono', monospace; font-size: 11px; }
   <div class="stat-card" onclick="openModal('bonus')">
     <div class="stat-label">V1 BONUS POOL</div>
     <div class="stat-value">50M</div>
-    <div class="stat-sub">100 steps x $100K MCap</div>
+    <div class="stat-sub">Distribué au deploy — auto LP flush</div>
   </div>
   <div class="stat-card" onclick="openModal('renounce')">
     <div class="stat-label">OWNERSHIP</div>
@@ -402,7 +410,7 @@ footer .mono { font-family: 'JetBrains Mono', monospace; font-size: 11px; }
   <div class="panel-header">
     <div>
       <div class="panel-title">Token allocations & deploy sequence</div>
-      <div class="panel-desc">1B MHT distributed across 6 allocations at deploy. Owner must complete 4 actions before calling renounceOwnership().</div>
+      <div class="panel-desc">1B MHT distributed across 6 allocations at deploy. Constructor auto-distributes V1 bonus snapshot and flushes remaining to LP. Owner calls renounceOwnership() — done forever.</div>
     </div>
     <button class="btn-download" onclick="downloadSVG(0)">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
@@ -410,9 +418,9 @@ footer .mono { font-family: 'JetBrains Mono', monospace; font-size: 11px; }
     </button>
   </div>
   <div class="svg-container" id="svg-0">
-    <svg width="100%" viewBox="0 0 780 580" role="img">
+    <svg width="100%" viewBox="0 0 780 620" role="img">
 <title>MHT V2 — Token allocation overview</title>
-<desc>1 billion MHT distributed across 5 allocations at deploy, each with dedicated wallet and role</desc>
+<desc>1 billion MHT distributed across 6 allocations at deploy — V1 bonus auto-distributed at deploy, remaining flushed to LP</desc>
 <defs>
   <marker id="arr0" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
     <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -444,7 +452,7 @@ footer .mono { font-family: 'JetBrains Mono', monospace; font-size: 11px; }
 <text font-family="JetBrains Mono" font-size="10" fill="#BA7517" x="420" y="191" text-anchor="middle" dominant-baseline="central">50M — 5%</text>
 <rect x="475" y="150" width="110" height="56" rx="8" fill="#712B13" stroke="#D85A30" stroke-width="0.5"/>
 <text font-family="JetBrains Mono" font-size="11" font-weight="600" fill="#F5C4B3" x="530" y="173" text-anchor="middle" dominant-baseline="central">Marketing</text>
-<text font-family="JetBrains Mono" font-size="10" fill="#D85A30" x="530" y="191" text-anchor="middle" dominant-baseline="central">100M — 10%</text>
+<text font-family="JetBrains Mono" font-size="10" fill="#D85A30" x="530" y="191" text-anchor="middle" dominant-baseline="central">150M — 15%</text>
 <rect x="585" y="150" width="110" height="56" rx="8" fill="#2C2C2A" stroke="#888780" stroke-width="0.5"/>
 <text font-family="JetBrains Mono" font-size="11" font-weight="600" fill="#D3D1C7" x="640" y="173" text-anchor="middle" dominant-baseline="central">Founder</text>
 <text font-family="JetBrains Mono" font-size="10" fill="#888780" x="640" y="191" text-anchor="middle" dominant-baseline="central">50M — 5%</text>
@@ -462,12 +470,16 @@ footer .mono { font-family: 'JetBrains Mono', monospace; font-size: 11px; }
 <rect x="145" y="278" width="110" height="56" rx="8" fill="#085041" stroke="#1D9E75" stroke-width="0.5"/>
 <text font-family="JetBrains Mono" font-size="10" font-weight="600" fill="#9FE1CB" x="200" y="298" text-anchor="middle" dominant-baseline="central">address(this)</text>
 <text font-family="JetBrains Mono" font-size="9" fill="#1D9E75" x="200" y="316" text-anchor="middle" dominant-baseline="central">Contrat — tracké</text>
+<!-- Ex-Presale split box -->
 <rect x="255" y="278" width="110" height="56" rx="8" fill="#0a2a1a" stroke="#1D9E75" stroke-width="0.5" stroke-dasharray="3 2"/>
-<text font-family="JetBrains Mono" font-size="10" font-weight="600" fill="#9FE1CB" x="310" y="298" text-anchor="middle" dominant-baseline="central">owner()</text>
-<text font-family="JetBrains Mono" font-size="9" fill="#1D9E75" x="310" y="316" text-anchor="middle" dominant-baseline="central">Migration V1</text>
+<text font-family="JetBrains Mono" font-size="9" font-weight="600" fill="#9FE1CB" x="310" y="294" text-anchor="middle" dominant-baseline="central">30M → LP launch</text>
+<text font-family="JetBrains Mono" font-size="9" fill="#1D9E75" x="310" y="310" text-anchor="middle" dominant-baseline="central">~47M → auto LP flush</text>
+<text font-family="JetBrains Mono" font-size="9" fill="#BA7517" x="310" y="326" text-anchor="middle" dominant-baseline="central">~3M → snapshot</text>
+<!-- Bonus V1 split box -->
 <rect x="365" y="278" width="110" height="56" rx="8" fill="#633806" stroke="#BA7517" stroke-width="0.5"/>
-<text font-family="JetBrains Mono" font-size="10" font-weight="600" fill="#FAC775" x="420" y="298" text-anchor="middle" dominant-baseline="central">address(this)</text>
-<text font-family="JetBrains Mono" font-size="9" fill="#BA7517" x="420" y="316" text-anchor="middle" dominant-baseline="central">Contrat — locked</text>
+<text font-family="JetBrains Mono" font-size="9" font-weight="600" fill="#FAC775" x="420" y="294" text-anchor="middle" dominant-baseline="central">~3M → holders V1</text>
+<text font-family="JetBrains Mono" font-size="9" fill="#BA7517" x="420" y="310" text-anchor="middle" dominant-baseline="central">~47M → LP auto</text>
+<text font-family="JetBrains Mono" font-size="9" fill="#E24B4A" x="420" y="326" text-anchor="middle" dominant-baseline="central">LP burned forever</text>
 <rect x="475" y="278" width="110" height="56" rx="8" fill="#712B13" stroke="#D85A30" stroke-width="0.5"/>
 <text font-family="JetBrains Mono" font-size="10" font-weight="600" fill="#F5C4B3" x="530" y="298" text-anchor="middle" dominant-baseline="central">marketingWallet</text>
 <text font-family="JetBrains Mono" font-size="9" fill="#D85A30" x="530" y="316" text-anchor="middle" dominant-baseline="central">Immutable</text>
@@ -476,25 +488,25 @@ footer .mono { font-family: 'JetBrains Mono', monospace; font-size: 11px; }
 <text font-family="JetBrains Mono" font-size="9" fill="#888780" x="640" y="316" text-anchor="middle" dominant-baseline="central">Immutable</text>
 <!-- Separator -->
 <line x1="40" y1="378" x2="740" y2="378" stroke="rgba(255,255,255,0.07)" stroke-width="0.5"/>
-<text font-family="JetBrains Mono" font-size="11" fill="#64748b" x="390" y="396" text-anchor="middle">Before renounceOwnership() — owner actions required</text>
+<text font-family="JetBrains Mono" font-size="11" fill="#64748b" x="390" y="396" text-anchor="middle">Constructor auto-actions at deploy — then owner calls renounceOwnership()</text>
 <!-- Pre-renounce steps -->
-<rect x="90" y="412" width="140" height="44" rx="8" fill="#1a1040" stroke="#534AB7" stroke-width="0.5"/>
-<text font-family="JetBrains Mono" font-size="11" font-weight="600" fill="#AFA9EC" x="160" y="430" text-anchor="middle" dominant-baseline="central">setV1Snapshot()</text>
-<text font-family="JetBrains Mono" font-size="10" fill="#7F77DD" x="160" y="448" text-anchor="middle" dominant-baseline="central">Once only</text>
-<rect x="244" y="412" width="140" height="44" rx="8" fill="#1a1040" stroke="#534AB7" stroke-width="0.5"/>
-<text font-family="JetBrains Mono" font-size="11" font-weight="600" fill="#AFA9EC" x="314" y="430" text-anchor="middle" dominant-baseline="central">setBlacklistBatch()</text>
-<text font-family="JetBrains Mono" font-size="10" fill="#7F77DD" x="314" y="448" text-anchor="middle" dominant-baseline="central">CryptoPanda</text>
-<rect x="398" y="412" width="148" height="44" rx="8" fill="#1a1040" stroke="#534AB7" stroke-width="0.5"/>
-<text font-family="JetBrains Mono" font-size="11" font-weight="600" fill="#AFA9EC" x="472" y="430" text-anchor="middle" dominant-baseline="central">releaseLPTranche1()</text>
-<text font-family="JetBrains Mono" font-size="10" fill="#7F77DD" x="472" y="448" text-anchor="middle" dominant-baseline="central">80M + addLiquidity</text>
-<rect x="560" y="412" width="140" height="44" rx="8" fill="#1a1040" stroke="#534AB7" stroke-width="0.5"/>
-<text font-family="JetBrains Mono" font-size="11" font-weight="600" fill="#AFA9EC" x="630" y="430" text-anchor="middle" dominant-baseline="central">setAutomation()</text>
-<text font-family="JetBrains Mono" font-size="10" fill="#7F77DD" x="630" y="448" text-anchor="middle" dominant-baseline="central">Chainlink registry</text>
+<rect x="50" y="412" width="155" height="44" rx="8" fill="#633806" stroke="#BA7517" stroke-width="0.5"/>
+<text font-family="JetBrains Mono" font-size="10" font-weight="600" fill="#FAC775" x="127" y="430" text-anchor="middle" dominant-baseline="central">V1 snapshot distributed</text>
+<text font-family="JetBrains Mono" font-size="9" fill="#BA7517" x="127" y="448" text-anchor="middle" dominant-baseline="central">Auto at deploy — hardcoded</text>
+<rect x="220" y="412" width="155" height="44" rx="8" fill="#085041" stroke="#1D9E75" stroke-width="0.5"/>
+<text font-family="JetBrains Mono" font-size="10" font-weight="600" fill="#9FE1CB" x="297" y="430" text-anchor="middle" dominant-baseline="central">LP flush by price</text>
+<text font-family="JetBrains Mono" font-size="9" fill="#1D9E75" x="297" y="448" text-anchor="middle" dominant-baseline="central">$0.0003 / $0.0004 / $0.0005 / $0.0006</text>
+<rect x="390" y="412" width="155" height="44" rx="8" fill="#1a1040" stroke="#534AB7" stroke-width="0.5"/>
+<text font-family="JetBrains Mono" font-size="10" font-weight="600" fill="#AFA9EC" x="467" y="430" text-anchor="middle" dominant-baseline="central">setBlacklistBatch()</text>
+<text font-family="JetBrains Mono" font-size="9" fill="#7F77DD" x="467" y="448" text-anchor="middle" dominant-baseline="central"> — silent burn</text>
+<rect x="560" y="412" width="155" height="44" rx="8" fill="#1a1040" stroke="#534AB7" stroke-width="0.5"/>
+<text font-family="JetBrains Mono" font-size="10" font-weight="600" fill="#AFA9EC" x="637" y="430" text-anchor="middle" dominant-baseline="central">setAutomation()</text>
+<text font-family="JetBrains Mono" font-size="9" fill="#7F77DD" x="637" y="448" text-anchor="middle" dominant-baseline="central">Chainlink registry</text>
 <!-- Final arrow -->
-<line x1="390" y1="456" x2="390" y2="500" stroke="#E24B4A" stroke-width="1.5" fill="none" marker-end="url(#arr0)"/>
-<rect x="240" y="500" width="300" height="56" rx="8" fill="#501313" stroke="#E24B4A" stroke-width="1"/>
-<text font-family="JetBrains Mono" font-size="14" font-weight="600" fill="#F7C1C1" x="390" y="520" text-anchor="middle" dominant-baseline="central">renounceOwnership()</text>
-<text font-family="JetBrains Mono" font-size="11" fill="#E24B4A" x="390" y="538" text-anchor="middle" dominant-baseline="central">Irréversible — owner() = address(0) — forever</text>
+<line x1="390" y1="456" x2="390" y2="510" stroke="#E24B4A" stroke-width="1.5" fill="none" marker-end="url(#arr0)"/>
+<rect x="240" y="510" width="300" height="56" rx="8" fill="#501313" stroke="#E24B4A" stroke-width="1"/>
+<text font-family="JetBrains Mono" font-size="14" font-weight="600" fill="#F7C1C1" x="390" y="530" text-anchor="middle" dominant-baseline="central">renounceOwnership()</text>
+<text font-family="JetBrains Mono" font-size="11" fill="#E24B4A" x="390" y="548" text-anchor="middle" dominant-baseline="central">Irréversible — owner() = address(0) — forever</text>
     </svg>
   </div>
   <div class="legend">
@@ -613,7 +625,7 @@ footer .mono { font-family: 'JetBrains Mono', monospace; font-size: 11px; }
 <line x1="340" y1="76" x2="340" y2="118" stroke="#888780" stroke-width="1" fill="none" marker-end="url(#arr2)"/>
 <rect x="190" y="118" width="300" height="44" rx="8" fill="#501313" stroke="#E24B4A" stroke-width="0.5"/>
 <text font-family="JetBrains Mono" font-size="12" font-weight="600" fill="#F7C1C1" x="340" y="135" text-anchor="middle" dominant-baseline="central">isRedirectToBurn[from]?</text>
-<text font-family="JetBrains Mono" font-size="10" fill="#E24B4A" x="340" y="153" text-anchor="middle" dominant-baseline="central">CryptoPanda silent redirect</text>
+<text font-family="JetBrains Mono" font-size="10" fill="#E24B4A" x="340" y="153" text-anchor="middle" dominant-baseline="central"> silent redirect</text>
 <path d="M490 140 L600 140 L600 194" stroke="#E24B4A" stroke-width="1" fill="none" marker-end="url(#arr2)"/>
 <text font-family="JetBrains Mono" font-size="10" fill="#E24B4A" x="545" y="133">Yes</text>
 <rect x="540" y="194" width="100" height="44" rx="8" fill="#501313" stroke="#E24B4A" stroke-width="0.5"/>
@@ -666,8 +678,8 @@ footer .mono { font-family: 'JetBrains Mono', monospace; font-size: 11px; }
 <div class="panel" id="panel-3">
   <div class="panel-header">
     <div>
-      <div class="panel-title">Bonus V1 distribution & LP tranches detail</div>
-      <div class="panel-desc">V1 snapshot set once before renounce. Chainlink auto-distributes 500K MHT per $100K MCap step over 100 steps ($100K → $10M). LP T1 manual at launch, T2/T3/T4 fully automatic.</div>
+      <div class="panel-title">Bonus V1 auto-distribution & LP flush by price</div>
+      <div class="panel-desc">V1 snapshot hardcoded at deploy — distributed automatically to eligible holders. Remaining ~47M flushed to LP in 4 tranches triggered by price levels. LP tokens burned permanently. Zero manual intervention required.</div>
     </div>
     <button class="btn-download" onclick="downloadSVG(3)">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
@@ -675,88 +687,86 @@ footer .mono { font-family: 'JetBrains Mono', monospace; font-size: 11px; }
     </button>
   </div>
   <div class="svg-container" id="svg-3">
-    <svg width="100%" viewBox="0 0 680 620" role="img">
-<title>MHT V2 — Bonus V1 and LP tranches</title>
-<desc>Snapshot set once before renounce. Chainlink distributes 500K per 100K MCap step. LP T1 manual, T2/T3/T4 auto with LP tokens burned.</desc>
+    <svg width="100%" viewBox="0 0 680 660" role="img">
+<title>MHT V2 — Bonus V1 auto-distribution and LP flush by price</title>
+<desc>Snapshot hardcoded at deploy. Eligible holders receive pro-rata share. Remaining ~47M flushed to LP in 4 price tranches. LP tokens burned forever.</desc>
 <defs>
   <marker id="arr3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
     <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
   </marker>
 </defs>
-<!-- LEFT: Bonus V1 -->
+<!-- LEFT: Bonus V1 auto-distribution -->
 <rect x="40" y="20" width="280" height="44" rx="8" fill="#633806" stroke="#BA7517" stroke-width="0.5"/>
 <text font-family="JetBrains Mono" font-size="12" font-weight="600" fill="#FAC775" x="180" y="36" text-anchor="middle" dominant-baseline="central">Bonus V1 Pool — 50,000,000 MHT</text>
 <text font-family="JetBrains Mono" font-size="10" fill="#BA7517" x="180" y="54" text-anchor="middle" dominant-baseline="central">Locked in address(this)</text>
 <line x1="180" y1="64" x2="180" y2="108" stroke="#BA7517" stroke-width="1" fill="none" marker-end="url(#arr3)"/>
-<rect x="40" y="108" width="280" height="44" rx="8" fill="#1a1040" stroke="#534AB7" stroke-width="0.5"/>
-<text font-family="JetBrains Mono" font-size="12" font-weight="600" fill="#AFA9EC" x="180" y="124" text-anchor="middle" dominant-baseline="central">setV1Snapshot()</text>
-<text font-family="JetBrains Mono" font-size="10" fill="#7F77DD" x="180" y="142" text-anchor="middle" dominant-baseline="central">Owner — once before renounce</text>
-<line x1="180" y1="152" x2="180" y2="196" stroke="#534AB7" stroke-width="1" fill="none" marker-end="url(#arr3)"/>
-<rect x="40" y="196" width="280" height="72" rx="8" fill="#141020" stroke="rgba(127,119,221,0.3)" stroke-width="0.5"/>
-<text font-family="JetBrains Mono" font-size="12" font-weight="600" fill="#AFA9EC" x="180" y="216" text-anchor="middle" dominant-baseline="central">v1SnapshotBalance[]</text>
-<text font-family="JetBrains Mono" font-size="10" fill="#7F77DD" x="60" y="236" dominant-baseline="central">Founder: 50,000,000 MHT</text>
-<text font-family="JetBrains Mono" font-size="10" fill="#7F77DD" x="60" y="254" dominant-baseline="central">Paul / Streak / other holders...</text>
-<line x1="180" y1="268" x2="180" y2="312" stroke="#BA7517" stroke-width="1.5" fill="none" marker-end="url(#arr3)"/>
-<rect x="40" y="312" width="280" height="56" rx="8" fill="#633806" stroke="#BA7517" stroke-width="0.5"/>
-<text font-family="JetBrains Mono" font-size="12" font-weight="600" fill="#FAC775" x="180" y="332" text-anchor="middle" dominant-baseline="central">_executeBonusStep()</text>
-<text font-family="JetBrains Mono" font-size="10" fill="#BA7517" x="180" y="350" text-anchor="middle" dominant-baseline="central">Chainlink — every +$100K MCap</text>
-<rect x="40" y="384" width="280" height="44" rx="8" fill="#1a1408" stroke="rgba(186,117,23,0.3)" stroke-width="0.5"/>
-<text font-family="JetBrains Mono" font-size="12" font-weight="600" fill="#FAC775" x="180" y="400" text-anchor="middle" dominant-baseline="central">100 steps x 500,000 MHT</text>
-<text font-family="JetBrains Mono" font-size="10" fill="#BA7517" x="180" y="418" text-anchor="middle" dominant-baseline="central">$100K to $10M MCap total</text>
-<line x1="180" y1="428" x2="180" y2="472" stroke="#BA7517" stroke-width="1" fill="none" marker-end="url(#arr3)"/>
-<rect x="40" y="472" width="280" height="44" rx="8" fill="#633806" stroke="#BA7517" stroke-width="0.5"/>
-<text font-family="JetBrains Mono" font-size="12" font-weight="600" fill="#FAC775" x="180" y="488" text-anchor="middle" dominant-baseline="central">bonusRewardPerToken++</text>
-<text font-family="JetBrains Mono" font-size="10" fill="#BA7517" x="180" y="506" text-anchor="middle" dominant-baseline="central">Pro-rata — founder included</text>
-<line x1="180" y1="516" x2="180" y2="560" stroke="#BA7517" stroke-width="1" fill="none" marker-end="url(#arr3)"/>
-<rect x="40" y="560" width="280" height="44" rx="8" fill="#173404" stroke="#639922" stroke-width="0.5"/>
-<text font-family="JetBrains Mono" font-size="12" font-weight="600" fill="#C0DD97" x="180" y="576" text-anchor="middle" dominant-baseline="central">claimBonus()</text>
-<text font-family="JetBrains Mono" font-size="10" fill="#639922" x="180" y="594" text-anchor="middle" dominant-baseline="central">Holder pull — nonReentrant</text>
-<!-- RIGHT: LP Tranches -->
+<rect x="40" y="108" width="280" height="44" rx="8" fill="#173404" stroke="#639922" stroke-width="0.5"/>
+<text font-family="JetBrains Mono" font-size="12" font-weight="600" fill="#C0DD97" x="180" y="124" text-anchor="middle" dominant-baseline="central">Constructor — auto at deploy</text>
+<text font-family="JetBrains Mono" font-size="10" fill="#639922" x="180" y="142" text-anchor="middle" dominant-baseline="central">Hardcoded snapshot — zero action needed</text>
+<line x1="180" y1="152" x2="180" y2="196" stroke="#639922" stroke-width="1" fill="none" marker-end="url(#arr3)"/>
+<rect x="40" y="196" width="280" height="88" rx="8" fill="#141020" stroke="rgba(127,119,221,0.3)" stroke-width="0.5"/>
+<text font-family="JetBrains Mono" font-size="12" font-weight="600" fill="#AFA9EC" x="180" y="216" text-anchor="middle" dominant-baseline="central">V1 Snapshot — eligible holders</text>
+<text font-family="JetBrains Mono" font-size="10" fill="#BA7517" x="60" y="236" dominant-baseline="central">Paul        — 2,000,000 MHT</text>
+<text font-family="JetBrains Mono" font-size="10" fill="#BA7517" x="60" y="252" dominant-baseline="central">Streak Me   — 585,655 MHT (+rachat)</text>
+<text font-family="JetBrains Mono" font-size="10" fill="#BA7517" x="60" y="268" dominant-baseline="central">Raids / BKO / Twitter / Mohamed...</text>
+<text font-family="JetBrains Mono" font-size="10" fill="#E24B4A" x="60" y="276" dominant-baseline="central"> → 0 (blacklisted)</text>
+<line x1="180" y1="284" x2="180" y2="328" stroke="#BA7517" stroke-width="1.5" fill="none" marker-end="url(#arr3)"/>
+<rect x="40" y="328" width="280" height="44" rx="8" fill="#173404" stroke="#639922" stroke-width="0.5"/>
+<text font-family="JetBrains Mono" font-size="12" font-weight="600" fill="#C0DD97" x="180" y="344" text-anchor="middle" dominant-baseline="central">~3M distributed instantly</text>
+<text font-family="JetBrains Mono" font-size="10" fill="#639922" x="180" y="362" text-anchor="middle" dominant-baseline="central">Pro-rata — sent at deploy tx</text>
+<line x1="180" y1="372" x2="180" y2="416" stroke="#BA7517" stroke-width="1.5" fill="none" marker-end="url(#arr3)"/>
+<rect x="40" y="416" width="280" height="44" rx="8" fill="#501313" stroke="#E24B4A" stroke-width="0.5"/>
+<text font-family="JetBrains Mono" font-size="12" font-weight="600" fill="#F7C1C1" x="180" y="432" text-anchor="middle" dominant-baseline="central">~47M → LP flush (see right)</text>
+<text font-family="JetBrains Mono" font-size="10" fill="#E24B4A" x="180" y="450" text-anchor="middle" dominant-baseline="central">Remaining redirected to auto-LP</text>
+<!-- RIGHT: LP flush by price -->
 <rect x="360" y="20" width="280" height="44" rx="8" fill="#085041" stroke="#1D9E75" stroke-width="0.5"/>
-<text font-family="JetBrains Mono" font-size="12" font-weight="600" fill="#9FE1CB" x="500" y="36" text-anchor="middle" dominant-baseline="central">LP Progressive — 200M MHT</text>
-<text font-family="JetBrains Mono" font-size="10" fill="#1D9E75" x="500" y="54" text-anchor="middle" dominant-baseline="central">Locked in address(this)</text>
+<text font-family="JetBrains Mono" font-size="12" font-weight="600" fill="#9FE1CB" x="500" y="36" text-anchor="middle" dominant-baseline="central">LP Flush — ~47M MHT</text>
+<text font-family="JetBrains Mono" font-size="10" fill="#1D9E75" x="500" y="54" text-anchor="middle" dominant-baseline="central">4 tranches — price triggered — auto</text>
 <line x1="500" y1="64" x2="500" y2="108" stroke="#1D9E75" stroke-width="1" fill="none" marker-end="url(#arr3)"/>
-<rect x="360" y="108" width="280" height="56" rx="8" fill="#085041" stroke="#1D9E75" stroke-width="0.5"/>
-<text font-family="JetBrains Mono" font-size="12" font-weight="600" fill="#9FE1CB" x="500" y="128" text-anchor="middle" dominant-baseline="central">T1 — 80M @ Launch</text>
-<text font-family="JetBrains Mono" font-size="10" fill="#1D9E75" x="500" y="146" text-anchor="middle" dominant-baseline="central">releaseLPTranche1() — owner before renounce</text>
-<line x1="500" y1="164" x2="500" y2="208" stroke="#1D9E75" stroke-width="1" fill="none" marker-end="url(#arr3)"/>
-<rect x="360" y="208" width="280" height="44" rx="8" fill="#085041" stroke="#1D9E75" stroke-width="0.5"/>
-<text font-family="JetBrains Mono" font-size="12" font-weight="600" fill="#9FE1CB" x="500" y="224" text-anchor="middle" dominant-baseline="central">addLiquidityETH</text>
-<text font-family="JetBrains Mono" font-size="10" fill="#1D9E75" x="500" y="242" text-anchor="middle" dominant-baseline="central">80M MHT + owner BNB</text>
-<line x1="500" y1="252" x2="500" y2="296" stroke="#1D9E75" stroke-width="1" fill="none" marker-end="url(#arr3)"/>
-<rect x="360" y="296" width="280" height="44" rx="8" fill="#501313" stroke="#E24B4A" stroke-width="0.5"/>
-<text font-family="JetBrains Mono" font-size="12" font-weight="600" fill="#F7C1C1" x="500" y="312" text-anchor="middle" dominant-baseline="central">LP tokens burned forever</text>
-<text font-family="JetBrains Mono" font-size="10" fill="#E24B4A" x="500" y="330" text-anchor="middle" dominant-baseline="central">Liquidity — permanently locked</text>
-<line x1="360" y1="364" x2="640" y2="364" stroke="rgba(255,255,255,0.07)" stroke-width="0.5"/>
-<text font-family="JetBrains Mono" font-size="10" fill="#64748b" x="500" y="380" text-anchor="middle">Auto — after renounceOwnership()</text>
-<rect x="360" y="394" width="280" height="44" rx="8" fill="#085041" stroke="#1D9E75" stroke-width="0.5"/>
-<text font-family="JetBrains Mono" font-size="12" font-weight="600" fill="#9FE1CB" x="500" y="410" text-anchor="middle" dominant-baseline="central">T2 — 40M @ $10M MCap</text>
-<text font-family="JetBrains Mono" font-size="10" fill="#1D9E75" x="500" y="428" text-anchor="middle" dominant-baseline="central">_checkAndReleaseLPTranches()</text>
-<rect x="360" y="454" width="280" height="44" rx="8" fill="#085041" stroke="#1D9E75" stroke-width="0.5"/>
-<text font-family="JetBrains Mono" font-size="12" font-weight="600" fill="#9FE1CB" x="500" y="470" text-anchor="middle" dominant-baseline="central">T3 — 40M @ $25M MCap</text>
-<text font-family="JetBrains Mono" font-size="10" fill="#1D9E75" x="500" y="488" text-anchor="middle" dominant-baseline="central">Auto via performUpkeep()</text>
-<rect x="360" y="514" width="280" height="44" rx="8" fill="#085041" stroke="#1D9E75" stroke-width="0.5"/>
-<text font-family="JetBrains Mono" font-size="12" font-weight="600" fill="#9FE1CB" x="500" y="530" text-anchor="middle" dominant-baseline="central">T4 — 40M @ $50M MCap</text>
-<text font-family="JetBrains Mono" font-size="10" fill="#1D9E75" x="500" y="548" text-anchor="middle" dominant-baseline="central">Auto via performUpkeep()</text>
-<path d="M500 558 L500 578 L580 578" stroke="#1D9E75" stroke-width="1" fill="none" marker-end="url(#arr3)"/>
-<rect x="360" y="568" width="260" height="28" rx="6" fill="#501313" stroke="#E24B4A" stroke-width="0.5"/>
-<text font-family="JetBrains Mono" font-size="10" fill="#F7C1C1" x="490" y="582" text-anchor="middle" dominant-baseline="central">addLiquidity + LP burned forever</text>
+<rect x="360" y="108" width="280" height="44" rx="8" fill="#085041" stroke="#1D9E75" stroke-width="0.5"/>
+<text font-family="JetBrains Mono" font-size="12" font-weight="600" fill="#9FE1CB" x="500" y="124" text-anchor="middle" dominant-baseline="central">T1 — ~11.5M @ $0.000300</text>
+<text font-family="JetBrains Mono" font-size="10" fill="#1D9E75" x="500" y="142" text-anchor="middle" dominant-baseline="central">Chainlink price check — swap 50/50</text>
+<line x1="500" y1="152" x2="500" y2="196" stroke="#1D9E75" stroke-width="1" fill="none" marker-end="url(#arr3)"/>
+<rect x="360" y="196" width="280" height="44" rx="8" fill="#085041" stroke="#1D9E75" stroke-width="0.5"/>
+<text font-family="JetBrains Mono" font-size="12" font-weight="600" fill="#9FE1CB" x="500" y="212" text-anchor="middle" dominant-baseline="central">T2 — ~11.5M @ $0.000400</text>
+<text font-family="JetBrains Mono" font-size="10" fill="#1D9E75" x="500" y="230" text-anchor="middle" dominant-baseline="central">Auto via Chainlink performUpkeep()</text>
+<line x1="500" y1="240" x2="500" y2="284" stroke="#1D9E75" stroke-width="1" fill="none" marker-end="url(#arr3)"/>
+<rect x="360" y="284" width="280" height="44" rx="8" fill="#085041" stroke="#1D9E75" stroke-width="0.5"/>
+<text font-family="JetBrains Mono" font-size="12" font-weight="600" fill="#9FE1CB" x="500" y="300" text-anchor="middle" dominant-baseline="central">T3 — ~11.5M @ $0.000500</text>
+<text font-family="JetBrains Mono" font-size="10" fill="#1D9E75" x="500" y="318" text-anchor="middle" dominant-baseline="central">Auto via Chainlink performUpkeep()</text>
+<line x1="500" y1="328" x2="500" y2="372" stroke="#1D9E75" stroke-width="1" fill="none" marker-end="url(#arr3)"/>
+<rect x="360" y="372" width="280" height="44" rx="8" fill="#085041" stroke="#1D9E75" stroke-width="0.5"/>
+<text font-family="JetBrains Mono" font-size="12" font-weight="600" fill="#9FE1CB" x="500" y="388" text-anchor="middle" dominant-baseline="central">T4 — ~11.5M @ $0.000600</text>
+<text font-family="JetBrains Mono" font-size="10" fill="#1D9E75" x="500" y="406" text-anchor="middle" dominant-baseline="central">Auto via Chainlink performUpkeep()</text>
+<line x1="500" y1="416" x2="500" y2="460" stroke="#1D9E75" stroke-width="1.5" fill="none" marker-end="url(#arr3)"/>
+<!-- Each tranche: swap 50/50 then addLiquidityETH then burn -->
+<rect x="360" y="460" width="280" height="56" rx="8" fill="#0a1a14" stroke="#1D9E75" stroke-width="0.5"/>
+<text font-family="JetBrains Mono" font-size="12" font-weight="600" fill="#9FE1CB" x="500" y="480" text-anchor="middle" dominant-baseline="central">swap 50/50 → addLiquidityETH</text>
+<text font-family="JetBrains Mono" font-size="10" fill="#1D9E75" x="500" y="498" text-anchor="middle" dominant-baseline="central">MHT + BNB injected into pair</text>
+<line x1="500" y1="516" x2="500" y2="560" stroke="#E24B4A" stroke-width="1.5" fill="none" marker-end="url(#arr3)"/>
+<rect x="360" y="560" width="280" height="44" rx="8" fill="#501313" stroke="#E24B4A" stroke-width="0.5"/>
+<text font-family="JetBrains Mono" font-size="12" font-weight="600" fill="#F7C1C1" x="500" y="576" text-anchor="middle" dominant-baseline="central">LP tokens → burned forever</text>
+<text font-family="JetBrains Mono" font-size="10" fill="#E24B4A" x="500" y="594" text-anchor="middle" dominant-baseline="central">0x000...dEaD — permanent liquidity</text>
 <!-- Vertical separator -->
-<line x1="340" y1="20" x2="340" y2="620" stroke="rgba(255,255,255,0.05)" stroke-width="1" stroke-dasharray="4 4"/>
+<line x1="340" y1="20" x2="340" y2="660" stroke="rgba(255,255,255,0.05)" stroke-width="1" stroke-dasharray="4 4"/>
+<!-- LP Progressive right side note -->
+<line x1="40" y1="530" x2="640" y2="530" stroke="rgba(255,255,255,0.05)" stroke-width="0.5"/>
+<text font-family="JetBrains Mono" font-size="10" fill="#64748b" x="180" y="560" text-anchor="middle">LP Progressive 200M — unchanged</text>
+<rect x="40" y="572" width="280" height="28" rx="4" fill="#085041" stroke="#1D9E75" stroke-width="0.5"/>
+<text font-family="JetBrains Mono" font-size="10" fill="#9FE1CB" x="180" y="586" text-anchor="middle" dominant-baseline="central">T2 40M@$10M / T3 40M@$25M / T4 40M@$50M — auto burned</text>
     </svg>
   </div>
   <div class="legend">
-    <div class="legend-item"><span class="legend-dot" style="background:#BA7517"></span>Bonus V1 flow</div>
-    <div class="legend-item"><span class="legend-dot" style="background:#7F77DD"></span>Owner snapshot action</div>
-    <div class="legend-item"><span class="legend-dot" style="background:#639922"></span>claimBonus()</div>
-    <div class="legend-item"><span class="legend-dot" style="background:#1D9E75"></span>LP tranches</div>
+    <div class="legend-item"><span class="legend-dot" style="background:#BA7517"></span>Bonus V1 — auto-distributed at deploy</div>
+    <div class="legend-item"><span class="legend-dot" style="background:#639922"></span>Eligible holders (hardcoded)</div>
+    <div class="legend-item"><span class="legend-dot" style="background:#1D9E75"></span>LP flush by price tranches</div>
     <div class="legend-item"><span class="legend-dot" style="background:#E24B4A"></span>LP burned forever</div>
   </div>
 </div>
 
 <footer>
   <p>$MHT — Milestone HODL Token — Smart Contract V2</p>
-  <p style="margin-top:8px" class="mono">Built on BNB Smart Chain — Powered by Chainlink Automation — Audited with Slither + Mythril + Echidna</p>
+  <p style="margin-top:8px" class="mono">Built on BNB Smart Chain — Powered by Chainlink Automation — Audited with Slither + Mythril + Echidna + Aderyn + SMTChecker + Halmos</p>
   <p style="margin-top:16px">
     <a href="https://apexpad.io">apexpad.io</a> &nbsp;|&nbsp;
     <a href="https://milestonehodl.apexpad.io">milestonehodl.apexpad.io</a> &nbsp;|&nbsp;
@@ -829,16 +839,16 @@ const modals = {
   bonus: {
     badge: 'V1 HOLDER REWARD',
     title: '<span>50M MHT</span> Bonus Pool',
-    body: `50 million MHT are reserved for V1 holders as a reward for early belief. The distribution happens over 100 steps: every time the market cap grows by $100K (from $100K to $10M), 500,000 MHT are distributed pro-rata to everyone in the V1 snapshot — including the founder. Hold V1 now to be in the snapshot.`,
-    highlight: `100 steps × 500,000 MHT = 50,000,000 total\nStep 1:  MCap $100K → distribute 500K\nStep 2:  MCap $200K → distribute 500K\n...\nStep 100: MCap $10M → distribute 500K`,
-    chart: 'bonus',
+    body: `50 million MHT are reserved for V1 holders as a reward for early belief. The distribution is fully automatic at deploy: a hardcoded snapshot sends each eligible holder their pro-rata share instantly. No claim needed. The remaining ~47M (founder's share) is redirected to auto-LP — split 50/50 MHT/BNB and injected in 4 tranches triggered by price levels ($0.0003 / $0.0004 / $0.0005 / $0.0006). LP tokens are burned permanently. Zero manual intervention.`,
+    highlight: `At deploy:\n~3M MHT → distributed to V1 holders (hardcoded)\n~47M MHT → flushed to LP in 4 price tranches\n\nLP flush tranches:\nT1: price >= $0.000300 → ~11.5M swap 50/50 → addLiquidityETH → LP burned\nT2: price >= $0.000400 → ~11.5M swap 50/50 → addLiquidityETH → LP burned\nT3: price >= $0.000500 → ~11.5M swap 50/50 → addLiquidityETH → LP burned\nT4: price >= $0.000600 → ~11.5M swap 50/50 → addLiquidityETH → LP burned`,
+    chart: null,
     btn: { label: 'See Bonus V1 & LP diagram', tab: 3 }
   },
   renounce: {
     badge: 'TRUSTLESS',
     title: 'owner() = <span>address(0)</span>',
     body: `After all setup is complete, the owner calls renounceOwnership() — an irreversible action that sets the owner to address(0). From that point, no admin function can ever be called again. The contract runs entirely on Chainlink Automation. No rug pull possible. No parameter changes. No emergency stop. Truly decentralized.`,
-    highlight: `Before renounce (required):\n1. setV1Snapshot()       ← once only\n2. setBlacklistBatch()   ← scammers\n3. releaseLPTranche1()  ← 80M + BNB\n4. setAutomationRegistry()\n\nThen: renounceOwnership() — FOREVER`,
+    highlight: `Before renounce (required):\n1. setBlacklistBatch()      ← scammers \n2. setAutomationRegistry()  ← Chainlink\n\nAuto at deploy (no action needed):\n✅ V1 snapshot distributed\n✅ LP launch addLiquidityETH (30M + 9.9 BNB)\n✅ PinkLock 6 months\n\nThen: renounceOwnership() — FOREVER`,
     chart: null,
     btn: { label: 'See deploy sequence', tab: 0 }
   }
@@ -895,7 +905,7 @@ function buildChart(type, ctx) {
   if (type === 'supply') {
     return new Chart(ctx, { type: 'doughnut', data: {
       labels: ['Smart-Vault','LP Pool','Ex-Presale','Marketing','Founder','Bonus V1'],
-      datasets: [{ data: [500,200,100,100,50,50], backgroundColor: ['#0C447C','#085041','#0a2a1a','#712B13','#2C2C2A','#633806'], borderColor: ['#378ADD','#1D9E75','#1D9E75','#D85A30','#888780','#BA7517'], borderWidth: 1.5 }]
+      datasets: [{ data: [500,200,50,150,50,50], backgroundColor: ['#0C447C','#085041','#0a2a1a','#712B13','#2C2C2A','#633806'], borderColor: ['#378ADD','#1D9E75','#1D9E75','#D85A30','#888780','#BA7517'], borderWidth: 1.5 }]
     }, options: { responsive: true, plugins: { legend: { display: true, position: 'right', labels: { color: '#e2e8f0', font: { family: 'JetBrains Mono', size: 11 }, padding: 12 } }, tooltip: { backgroundColor: '#0e1420', borderColor: 'rgba(249,115,22,0.3)', borderWidth: 1, titleColor: '#f97316', bodyColor: '#e2e8f0' } }, cutout: '65%' } });
   }
 
