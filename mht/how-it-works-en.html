@@ -9,7 +9,7 @@
   gtag('js', new Date());
   gtag('config', 'G-LJQ14ER06M');
 </script>
-  
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>$MHT — How It Really Works</title>
@@ -37,7 +37,6 @@
     overflow-x: hidden;
   }
 
-  /* Grid background */
   body::before {
     content: '';
     position: fixed;
@@ -58,7 +57,6 @@
     z-index: 1;
   }
 
-  /* HEADER */
   .lang-switch {
     text-align: right;
     margin-bottom: 40px;
@@ -112,7 +110,6 @@
     line-height: 1.7;
   }
 
-  /* SECTION */
   .section {
     margin-bottom: 60px;
     animation: fadeUp 0.8s ease both;
@@ -163,7 +160,7 @@
 
   .math-line {
     font-family: 'Space Mono', monospace;
-    font-size: 1.3rem;
+    font-size: 1.1rem;
     font-weight: 700;
     color: var(--gold);
     text-align: center;
@@ -175,7 +172,6 @@
     letter-spacing: 1px;
   }
 
-  /* NOTE */
   .note {
     background: rgba(201,168,76,0.06);
     border: 1px solid rgba(201,168,76,0.2);
@@ -188,130 +184,159 @@
     margin: 16px 0;
   }
 
-  /* TABLE */
-  .table-wrap {
-    overflow-x: auto;
-    margin: 20px 0;
-    border-radius: 6px;
-    border: 1px solid rgba(201,168,76,0.15);
+  /* SIMULATOR */
+  .simulator-wrap {
+    background: var(--dark2);
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 8px;
+    padding: 30px;
+    margin-bottom: 20px;
   }
 
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.9rem;
+  .controls-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin-bottom: 28px;
   }
 
-  thead tr {
-    background: var(--dark3);
-  }
-
-  thead th {
+  .control-group label {
+    display: block;
     font-family: 'Space Mono', monospace;
     font-size: 11px;
+    color: var(--gold);
     letter-spacing: 2px;
     text-transform: uppercase;
-    color: var(--gold);
-    padding: 14px 16px;
-    text-align: center;
-    border-bottom: 1px solid rgba(201,168,76,0.2);
+    margin-bottom: 12px;
   }
 
-  tbody tr { transition: background 0.15s; }
-  tbody tr:nth-child(odd) { background: var(--dark2); }
-  tbody tr:nth-child(even) { background: rgba(255,255,255,0.02); }
-  tbody tr:hover { background: rgba(201,168,76,0.08); }
-
-  tbody td {
-    padding: 13px 16px;
-    text-align: center;
-    font-family: 'Space Mono', monospace;
-    font-size: 13px;
-    border-bottom: 1px solid rgba(255,255,255,0.04);
-  }
-
-  .td-milestone { color: var(--gray); }
-  .td-value { color: var(--green); font-weight: 700; font-size: 14px; }
-  .td-price { color: var(--gold-light); }
-  .td-entry { color: var(--white); }
-
-  /* REFERRAL CARDS */
-  .ref-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  .control-row {
+    display: flex;
+    align-items: center;
     gap: 16px;
-    margin: 20px 0;
   }
 
-  .ref-card {
-    background: var(--dark2);
-    border: 1px solid rgba(201,168,76,0.15);
-    border-radius: 6px;
-    padding: 24px;
-    transition: border-color 0.2s, transform 0.2s;
+  input[type=range] {
+    flex: 1;
+    -webkit-appearance: none;
+    height: 3px;
+    background: rgba(201,168,76,0.2);
+    border-radius: 2px;
+    outline: none;
+    cursor: pointer;
   }
 
-  .ref-card:hover {
-    border-color: var(--gold);
-    transform: translateY(-2px);
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--gold);
+    cursor: pointer;
+    transition: transform 0.1s;
   }
 
-  .ref-card .range {
+  input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.2); }
+
+  .val-display {
     font-family: 'Space Mono', monospace;
-    font-size: 12px;
-    color: var(--gray);
-    margin-bottom: 10px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--gold-light);
+    min-width: 90px;
+    text-align: right;
   }
 
-  .ref-card .reward {
-    font-size: 1.5rem;
-    font-weight: 800;
-    color: var(--green);
+  .summary-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .scard {
+    background: var(--dark3);
+    border: 1px solid rgba(201,168,76,0.12);
+    border-radius: 6px;
+    padding: 16px;
+    text-align: center;
+  }
+
+  .scard-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--gray);
+    letter-spacing: 2px;
+    text-transform: uppercase;
     margin-bottom: 8px;
   }
 
-  .ref-card .example {
-    font-size: 0.8rem;
-    color: var(--gray);
-    font-family: 'Space Mono', monospace;
+  .scard-value {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: var(--green);
   }
 
-  /* APEX REFERRAL */
-  .apex-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-    margin: 20px 0;
-  }
+  .scard-value.gold { color: var(--gold-light); }
 
-  .apex-card {
-    background: var(--dark2);
-    border: 1px solid rgba(201,168,76,0.1);
+  /* TABLE */
+  .table-wrap {
+    overflow-x: auto;
     border-radius: 6px;
-    padding: 20px;
-    text-align: center;
+    border: 1px solid rgba(201,168,76,0.15);
   }
 
-  .apex-card .projects {
+  table { width: 100%; border-collapse: collapse; }
+
+  thead tr { background: var(--dark3); }
+
+  thead th {
     font-family: 'Space Mono', monospace;
-    font-size: 11px;
-    color: var(--gray);
-    margin-bottom: 10px;
-    letter-spacing: 1px;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    padding: 14px 12px;
+    text-align: center;
+    border-bottom: 1px solid rgba(201,168,76,0.2);
+    white-space: nowrap;
   }
 
-  .apex-card .mht {
-    font-size: 1.1rem;
+  tbody tr:nth-child(odd) { background: var(--dark2); }
+  tbody tr:nth-child(even) { background: rgba(255,255,255,0.02); }
+  tbody tr:hover { background: rgba(201,168,76,0.08); }
+  tbody tr.best-row { background: rgba(0,230,118,0.05) !important; }
+  tbody tr.best-row td { border-top: 1px solid rgba(0,230,118,0.15); border-bottom: 1px solid rgba(0,230,118,0.15); }
+
+  tbody td {
+    padding: 12px 12px;
+    text-align: center;
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+
+  .td-m { color: var(--gray); }
+  .td-val { color: var(--green); font-weight: 700; font-size: 13px; }
+  .td-price { color: var(--gold-light); }
+  .td-mht { color: var(--white); }
+  .td-reward { color: rgba(0,230,118,0.7); }
+  .td-roi-pos { color: var(--green); }
+  tr.entry-row td { color: var(--gold); }
+
+  .math-line-dynamic {
+    font-family: 'Space Mono', monospace;
+    font-size: 1rem;
     font-weight: 700;
     color: var(--gold);
-    margin-bottom: 6px;
-  }
-
-  .apex-card .bonus {
-    font-size: 0.75rem;
-    color: var(--gray);
+    text-align: center;
+    padding: 18px;
+    border: 1px solid rgba(201,168,76,0.3);
+    border-radius: 4px;
+    background: rgba(201,168,76,0.05);
+    margin-top: 20px;
+    letter-spacing: 1px;
+    line-height: 1.6;
   }
 
   /* CTA */
@@ -322,20 +347,10 @@
     background: var(--dark2);
     border: 1px solid rgba(201,168,76,0.2);
     border-radius: 8px;
-    animation: fadeUp 1s ease both;
   }
 
-  .cta-title {
-    font-size: 1.8rem;
-    font-weight: 800;
-    margin-bottom: 10px;
-  }
-
-  .cta-sub {
-    color: var(--gray);
-    margin-bottom: 30px;
-    font-size: 0.95rem;
-  }
+  .cta-title { font-size: 1.8rem; font-weight: 800; margin-bottom: 10px; }
+  .cta-sub { color: var(--gray); margin-bottom: 30px; font-size: 0.95rem; }
 
   .btn {
     display: inline-block;
@@ -369,7 +384,12 @@
     letter-spacing: 2px;
   }
 
-  /* WARNING BANNER */
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(201,168,76,0.3), transparent);
+    margin: 50px 0;
+  }
+
   .warning-note {
     background: rgba(255, 200, 0, 0.05);
     border: 1px solid rgba(255, 200, 0, 0.2);
@@ -382,13 +402,6 @@
     line-height: 1.7;
   }
 
-  /* DIVIDER */
-  .divider {
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(201,168,76,0.3), transparent);
-    margin: 50px 0;
-  }
-
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
@@ -399,8 +412,8 @@
   .section:nth-child(4) { animation-delay: 0.3s; }
 
   @media (max-width: 600px) {
-    .apex-grid { grid-template-columns: 1fr; }
-    .ref-grid { grid-template-columns: 1fr; }
+    .controls-grid { grid-template-columns: 1fr; }
+    .summary-cards { grid-template-columns: 1fr; }
     h1 { font-size: 1.8rem; }
   }
 </style>
@@ -414,7 +427,7 @@
 
   <!-- HERO -->
   <div class="hero">
-    <div class="tag">$MHT — Education</div>
+    <div class="tag">$MHT V2.1 — Education</div>
     <h1>For those who still don't<br>get how <span>$MHT</span> works.</h1>
     <p class="subtitle">Let me show you. No hype. No promises. Just math — verifiable on-chain, automated by Chainlink.</p>
   </div>
@@ -423,142 +436,199 @@
   <div class="section">
     <div class="section-label">01 — The Mechanism</div>
     <div class="big-statement">
-      <p>Buy 1 BNB worth of $MHT at presale price = <strong>5,000,000 MHT</strong> = <strong>$608 today</strong>.</p>
+      <p>Buy <strong>1 BNB</strong> worth of $MHT at DEX launch price → you receive <strong>~2,995,000 MHT</strong>.</p>
       <p>Then just <strong>hold</strong>. Don't sell. Don't stake. Nothing.</p>
-      <p>Every time the market cap hits a new <strong>$1M milestone</strong>, Chainlink Automation automatically releases 5,000,000 MHT from the Smart-Vault:</p>
-      <p>→ <strong>70% distributed pro-rata to all eligible holders</strong> — automatically, trustlessly, on-chain.<br>→ 30% goes to liquidity & marketing.</p>
-      <p class="highlight">At Milestone 5 — your $608 becomes $73,895.</p>
+      <p>Every time the market cap hits a new <strong>$1M milestone</strong>, Chainlink Automation automatically releases tokens from the Smart-Vault:</p>
+      <p>→ <strong>70% distributed pro-rata to all eligible holders</strong> — automatically, trustlessly, on-chain.<br>
+      → 15% injected into liquidity (LP tokens burned).<br>
+      → 15% goes to marketing (auto-swapped to BNB).</p>
+      <p class="highlight">At Milestone 10 — your 1 BNB becomes $223,000+.</p>
     </div>
     <div class="math-line">This is not a promise. This is math.</div>
   </div>
 
-  <!-- REWARD TABLE -->
+  <!-- SIMULATOR -->
   <div class="section">
-    <div class="section-label">02 — Reward Simulation — 1 BNB invested</div>
+    <div class="section-label">02 — Live Reward Simulator</div>
     <div class="warning-note">
-      📌 Displayed price is $0.0002/MHT — based on BNB at $650 at deployment. Current BNB ~$608 means you're actually getting a better entry price today.
+      📌 Adjust BNB price and your investment below — everything recalculates in real time. Based on V2.1 mechanics: 500M vault, 5% release per milestone, 70% to holders, eligible supply ≈ 54.3M MHT at launch.
     </div>
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>Milestone</th>
-            <th>MHT Holdings</th>
-            <th>Reward Received</th>
-            <th>Price / MHT</th>
-            <th>Total Value ($)</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="td-milestone">Presale entry</td>
-            <td class="td-entry">5,000,000</td>
-            <td class="td-entry">—</td>
-            <td class="td-price">$0.0001216</td>
-            <td class="td-entry">$608</td>
-          </tr>
-          <tr>
-            <td class="td-milestone">M1 — $1M MC</td>
-            <td class="td-entry">5,116,667</td>
-            <td class="td-entry">116,667</td>
-            <td class="td-price">$0.00263</td>
-            <td class="td-value">$13,457</td>
-          </tr>
-          <tr>
-            <td class="td-milestone">M2 — $2M MC</td>
-            <td class="td-entry">5,236,389</td>
-            <td class="td-entry">119,722</td>
-            <td class="td-price">$0.00526</td>
-            <td class="td-value">$27,543</td>
-          </tr>
-          <tr>
-            <td class="td-milestone">M3 — $3M MC</td>
-            <td class="td-entry">5,359,285</td>
-            <td class="td-entry">122,896</td>
-            <td class="td-price">$0.00789</td>
-            <td class="td-value">$42,285</td>
-          </tr>
-          <tr>
-            <td class="td-milestone">M4 — $4M MC</td>
-            <td class="td-entry">5,485,477</td>
-            <td class="td-entry">126,192</td>
-            <td class="td-price">$0.01053</td>
-            <td class="td-value">$57,762</td>
-          </tr>
-          <tr>
-            <td class="td-milestone">M5 — $5M MC</td>
-            <td class="td-entry">5,615,083</td>
-            <td class="td-entry">129,606</td>
-            <td class="td-price">$0.01316</td>
-            <td class="td-value">$73,895</td>
-          </tr>
-        </tbody>
-      </table>
+
+    <div class="simulator-wrap">
+      <div class="controls-grid">
+        <div class="control-group">
+          <label>BNB Price (USD)</label>
+          <div class="control-row">
+            <input type="range" id="bnbPrice" min="400" max="1000" value="620" step="10">
+            <span class="val-display" id="bnbDisplay">$620</span>
+          </div>
+        </div>
+        <div class="control-group">
+          <label>Your Investment (BNB)</label>
+          <div class="control-row">
+            <input type="range" id="invest" min="0.1" max="10" value="1" step="0.1">
+            <span class="val-display" id="investDisplay">1.0 BNB</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="summary-cards">
+        <div class="scard">
+          <div class="scard-label">Entry Price</div>
+          <div class="scard-value gold" id="entryPrice">$0.000207</div>
+        </div>
+        <div class="scard">
+          <div class="scard-label">MHT Received</div>
+          <div class="scard-value gold" id="mhtReceived">2,995,169</div>
+        </div>
+        <div class="scard">
+          <div class="scard-label">Value at M10</div>
+          <div class="scard-value" id="valueM10">$223,042</div>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Milestone</th>
+              <th>MCap Target</th>
+              <th>MHT Holdings</th>
+              <th>Reward Received</th>
+              <th>Price / MHT</th>
+              <th>Total Value</th>
+              <th>ROI</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+
+      <div class="math-line-dynamic" id="mathLine">
+        1.0 BNB invested → $223,042 at Milestone 10.<br>This is not a promise. This is math.
+      </div>
     </div>
+
     <div class="note">
-⚠️ Estimation only (DYOR) — Eligible supply for rewards = holders excluding LP pair, marketing & contract wallets. The 70/15/15 split is automatic: 70% to holders pro-rata, 15% auto-LP, 15% marketing in BNB. Additionally, 1% of every transaction is permanently burned 🔥 reducing total supply over time, which increases your proportional share of future rewards.</div>
+      ⚠️ Conservative simulation (DYOR) — Price modeled as MCap / (Total Supply - Burned). Eligible supply at launch ≈ 54.3M MHT (founder + V1 bonus holders). LP tranches ($1.5M→$75M) and flush LP (~65.7M MHT) are not modeled — additional liquidity injections may impact price and rewards. 1% of every transaction is permanently burned 🔥 increasing your proportional share over time. Real results depend on market conditions and trading volume.
+    </div>
+  </div>
 
   <div class="divider"></div>
 
-  <!-- TWO WAYS -->
+  <!-- ELIGIBLE SUPPLY -->
   <div class="section">
-    <div class="section-label">03 — Two Ways to Earn</div>
+    <div class="section-label">03 — Why Rewards Are So High</div>
     <div class="big-statement">
-      <p><strong>Way #1</strong> — Hold & earn automatically. (see table above)</p>
-      <p><strong>Way #2</strong> — Share your referral link & earn commissions on every buy you bring in.</p>
+      <p>In V2.1, the <strong>eligible supply for rewards is only ~54.3M MHT</strong> at launch.</p>
+      <p>500M are locked in the vault. 200M in progressive LP. 150M in marketing. 65.7M in flush LP. None of these are eligible.</p>
+      <p>→ When 70% of a milestone release is distributed across just 54M tokens, <strong>each token receives a massive reward</strong>.</p>
+      <p>→ As milestones hit and LP tranches inject liquidity, supply grows — but so does the market cap. The math is designed to reward early HODLers most.</p>
     </div>
-
-    <div class="ref-grid">
-      <div class="ref-card">
-        <div class="range">Up to $1,000</div>
-        <div class="reward">3% in MHT</div>
-        <div class="example">$1,000 brought → $30 in MHT</div>
-      </div>
-      <div class="ref-card">
-        <div class="range">$1,000 – $5,000</div>
-        <div class="reward">5% in MHT</div>
-        <div class="example">$3,000 brought → $150 in MHT</div>
-      </div>
-      <div class="ref-card">
-        <div class="range">Over $5,000</div>
-        <div class="reward">7% in MHT</div>
-        <div class="example">$5,000 brought → $350 in MHT + Priority Access</div>
-      </div>
-    </div>
-    <div class="note">All rewards paid in MHT after DEX launch — from the Marketing wallet, verifiable on-chain.</div>
-  </div>
-
-  <!-- APEX REFERRAL -->
-  <div class="section">
-    <div class="section-label">04 — ApexPad Project Referral — Your Second Link</div>
-    <div class="apex-grid">
-      <div class="apex-card">
-        <div class="projects">1 Project</div>
-        <div class="mht">500,000 MHT</div>
-        <div class="bonus">—</div>
-      </div>
-      <div class="apex-card">
-        <div class="projects">3 Projects</div>
-        <div class="mht">2,000,000 MHT</div>
-        <div class="bonus">Official partner mention</div>
-      </div>
-      <div class="apex-card">
-        <div class="projects">5+ Projects</div>
-        <div class="mht">5,000,000 MHT</div>
-        <div class="bonus">ApexPad Official Partner badge</div>
-      </div>
+    <div class="note">
+      📌 Eligible supply excludes: vault, marketing wallet, LP pair, progressive LP contracts, flush LP balance. Founder wallet and V1 bonus holders ARE included. This is verifiable on-chain at any time.
     </div>
   </div>
 
   <!-- CTA -->
   <div class="cta-block">
-    <div class="cta-title">Hold. Share. Earn. That's it.</div>
-    <div class="cta-sub">DEX launch coming soon — V2.1 contract in audit. Follow us for the launch date.</div>
-    <a href="https://t.me/Milestone_HODL_Official" target="_blank" class="btn">Join Telegram →</a>
-    <a href="https://x.com/milestone_hodl" target="_blank" class="btn btn-outline">Follow @milestone_hodl</a>
+    <div class="cta-title">Hold. Earn. That's it.</div>
+    <div class="cta-sub">$MHT V2.1 launches on PancakeSwap. Join the Telegram for launch announcement.</div>
+    <a href="https://t.me/Milestone_HODL_Official" class="btn">Join Telegram →</a>
+    <a href="https://x.com/milestone_hodl" class="btn btn-outline">Follow on X</a>
     <div class="slogan">🔥🔥 Trust the process 🤝 Earn the growth 🔥🔥</div>
   </div>
 
 </div>
+
+<script>
+const TOTAL_SUPPLY = 1_000_000_000;
+const INITIAL_VAULT = 500_000_000;
+const INITIAL_BURNED = 33_004;
+const ELIGIBLE_LAUNCH = 54_300_574;
+const MHT_IN_POOL = 30_000_000;
+const BNB_IN_POOL = 10;
+
+function fmt(n) {
+  if (n >= 1_000_000) return '$' + (n / 1_000_000).toFixed(2) + 'M';
+  if (n >= 1_000) return '$' + Math.round(n).toLocaleString('en');
+  return '$' + n.toFixed(2);
+}
+
+function fmtMHT(n) {
+  if (n >= 1_000_000) return (n / 1_000_000).toFixed(3) + 'M';
+  return Math.round(n).toLocaleString('en');
+}
+
+function simulate(bnbPrice, investBNB) {
+  const launchPrice = (BNB_IN_POOL * bnbPrice) / MHT_IN_POOL;
+  const mhtBought = (investBNB * bnbPrice) / launchPrice;
+  const investUSD = investBNB * bnbPrice;
+
+  let vault = INITIAL_VAULT;
+  let burned = INITIAL_BURNED;
+  let eligible = ELIGIBLE_LAUNCH;
+  let holderMHT = mhtBought;
+  let rows = [];
+
+  rows.push({
+    label: 'DEX Entry', mcap: 0, mht: holderMHT,
+    reward: 0, price: launchPrice, value: investUSD, roi: 0, isEntry: true
+  });
+
+  for (let m = 1; m <= 10; m++) {
+    const mcapTarget = m * 1_000_000;
+    const mhtPrice = mcapTarget / (TOTAL_SUPPLY - burned);
+    let release = vault * 0.05;
+    release = Math.max(1_000_000, Math.min(20_000_000, release));
+    const holdersShare = release * 0.70;
+    const reward = (holderMHT / eligible) * holdersShare;
+    holderMHT += reward;
+    vault -= release;
+    burned += release * 0.005;
+    eligible += reward * 0.1;
+    const value = holderMHT * mhtPrice;
+    const roi = ((value - investUSD) / investUSD) * 100;
+    rows.push({ label: 'M' + m, mcap: mcapTarget, mht: holderMHT, reward, price: mhtPrice, value, roi, isEntry: false });
+  }
+  return { rows, launchPrice, mhtBought, investUSD };
+}
+
+function render() {
+  const bnbPrice = parseFloat(document.getElementById('bnbPrice').value);
+  const investBNB = parseFloat(document.getElementById('invest').value);
+
+  document.getElementById('bnbDisplay').textContent = '$' + bnbPrice;
+  document.getElementById('investDisplay').textContent = investBNB.toFixed(1) + ' BNB';
+
+  const { rows, launchPrice, mhtBought, investUSD } = simulate(bnbPrice, investBNB);
+  const lastRow = rows[rows.length - 1];
+
+  document.getElementById('entryPrice').textContent = '$' + launchPrice.toFixed(6);
+  document.getElementById('mhtReceived').textContent = fmtMHT(mhtBought);
+  document.getElementById('valueM10').textContent = fmt(lastRow.value);
+
+  const tbody = document.getElementById('tableBody');
+  tbody.innerHTML = rows.map(r => {
+    const roiStr = r.isEntry ? '—' : (r.roi >= 0 ? '+' : '') + Math.round(r.roi) + '%';
+    return `<tr class="${r.isEntry ? 'entry-row' : ''}">
+      <td class="td-m">${r.label}</td>
+      <td class="td-price">${r.isEntry ? 'Launch' : '$' + (r.mcap / 1e6).toFixed(0) + 'M MCap'}</td>
+      <td class="td-mht">${fmtMHT(r.mht)}</td>
+      <td class="td-reward">${r.isEntry ? '—' : '+' + fmtMHT(r.reward)}</td>
+      <td class="td-price">$${r.price.toFixed(5)}</td>
+      <td class="td-val">${fmt(r.value)}</td>
+      <td class="${r.roi > 0 ? 'td-roi-pos' : 'td-m'}" style="font-family:'Space Mono',monospace;font-size:12px">${roiStr}</td>
+    </tr>`;
+  }).join('');
+
+  document.getElementById('mathLine').innerHTML =
+    investBNB.toFixed(1) + ' BNB invested → ' + fmt(lastRow.value) + ' at Milestone 10.<br>This is not a promise. This is math.';
+}
+
+document.getElementById('bnbPrice').addEventListener('input', render);
+document.getElementById('invest').addEventListener('input', render);
+render();
+</script>
 </body>
 </html>
