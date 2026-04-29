@@ -195,7 +195,7 @@ h1 span { color: var(--orange); }
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   gap: 12px;
-  margin-bottom: 32px;
+  margin-bottom: 16px;
 }
 .stat-card {
   background: var(--surface);
@@ -333,10 +333,89 @@ footer {
 footer a { color: var(--orange); text-decoration: none; }
 footer .mono { font-family: 'JetBrains Mono', monospace; font-size: 11px; }
 
+/* Donut permanent */
+.donut-section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 28px 32px;
+  margin-bottom: 32px;
+  display: flex;
+  align-items: center;
+  gap: 48px;
+  flex-wrap: wrap;
+}
+.donut-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  color: var(--muted);
+  margin-bottom: 20px;
+}
+.donut-wrap {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  flex-shrink: 0;
+}
+.donut-center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+.donut-center-value { font-size: 22px; font-weight: 800; color: var(--text); }
+.donut-center-label { font-size: 10px; color: var(--muted); font-family: 'JetBrains Mono', monospace; margin-top: 2px; }
+.donut-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.donut-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: var(--text);
+}
+.donut-legend-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+.donut-legend-item strong { color: var(--orange); }
+
+/* Tax info bar */
+.tax-bar {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+}
+.tax-item {
+  flex: 1;
+  min-width: 200px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.7;
+}
+.tax-item .tax-title { color: var(--orange); font-weight: 600; margin-bottom: 4px; }
+.tax-trustless { color: var(--teal); font-size: 12px; font-family: 'JetBrains Mono', monospace; margin-top: 4px; }
+
 @media (max-width: 600px) {
   .panel-header { flex-direction: column; }
   .tabs { gap: 2px; }
   .tab { min-width: 100px; font-size: 12px; padding: 8px 10px; }
+  .donut-section { flex-direction: column; align-items: flex-start; gap: 24px; }
+  .donut-wrap { width: 160px; height: 160px; }
 }
 </style>
 </head>
@@ -386,6 +465,43 @@ footer .mono { font-family: 'JetBrains Mono', monospace; font-size: 11px; }
     <div class="stat-label">OWNERSHIP</div>
     <div class="stat-value">0x0</div>
     <div class="stat-sub">renounced at launch</div>
+  </div>
+</div>
+
+<!-- Donut chart permanent + tax info -->
+<div class="donut-section">
+  <div style="flex:1;min-width:260px;">
+    <div class="donut-label">TOKEN ALLOCATION — 1,000,000,000 MHT</div>
+    <div style="display:flex;align-items:center;gap:40px;flex-wrap:wrap;">
+      <div class="donut-wrap">
+        <canvas id="donut-main"></canvas>
+        <div class="donut-center">
+          <div class="donut-center-value">1B</div>
+          <div class="donut-center-label">MHT</div>
+        </div>
+      </div>
+      <div class="donut-legend">
+        <div class="donut-legend-item"><span class="donut-legend-dot" style="background:#378ADD;border:1px solid #378ADD;"></span>Smart-Vault <strong>50%</strong></div>
+        <div class="donut-legend-item"><span class="donut-legend-dot" style="background:#888780;border:1px solid #888780;"></span>LP Progressive <strong>20%</strong></div>
+        <div class="donut-legend-item"><span class="donut-legend-dot" style="background:#D85A30;border:1px solid #D85A30;"></span>Marketing <strong>15%</strong></div>
+        <div class="donut-legend-item"><span class="donut-legend-dot" style="background:#7F77DD;border:1px solid #7F77DD;"></span>START (LP flush) <strong>5%</strong></div>
+        <div class="donut-legend-item"><span class="donut-legend-dot" style="background:#E24B4A;border:1px solid #E24B4A;"></span>Founder <strong>5%</strong></div>
+        <div class="donut-legend-item"><span class="donut-legend-dot" style="background:#BA7517;border:1px solid #BA7517;"></span>Bonus V1 <strong>5%</strong></div>
+      </div>
+    </div>
+    <div class="tax-bar">
+      <div class="tax-item">
+        <div class="tax-title">🛡️ Buy Tax: 2%</div>
+        1% Burn / 1% Mkt → BNB auto-swap
+      </div>
+      <div class="tax-item">
+        <div class="tax-title">📈 Sell Tax: 5%</div>
+        1% Burn / 2% Auto-LP burned / 2% Mkt → BNB auto-swap
+      </div>
+      <div class="tax-item">
+        <div class="tax-trustless">🔒 renounceOwnership() at launch — trustless forever</div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -772,7 +888,7 @@ footer .mono { font-family: 'JetBrains Mono', monospace; font-size: 11px; }
     <a href="https://milestonehodl.apexpad.io">milestonehodl.apexpad.io</a> &nbsp;|&nbsp;
     <a href="https://x.com/apexpad_io">@apexpad_io</a>
   </p>
-  <p style="margin-top:12px" class="mono" style="color:var(--orange)">🔥🔥 Trust the process • Earn the growth 🔥🔥</p>
+  <p style="margin-top:12px;font-family:'JetBrains Mono',monospace;font-size:12px;color:#f97316;">🔥🔥 Trust the process • Earn the growth 🔥🔥</p>
 </footer>
 
 </div>
@@ -953,7 +1069,39 @@ function buildChart(type, ctx) {
       ]
     }, options: { ...defaults, scales: { ...defaults.scales, y2: { position: 'right', grid: { display: false }, ticks: { color: '#f97316', font: { family: 'JetBrains Mono', size: 10 }, callback: v => `${v}M` } } } } });
   }
-}
+// Donut permanent
+(function() {
+  const ctx = document.getElementById('donut-main');
+  if (!ctx) return;
+  new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: ['Smart-Vault 50%','LP Progressive 20%','Marketing 15%','START 5%','Founder 5%','Bonus V1 5%'],
+      datasets: [{
+        data: [50, 20, 15, 5, 5, 5],
+        backgroundColor: ['#0C447C','#2C2C2A','#712B13','#1a1040','#501313','#633806'],
+        borderColor: ['#378ADD','#888780','#D85A30','#7F77DD','#E24B4A','#BA7517'],
+        borderWidth: 2,
+        hoverOffset: 6
+      }]
+    },
+    options: {
+      responsive: true,
+      cutout: '62%',
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: '#0e1420',
+          borderColor: 'rgba(249,115,22,0.3)',
+          borderWidth: 1,
+          titleColor: '#f97316',
+          bodyColor: '#e2e8f0',
+          callbacks: { label: c => ' ' + c.label }
+        }
+      }
+    }
+  });
+})();
 </script>
 </body>
 </html>
