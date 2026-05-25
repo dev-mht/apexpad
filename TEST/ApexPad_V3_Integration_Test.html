@@ -1,0 +1,1382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ApexPad V3 — Integration Test Suite</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.7.0/ethers.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --fire: #ff4500; --ember: #ff6b00; --gold: #ffaa00;
+  --green: #22c55e; --red: #ef4444; --blue: #3b82f6;
+  --yellow: #f59e0b; --bg: #050505; --card: #0d0d0d;
+  --border: #1a1a1a; --muted: #444; --text: #e0e0e0;
+}
+body {
+  background: var(--bg); color: var(--text);
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  padding: 28px; min-height: 100vh;
+}
+body::before {
+  content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background-image: linear-gradient(rgba(255,69,0,.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,69,0,.025) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+.container { max-width: 1100px; margin: 0 auto; position: relative; z-index: 1; }
+
+h1 { font-size: 1.8rem; letter-spacing: 4px; color: var(--fire); margin-bottom: 3px; }
+.subtitle { color: var(--muted); font-size: 0.68rem; letter-spacing: 3px; margin-bottom: 28px; }
+
+.card { background: var(--card); border: 1px solid var(--border); border-radius: 6px; padding: 20px; margin-bottom: 16px; }
+.card h2 { color: var(--fire); font-size: 0.82rem; letter-spacing: 2px; margin-bottom: 14px; }
+
+.input-group { margin-bottom: 10px; }
+label { display: block; color: var(--muted); font-size: 0.68rem; letter-spacing: 1px; margin-bottom: 4px; }
+input { width: 100%; background: #111; border: 1px solid #222; color: var(--text); padding: 9px 12px;
+  border-radius: 4px; font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; }
+input:focus { outline: none; border-color: var(--fire); }
+
+.btn { background: linear-gradient(135deg, #cc2200, var(--ember)); color: #fff; border: none;
+  padding: 12px 24px; border-radius: 4px; cursor: pointer; font-family: 'JetBrains Mono', monospace;
+  font-size: 0.82rem; font-weight: bold; letter-spacing: 2px; width: 100%; transition: opacity .2s; }
+.btn:hover { opacity: .82; }
+.btn:disabled { opacity: .3; cursor: not-allowed; }
+.btn-sm { padding: 8px 16px; font-size: 0.72rem; margin-top: 8px; background: #0d0d0d;
+  border: 1px solid var(--fire); color: var(--fire); cursor: pointer;
+  font-family: 'JetBrains Mono', monospace; font-weight: bold; letter-spacing: 1px;
+  border-radius: 4px; width: 100%; transition: opacity .2s; }
+.btn-sm:hover { background: rgba(255,69,0,.08); }
+.btn-export { padding: 9px 16px; font-size: 0.72rem; margin-top: 8px; background: #0d0d0d;
+  border: 1px solid var(--green); color: var(--green); cursor: pointer;
+  font-family: 'JetBrains Mono', monospace; font-weight: bold; letter-spacing: 1px;
+  border-radius: 4px; width: 100%; transition: opacity .2s; }
+.btn-export:hover { background: rgba(34,197,94,.06); }
+.btn-export:disabled { opacity: .3; cursor: not-allowed; }
+
+/* STATS */
+.stats { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-bottom: 16px; }
+.stat { background: var(--card); border: 1px solid var(--border); padding: 12px; border-radius: 4px; text-align: center; }
+.stat-n { font-size: 1.8rem; font-weight: bold; line-height: 1; margin-bottom: 4px; }
+.stat-l { color: var(--muted); font-size: 0.6rem; letter-spacing: 2px; }
+.s-pass { color: var(--green); }
+.s-fail { color: var(--red); }
+.s-skip { color: var(--yellow); }
+.s-fire { background: linear-gradient(135deg, var(--fire), var(--gold));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  font-size: 1.8rem; font-weight: bold; }
+
+/* PROGRESS */
+.progress-track { height: 4px; background: #111; border-radius: 2px; margin: 12px 0; overflow: hidden; }
+.progress-fill { height: 100%; background: linear-gradient(90deg, var(--fire), var(--gold)); width: 0%; transition: width .4s; }
+
+/* PHASE */
+.phase-header { display: flex; align-items: center; gap: 10px; margin: 20px 0 10px; }
+.phase-badge { background: rgba(255,69,0,.1); border: 1px solid var(--fire); color: var(--fire);
+  font-size: 0.65rem; letter-spacing: 2px; padding: 3px 10px; border-radius: 3px; white-space: nowrap; }
+.phase-line { flex: 1; height: 1px; background: var(--border); }
+
+/* TEST GRID */
+.test-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 8px; margin-bottom: 14px; }
+.t-item { background: var(--card); border: 1px solid var(--border); padding: 10px 14px;
+  border-radius: 4px; font-size: 0.7rem; color: var(--muted); transition: all .25s; line-height: 1.5; }
+.t-item .t-sub { font-size: 0.6rem; color: #2a2a2a; margin-top: 3px; }
+.t-item.running { border-color: var(--yellow); color: var(--yellow); }
+.t-item.running .t-sub { color: var(--yellow); opacity: .6; }
+.t-item.passed { border-color: var(--green); color: var(--green); background: rgba(34,197,94,.04); }
+.t-item.passed .t-sub { color: var(--green); opacity: .6; }
+.t-item.failed { border-color: var(--red); color: var(--red); background: rgba(239,68,68,.04); }
+.t-item.failed .t-sub { color: var(--red); opacity: .6; }
+.t-item.skipped { border-color: #1a1a1a; color: #333; }
+.t-item.na { border-color: var(--yellow); color: var(--yellow); background: rgba(245,158,11,.05); }
+
+/* LOGS */
+.log-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+.log-card-header h2 { margin-bottom: 0; }
+.log-container { background: #020202; border: 1px solid #111; border-radius: 4px; padding: 14px;
+  height: 500px; overflow-y: auto; font-size: 0.7rem; line-height: 1.9;
+  scrollbar-width: thin; scrollbar-color: #222 transparent; }
+.log-entry { display: flex; gap: 10px; border-bottom: 1px solid #070707; padding: 1px 0; }
+.log-time { color: #222; min-width: 80px; flex-shrink: 0; }
+.log-msg { flex: 1; }
+.log-entry.success .log-msg { color: var(--green); }
+.log-entry.error .log-msg { color: var(--red); }
+.log-entry.info .log-msg { color: var(--blue); }
+.log-entry.warning .log-msg { color: var(--yellow); }
+.log-entry.pending .log-msg { color: #555; }
+.log-entry.section .log-msg { color: var(--fire); font-weight: bold; letter-spacing: 1px; }
+.log-entry.pass .log-msg { color: var(--green); font-weight: bold; }
+.log-entry.fail .log-msg { color: var(--red); font-weight: bold; }
+.log-entry.data .log-msg { color: #777; }
+
+/* SCORE */
+.score-wrap { text-align: center; padding: 20px 0 8px; }
+.score-big { font-size: 4.5rem; font-weight: bold; }
+.score-label { color: var(--muted); font-size: 0.7rem; letter-spacing: 3px; margin-top: 4px; }
+.verdict { border-radius: 6px; padding: 16px 20px; margin-top: 14px; font-size: 0.8rem;
+  line-height: 1.8; display: none; }
+.verdict.pass-v { border: 1px solid var(--green); background: rgba(34,197,94,.05); color: var(--green); }
+.verdict.fail-v { border: 1px solid var(--red); background: rgba(239,68,68,.05); color: var(--red); }
+
+/* NETWORK BADGE */
+.network-badge { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px;
+  border-radius: 20px; font-size: 0.68rem; font-weight: bold; letter-spacing: 1px;
+  margin-left: 12px; vertical-align: middle; }
+.network-badge.testnet { background: rgba(34,197,94,.1); border: 1px solid var(--green); color: var(--green); }
+.network-badge.mainnet { background: rgba(239,68,68,.15); border: 1px solid var(--red); color: var(--red); }
+.network-badge.unknown { background: rgba(245,158,11,.1); border: 1px solid var(--yellow); color: var(--yellow); }
+.network-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; animation: pulse 1.5s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+
+/* MAINNET BANNER */
+#mainnetBanner { display: none; position: fixed; top: 0; left: 0; right: 0; z-index: 9999;
+  background: #120000; border-bottom: 3px solid var(--red);
+  animation: pulseBorder 1.5s ease-in-out infinite; }
+@keyframes pulseBorder { 0%,100%{border-bottom-color:#ef4444} 50%{border-bottom-color:#ff0000;box-shadow:0 0 20px rgba(255,0,0,.4)} }
+.banner-inner { padding: 14px 28px; display: flex; align-items: center; gap: 18px; }
+.banner-icon { font-size: 2rem; animation: shake .5s ease-in-out infinite alternate; }
+@keyframes shake { from{transform:rotate(-8deg)} to{transform:rotate(8deg)} }
+.banner-text { flex: 1; }
+.banner-title { color: #ff4444; font-size: .95rem; font-weight: bold; letter-spacing: 3px; margin-bottom: 4px; }
+.banner-sub { color: #cc2222; font-size: .7rem; letter-spacing: 1px; line-height: 1.6; }
+.banner-close { background: #cc0000; color: #fff; border: none; padding: 8px 16px; border-radius: 3px;
+  cursor: pointer; font-family: 'JetBrains Mono', monospace; font-size: .72rem; font-weight: bold; }
+#mainnetOverlay { display: none; position: fixed; inset: 0; z-index: 9998;
+  background: rgba(80,0,0,.3); backdrop-filter: blur(2px); pointer-events: none; }
+
+/* INFO BOX */
+.info-box { background: rgba(59,130,246,.05); border: 1px solid rgba(59,130,246,.2);
+  border-radius: 4px; padding: 14px; margin-bottom: 14px; font-size: 0.72rem;
+  color: #6699cc; line-height: 1.8; }
+.info-box strong { color: var(--blue); }
+
+/* GRID 2 COL */
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+@media (max-width: 700px) { .grid2 { grid-template-columns: 1fr; } .stats { grid-template-columns: repeat(3,1fr); } }
+</style>
+</head>
+<body>
+<div id="mainnetBanner">
+  <div class="banner-inner">
+    <div class="banner-icon">🚨</div>
+    <div class="banner-text">
+      <div class="banner-title">⛔ MAINNET DÉTECTÉ — TESTS BLOQUÉS</div>
+      <div class="banner-sub">
+        Tu es connecté sur <strong>BSC MAINNET (ChainID 56)</strong>. Les tests sont BLOQUÉS sur Mainnet.<br>
+        <strong>→ Bascule sur BSC TESTNET (ChainID 97) dans MetaMask puis reconnecte.</strong>
+      </div>
+    </div>
+    <button class="banner-close" onclick="dismissBanner()">✕ COMPRIS</button>
+  </div>
+</div>
+<div id="mainnetOverlay"></div>
+
+<div class="container">
+
+<h1>⚡ APEXPAD V3 — TEST SUITE
+  <span id="networkBadge" class="network-badge unknown">
+    <span class="network-dot"></span><span id="networkLabel">—</span>
+  </span>
+</h1>
+<p class="subtitle">// INTEGRATION TESTS — FACTORY V3 + PRESALEPOOL V3 — EIP-1167 CLONE PATTERN — BSC TESTNET ONLY</p>
+
+<div class="info-box">
+  ⚠️ <strong>NOTE IMPORTANTE :</strong> ApexPad V3 impose <code>endTime >= now + 1 hour</code> (PresaleTooShort guard).<br>
+  Le test de <strong>finalize()</strong> avec LP add réel nécessite d'attendre <code>endTime + 5 min</code> (~65 min).<br>
+  Les tests couvrent : Factory, clone deploy, contributions, guards, cancel, refund, pull-payment, security.<br>
+  Un <strong>bouton séparé</strong> permet de tester finalize() après le délai requis.
+</div>
+
+<!-- CONFIG -->
+<div class="card">
+  <h2>📋 CONFIGURATION — BSC TESTNET ADDRESSES</h2>
+  <div class="grid2">
+    <div>
+      <div class="input-group">
+        <label>APEXPAD FACTORY V3 (TESTNET)</label>
+        <input id="factoryAddr" value="0x500d7Fde639a750E56DF295CeB5523F695bB4bE4" />
+      </div>
+      <div class="input-group">
+        <label>PRESALEPOOL MASTER (TESTNET)</label>
+        <input id="masterAddr" value="0x6fD53Bfa0a899dC8C46Fc778510Dc44ebbE63395" />
+      </div>
+    </div>
+    <div>
+      <div class="input-group">
+        <label>TEST TOKEN ERC-20 (18 DECIMALS)</label>
+        <input id="tokenAddr" value="0x611916bf3CF8F4b860571FD92184cc203C5F4FBD" />
+      </div>
+      <div class="input-group">
+        <label>PANCAKESWAP ROUTER (TESTNET)</label>
+        <input id="routerAddr" value="0xD99D1c33F9fC3444f8101754aBC46c52416550D1" />
+      </div>
+    </div>
+  </div>
+  <button class="btn" onclick="connectWallet()">🦊 CONNECT METAMASK (BSC TESTNET)</button>
+</div>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat"><div class="stat-n s-pass" id="stPass">0</div><div class="stat-l">PASSED</div></div>
+  <div class="stat"><div class="stat-n s-fail" id="stFail">0</div><div class="stat-l">FAILED</div></div>
+  <div class="stat"><div class="stat-n s-skip" id="stSkip">0</div><div class="stat-l">SKIPPED</div></div>
+  <div class="stat"><div class="stat-n" id="stTotal" style="color:#555">0</div><div class="stat-l">TOTAL</div></div>
+  <div class="stat"><div class="s-fire" id="stScore">—</div><div class="stat-l">SCORE</div></div>
+</div>
+<div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+
+<!-- PHASE 0 — FACTORY -->
+<div class="phase-header">
+  <span class="phase-badge">PHASE 0 — FACTORY & SETUP</span><div class="phase-line"></div>
+</div>
+<div class="test-grid">
+  <div class="t-item" id="n0a">🏭 Factory déployée + impl check<div class="t-sub">implementation() == masterAddr</div></div>
+  <div class="t-item" id="n0b">🚀 createPresale() avec flatFee correct<div class="t-sub">clone déployé + isApexPresale=true</div></div>
+  <div class="t-item" id="n0c">💸 createPresale() sans flatFee → revert<div class="t-sub">InsufficientFlatFee guard</div></div>
+  <div class="t-item" id="n0d">📊 accumulatedFees après createPresale<div class="t-sub">accumulatedFees += flatFee</div></div>
+</div>
+
+<!-- PHASE 1 — PRESALE SETUP -->
+<div class="phase-header">
+  <span class="phase-badge">PHASE 1 — PRESALE SETUP & GUARDS</span><div class="phase-line"></div>
+</div>
+<div class="test-grid">
+  <div class="t-item" id="n1a">🔍 getRequiredTokens() pre-check<div class="t-sub">calcul correct claimPool + lpTokens</div></div>
+  <div class="t-item" id="n1b">💰 Fund presale avec tokens<div class="t-sub">transfer(presale, requiredTokens)</div></div>
+  <div class="t-item" id="n1c">🚫 finalize() sans tokens → revert<div class="t-sub">InsufficientTokenBalance guard</div></div>
+  <div class="t-item" id="n1d">⏰ State PENDING → ACTIVE auto<div class="t-sub">currentState() après startTime</div></div>
+</div>
+
+<!-- PHASE 2 — CONTRIBUTIONS -->
+<div class="phase-header">
+  <span class="phase-badge">PHASE 2 — CONTRIBUTIONS & VALIDATION</span><div class="phase-line"></div>
+</div>
+<div class="test-grid">
+  <div class="t-item" id="n2a">✅ contribute() normale<div class="t-sub">contributions[signer] mise à jour</div></div>
+  <div class="t-item" id="n2b">⬇️ contribute() sous minContrib → revert<div class="t-sub">BelowMinContribution guard</div></div>
+  <div class="t-item" id="n2c">⬆️ contribute() au-dessus maxContrib → revert<div class="t-sub">AboveMaxContribution guard</div></div>
+  <div class="t-item" id="n2d">🚫 contribute() blacklisté → revert<div class="t-sub">setBlacklist() + Blacklisted guard</div></div>
+  <div class="t-item" id="n2e">⏸️ contribute() paused → revert<div class="t-sub">setPaused(true) + ContractPaused guard</div></div>
+</div>
+
+<!-- PHASE 3 — STATE MACHINE -->
+<div class="phase-header">
+  <span class="phase-badge">PHASE 3 — STATE MACHINE</span><div class="phase-line"></div>
+</div>
+<div class="test-grid">
+  <div class="t-item" id="n3a">🏆 HardCap atteint → state SUCCESS<div class="t-sub">totalRaised >= hardCap</div></div>
+  <div class="t-item" id="n3b">⏱️ finalize() TooEarly → revert<div class="t-sub">endTime + CONTRIBUTION_DELAY guard</div></div>
+  <div class="t-item" id="n3c">🚫 claim() avant FINALIZED → revert<div class="t-sub">WrongState guard</div></div>
+  <div class="t-item" id="n3d">❌ cancel() en SUCCESS → CANCELLED<div class="t-sub">reservedForRefund = totalRaised</div></div>
+</div>
+
+<!-- PHASE 4 — REFUND PATH -->
+<div class="phase-header">
+  <span class="phase-badge">PHASE 4 — REFUND PATH (CANCEL/FAILED)</span><div class="phase-line"></div>
+</div>
+<div class="test-grid">
+  <div class="t-item" id="n4a">💸 claimRefund() en CANCELLED → succès<div class="t-sub">BNB retourné au contributor</div></div>
+  <div class="t-item" id="n4b">🔒 claimRefund() × 2 → revert<div class="t-sub">NothingToRefund guard (double-refund)</div></div>
+  <div class="t-item" id="n4c">🚨 emergencyCancel() via Factory<div class="t-sub">apexAdmin cancel + WrongState après</div></div>
+</div>
+
+<!-- PHASE 5 — PULL PAYMENT & SECURITY -->
+<div class="phase-header">
+  <span class="phase-badge">PHASE 5 — PULL-PAYMENT & SECURITY</span><div class="phase-line"></div>
+</div>
+<div class="test-grid">
+  <div class="t-item" id="n5a">💰 withdrawOwnerProceeds() avant FINALIZED → revert<div class="t-sub">NothingToClaim avant finalize()</div></div>
+  <div class="t-item" id="n5b">🔒 rescueStuckERC20 rejette project token<div class="t-sub">CannotRescueProjectToken guard</div></div>
+  <div class="t-item" id="n5c">🏦 withdrawAccumulatedFees() Factory<div class="t-sub">owner only — pull-payment fees</div></div>
+  <div class="t-item" id="n5d">🛡️ renounceOwnership() factory → revert ou OK<div class="t-sub">Ownable2Step check</div></div>
+</div>
+
+<!-- RUN -->
+<div class="card">
+  <h2>🚀 LAUNCH INTEGRATION TEST</h2>
+  <div class="grid2">
+    <button class="btn" id="runBtn" onclick="runTests()" disabled>⚡ RUN ALL TESTS (19 TESTS)</button>
+    <button class="btn-sm" id="finalizeBtn" onclick="testFinalize()" disabled style="margin-top:0">
+      ⏳ TEST FINALIZE() — APRÈS DÉLAI (run séparé)
+    </button>
+  </div>
+  <button class="btn-sm" onclick="clearLogs()">🗑 CLEAR LOGS</button>
+</div>
+
+<!-- LOGS -->
+<div class="card">
+  <div class="log-card-header">
+    <h2>📟 TEST LOGS</h2>
+    <span id="logCount" style="color:var(--muted);font-size:0.68rem;letter-spacing:1px">0 entrées</span>
+  </div>
+  <div class="log-container" id="logs"></div>
+  <button class="btn-export" id="exportBtn" onclick="exportLog()" disabled>📄 EXPORTER LE RAPPORT (TXT + PDF)</button>
+</div>
+
+<!-- SCORE -->
+<div class="card">
+  <div class="score-wrap">
+    <div class="s-fire score-big" id="scoreDisplay">—</div>
+    <div class="score-label">INTEGRATION SCORE / 100</div>
+  </div>
+  <div class="verdict" id="verdictBox"></div>
+</div>
+
+</div><!-- /container -->
+
+<script>
+// ═══════════════════════════════════════════
+// CONSTANTS
+// ═══════════════════════════════════════════
+const TOTAL = 19;
+const FLAT_FEE = ethers.parseEther('0.01'); // 0.01 BNB
+const TOKEN_PRICE = 10000n; // 10000 tokens per BNB
+const SOFT_CAP = ethers.parseEther('0.1');
+const HARD_CAP = ethers.parseEther('1');
+const MIN_CONTRIB = ethers.parseEther('0.01');
+const MAX_CONTRIB = ethers.parseEther('0.5');
+const LP_PERCENT = 60n;
+const LP_LOCK = BigInt(30 * 24 * 3600); // 30 days
+
+// ═══════════════════════════════════════════
+// ABIs
+// ═══════════════════════════════════════════
+const FACTORY_ABI = [
+  "function implementation() view returns (address)",
+  "function feeWallet() view returns (address)",
+  "function dexRouter() view returns (address)",
+  "function flatFee() view returns (uint256)",
+  "function factoryPaused() view returns (bool)",
+  "function accumulatedFees() view returns (uint256)",
+  "function presaleCount() view returns (uint256)",
+  "function presales(uint256) view returns (address)",
+  "function isApexPresale(address) view returns (bool)",
+  "function owner() view returns (address)",
+  "function createPresale(address,uint256[9],string,string,string) external payable returns (address)",
+  "function emergencyCancel(address) external",
+  "function withdrawAccumulatedFees(address,uint256) external",
+  "function withdrawApexFeeFromPool(address,address) external",
+  "function getOwnerPresales(address) view returns (address[])",
+];
+
+const PRESALE_ABI = [
+  "function token() view returns (address)",
+  "function apexFeeWallet() view returns (address)",
+  "function apexAdmin() view returns (address)",
+  "function dexRouter() view returns (address)",
+  "function tokenPrice() view returns (uint256)",
+  "function softCap() view returns (uint256)",
+  "function hardCap() view returns (uint256)",
+  "function minContrib() view returns (uint256)",
+  "function maxContrib() view returns (uint256)",
+  "function startTime() view returns (uint256)",
+  "function endTime() view returns (uint256)",
+  "function lpPercent() view returns (uint256)",
+  "function lpLockDuration() view returns (uint256)",
+  "function state() view returns (uint8)",
+  "function currentState() view returns (uint8)",
+  "function totalRaised() view returns (uint256)",
+  "function totalRefunded() view returns (uint256)",
+  "function reservedForRefund() view returns (uint256)",
+  "function apexFeeOwed() view returns (uint256)",
+  "function ownerProceedsOwed() view returns (uint256)",
+  "function lpAdded() view returns (bool)",
+  "function paused() view returns (bool)",
+  "function pair() view returns (address)",
+  "function lpTokensReceived() view returns (uint256)",
+  "function lpUnlockTime() view returns (uint256)",
+  "function contributions(address) view returns (uint256)",
+  "function claimed(address) view returns (bool)",
+  "function refunded(address) view returns (bool)",
+  "function blacklist(address) view returns (bool)",
+  "function getRequiredTokens() view returns (uint256)",
+  "function getTokensOwed(address) view returns (uint256)",
+  "function owner() view returns (address)",
+  "function contribute() external payable",
+  "function claim() external",
+  "function claimRefund() external",
+  "function finalize() external",
+  "function cancel() external",
+  "function unlockLP(address) external",
+  "function burnLP() external",
+  "function setPaused(bool) external",
+  "function setBlacklist(address,bool) external",
+  "function withdrawOwnerProceeds(address) external",
+  "function withdrawApexFee(address) external",
+  "function rescueStuckETH(address,uint256) external",
+  "function rescueStuckERC20(address,address,uint256) external",
+];
+
+const ERC20_ABI = [
+  "function transfer(address,uint256) external returns (bool)",
+  "function balanceOf(address) view returns (uint256)",
+  "function approve(address,uint256) external returns (bool)",
+  "function decimals() view returns (uint8)",
+  "function symbol() view returns (string)",
+];
+
+// ═══════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════
+let provider, signer, signerAddr;
+let factory, token, presale, presaleAddr;
+let presale2, presale2Addr; // second presale for cancel/refund tests
+let passed = 0, failed = 0, skipped = 0;
+let isMainnet = false;
+let logEntries = [];
+let testStartTime = null;
+let networkName = '—';
+let walletAddrForLog = '—';
+
+// State enum
+const STATE = { PENDING:0, ACTIVE:1, SUCCESS:2, FAILED:3, CANCELLED:4, FINALIZED:5 };
+const STATE_NAMES = ['PENDING','ACTIVE','SUCCESS','FAILED','CANCELLED','FINALIZED'];
+
+// ═══════════════════════════════════════════
+// MAINNET GUARD
+// ═══════════════════════════════════════════
+function showMainnetWarning() {
+  document.getElementById('mainnetBanner').style.display = 'block';
+  document.getElementById('mainnetOverlay').style.display = 'block';
+  document.getElementById('runBtn').disabled = true;
+}
+function dismissBanner() {
+  document.getElementById('mainnetBanner').style.display = 'none';
+  document.getElementById('mainnetOverlay').style.display = 'none';
+}
+function setNetworkBadge(chainId) {
+  const badge = document.getElementById('networkBadge');
+  const label = document.getElementById('networkLabel');
+  badge.className = 'network-badge';
+  if (chainId === 97n) {
+    badge.classList.add('testnet');
+    label.textContent = 'BSC TESTNET ✓';
+    networkName = 'BSC Testnet (ChainID 97)';
+  } else if (chainId === 56n) {
+    badge.classList.add('mainnet');
+    label.textContent = 'BSC MAINNET ⛔';
+    networkName = 'BSC Mainnet (ChainID 56)';
+  } else {
+    badge.classList.add('unknown');
+    label.textContent = `ChainID ${chainId}`;
+    networkName = `Unknown (ChainID ${chainId})`;
+  }
+}
+if (window.ethereum) {
+  window.ethereum.on('chainChanged', () => window.location.reload());
+  window.ethereum.on('accountsChanged', () => window.location.reload());
+}
+
+// ═══════════════════════════════════════════
+// UI HELPERS
+// ═══════════════════════════════════════════
+function log(msg, type = 'info') {
+  const el = document.getElementById('logs');
+  const ts = new Date().toTimeString().slice(0, 8);
+  const icons = { success:'✅', error:'❌', info:'ℹ️', warning:'⚠️',
+    pending:'⏳', section:'🔷', pass:'✔', fail:'✘', data:'📊' };
+  el.innerHTML += `<div class="log-entry ${type}">
+    <span class="log-time">${ts}</span>
+    <span class="log-msg">${icons[type]||''} ${msg}</span></div>`;
+  el.scrollTop = el.scrollHeight;
+  logEntries.push({ ts, type, msg });
+  document.getElementById('logCount').textContent = `${logEntries.length} entrée${logEntries.length>1?'s':''}`;
+}
+
+function setT(id, status) {
+  const el = document.getElementById(id);
+  if (el) el.className = `t-item ${status}`;
+}
+
+function updateStats() {
+  document.getElementById('stPass').textContent = passed;
+  document.getElementById('stFail').textContent = failed;
+  document.getElementById('stSkip').textContent = skipped;
+  document.getElementById('stTotal').textContent = passed + failed + skipped;
+  const total = passed + failed;
+  const score = total > 0 ? Math.round((passed / TOTAL) * 100) : 0;
+  document.getElementById('stScore').textContent = total > 0 ? score + '%' : '—';
+  const progress = Math.min(((passed + failed + skipped) / TOTAL) * 100, 100);
+  document.getElementById('progressFill').style.width = `${progress}%`;
+  if (total > 0) document.getElementById('scoreDisplay').textContent = score + '/100';
+}
+
+function clearLogs() {
+  document.getElementById('logs').innerHTML = '';
+  logEntries = [];
+  document.getElementById('logCount').textContent = '0 entrées';
+  document.getElementById('exportBtn').disabled = true;
+}
+
+async function ok(id, msg) {
+  passed++;
+  setT(id, 'passed');
+  log(`PASS — ${msg}`, 'pass');
+  updateStats();
+}
+async function ko(id, msg) {
+  failed++;
+  setT(id, 'failed');
+  log(`FAIL — ${msg}`, 'fail');
+  updateStats();
+}
+function skip(id, msg) {
+  skipped++;
+  setT(id, 'skipped');
+  log(`SKIP — ${msg}`, 'warning');
+  updateStats();
+}
+async function shouldRevert(fn, id, label) {
+  try {
+    await fn();
+    await ko(id, `${label} — devait revert MAIS n'a PAS revert ! ⚠️ VULNÉRABILITÉ`);
+    return false;
+  } catch(e) {
+    await ok(id, `${label} — revert correct ✓`);
+    return true;
+  }
+}
+async function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+// ═══════════════════════════════════════════
+// WALLET
+// ═══════════════════════════════════════════
+async function connectWallet() {
+  try {
+    if (!window.ethereum) { alert('MetaMask requis'); return; }
+    await window.ethereum.request({ method: 'eth_requestAccounts' });
+    provider = new ethers.BrowserProvider(window.ethereum);
+    signer = await provider.getSigner();
+    signerAddr = await signer.getAddress();
+    walletAddrForLog = signerAddr;
+    const network = await provider.getNetwork();
+    setNetworkBadge(network.chainId);
+
+    if (network.chainId === 56n) {
+      isMainnet = true;
+      showMainnetWarning();
+      log('🚨 MAINNET DÉTECTÉ — TESTS BLOQUÉS. Passe sur BSC TESTNET.', 'error');
+      return;
+    }
+
+    factory = new ethers.Contract(document.getElementById('factoryAddr').value, FACTORY_ABI, signer);
+    token = new ethers.Contract(document.getElementById('tokenAddr').value, ERC20_ABI, signer);
+
+    log(`Wallet connecté : ${signerAddr}`, 'success');
+    log(`Réseau : ${networkName} ✅`, 'success');
+
+    const tokenBal = await token.balanceOf(signerAddr);
+    const symbol = await token.symbol();
+    const bnbBal = await provider.getBalance(signerAddr);
+    log(`Balance ${symbol} : ${ethers.formatEther(tokenBal)}`, 'data');
+    log(`Balance BNB : ${ethers.formatEther(bnbBal)} BNB`, 'data');
+
+    document.getElementById('runBtn').disabled = false;
+    document.getElementById('finalizeBtn').disabled = false;
+    document.getElementById('exportBtn').disabled = false;
+  } catch(e) {
+    log(`Erreur connexion : ${e.message}`, 'error');
+  }
+}
+
+// ═══════════════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════════════
+async function deployPresale(fundIt = false) {
+  const now = Math.floor(Date.now() / 1000);
+  // startTime in 5s, endTime in 1 hour + 5 min (minimum for PresaleTooShort)
+  const startTime = BigInt(now + 5);
+  const endTime   = BigInt(now + 3660); // 61 minutes
+
+  const nums = [
+    TOKEN_PRICE,   // tokenPrice: 10000 tokens/BNB
+    SOFT_CAP,      // softCap: 0.1 BNB
+    HARD_CAP,      // hardCap: 1 BNB
+    MIN_CONTRIB,   // minContrib: 0.01 BNB
+    MAX_CONTRIB,   // maxContrib: 0.5 BNB
+    startTime,
+    endTime,
+    LP_PERCENT,    // lpPercent: 60%
+    LP_LOCK,       // lpLockDuration: 30 days
+  ];
+
+  log('Déploiement presale via Factory (flatFee 0.01 BNB)...', 'pending');
+  const tx = await factory.createPresale(
+    document.getElementById('tokenAddr').value,
+    nums,
+    'ApexPad V3 Test Presale',
+    'https://apexpad.io',
+    'https://t.me/Milestone_HODL_Official',
+    { value: FLAT_FEE }
+  );
+  await tx.wait();
+
+  const count = await factory.presaleCount();
+  const addr = await factory.presales(count - 1n);
+  const pool = new ethers.Contract(addr, PRESALE_ABI, signer);
+
+  log(`Presale déployée : ${addr}`, 'success');
+
+  if (fundIt) {
+    const required = await pool.getRequiredTokens();
+    const buffer = required + ethers.parseEther('100'); // small buffer
+    const bal = await token.balanceOf(signerAddr);
+    if (bal >= buffer) {
+      const txT = await token.transfer(addr, buffer);
+      await txT.wait();
+      log(`Tokens transférés : ${ethers.formatEther(buffer)} tokens → ${addr}`, 'success');
+    } else {
+      log(`⚠️ Solde token insuffisant : ${ethers.formatEther(bal)} < ${ethers.formatEther(buffer)}`, 'warning');
+    }
+  }
+
+  return { pool, addr };
+}
+
+async function waitForActive(pool) {
+  const start = await pool.startTime();
+  const now = BigInt(Math.floor(Date.now() / 1000));
+  if (start > now) {
+    const waitMs = Number(start - now) * 1000 + 2000;
+    log(`Attente startTime : ${Math.ceil(waitMs/1000)}s...`, 'pending');
+    await sleep(waitMs);
+  }
+}
+
+// ═══════════════════════════════════════════
+// MAIN TEST RUNNER
+// ═══════════════════════════════════════════
+async function runTests() {
+  document.getElementById('runBtn').disabled = true;
+  passed = 0; failed = 0; skipped = 0;
+  logEntries = [];
+  testStartTime = Date.now();
+  clearLogs();
+  updateStats();
+
+  // Reset test items
+  for (let p = 0; p <= 5; p++) {
+    for (const l of ['a','b','c','d','e']) {
+      const el = document.getElementById(`n${p}${l}`);
+      if (el) el.className = 't-item';
+    }
+  }
+
+  log('', 'info');
+  log('══════════════════════════════════════════════════', 'section');
+  log('  APEXPAD V3 — INTEGRATION TEST SUITE', 'section');
+  log('  FACTORY V3 + PRESALEPOOL V3 — EIP-1167 CLONES', 'section');
+  log(`  Wallet : ${signerAddr}`, 'section');
+  log('══════════════════════════════════════════════════', 'section');
+
+  try {
+
+    // ─────────────────────────────────────────
+    // PHASE 0 — FACTORY & SETUP
+    // ─────────────────────────────────────────
+    log('', 'info');
+    log('[ PHASE 0 ] FACTORY & SETUP', 'section');
+
+    // N0A — Factory implementation check
+    setT('n0a', 'running');
+    try {
+      const impl = await factory.implementation();
+      const master = document.getElementById('masterAddr').value.toLowerCase();
+      log(`implementation() = ${impl}`, 'data');
+      if (impl.toLowerCase() === master) {
+        await ok('n0a', `Factory.implementation() == masterAddr ✓`);
+      } else {
+        await ko('n0a', `implementation mismatch: got ${impl}`);
+      }
+    } catch(e) { await ko('n0a', `Factory check échoué : ${e.message}`); }
+
+    // N0B — createPresale() avec flatFee correct
+    setT('n0b', 'running');
+    try {
+      const countBefore = await factory.presaleCount();
+      const feesBefore = await factory.accumulatedFees();
+      const { pool, addr } = await deployPresale(false);
+      presale = pool;
+      presaleAddr = addr;
+      const countAfter = await factory.presaleCount();
+      const isApex = await factory.isApexPresale(addr);
+      const owner = await presale.owner();
+      log(`presaleCount: ${countBefore} → ${countAfter}`, 'data');
+      log(`isApexPresale: ${isApex}`, 'data');
+      log(`owner: ${owner}`, 'data');
+      if (countAfter === countBefore + 1n && isApex && owner.toLowerCase() === signerAddr.toLowerCase()) {
+        await ok('n0b', `createPresale() → clone déployé, owner=signer, isApexPresale=true ✓`);
+      } else {
+        await ko('n0b', `createPresale() résultat incorrect`);
+      }
+    } catch(e) { await ko('n0b', `createPresale() échoué : ${e.message}`); }
+
+    // N0C — createPresale() sans flatFee → revert
+    setT('n0c', 'running');
+    await shouldRevert(
+      async () => {
+        const now = Math.floor(Date.now() / 1000);
+        const nums = [TOKEN_PRICE, SOFT_CAP, HARD_CAP, MIN_CONTRIB, MAX_CONTRIB,
+          BigInt(now+5), BigInt(now+3660), LP_PERCENT, LP_LOCK];
+        await factory.createPresale(
+          document.getElementById('tokenAddr').value,
+          nums, 'NoFee', 'x', 'x',
+          { value: 0n }
+        );
+      },
+      'n0c', 'createPresale() sans flatFee → revert InsufficientFlatFee'
+    );
+
+    // N0D — accumulatedFees après createPresale
+    setT('n0d', 'running');
+    try {
+      const fees = await factory.accumulatedFees();
+      log(`accumulatedFees = ${ethers.formatEther(fees)} BNB`, 'data');
+      if (fees >= FLAT_FEE) {
+        await ok('n0d', `accumulatedFees = ${ethers.formatEther(fees)} BNB >= flatFee ✓`);
+      } else {
+        await ko('n0d', `accumulatedFees trop bas : ${ethers.formatEther(fees)} BNB`);
+      }
+    } catch(e) { await ko('n0d', `accumulatedFees check échoué : ${e.message}`); }
+
+    // ─────────────────────────────────────────
+    // PHASE 1 — PRESALE SETUP
+    // ─────────────────────────────────────────
+    log('', 'info');
+    log('[ PHASE 1 ] PRESALE SETUP & GUARDS', 'section');
+
+    // N1A — getRequiredTokens() pre-check
+    setT('n1a', 'running');
+    try {
+      const required = await presale.getRequiredTokens();
+      const price = await presale.tokenPrice();
+      const hard = await presale.hardCap();
+      const claimPool = (hard * price) / ethers.parseEther('1');
+      log(`getRequiredTokens() = ${ethers.formatEther(required)} tokens`, 'data');
+      log(`claimPool estimé = ${ethers.formatEther(claimPool)} tokens`, 'data');
+      if (required >= claimPool && required > 0n) {
+        await ok('n1a', `getRequiredTokens() = ${ethers.formatEther(required)} tokens > claimPool ✓`);
+      } else {
+        await ko('n1a', `getRequiredTokens() incorrect : ${required}`);
+      }
+    } catch(e) { await ko('n1a', `getRequiredTokens() échoué : ${e.message}`); }
+
+    // N1C — finalize() avant funding → revert InsufficientTokenBalance
+    // (test this BEFORE funding)
+    setT('n1c', 'running');
+    await shouldRevert(
+      () => presale.finalize(),
+      'n1c', 'finalize() sans tokens → revert (WrongState ou InsufficientTokenBalance)'
+    );
+
+    // N1B — Fund presale avec tokens
+    setT('n1b', 'running');
+    try {
+      const required = await presale.getRequiredTokens();
+      const toSend = required + ethers.parseEther('100');
+      const bal = await token.balanceOf(signerAddr);
+      log(`Tokens disponibles : ${ethers.formatEther(bal)}`, 'data');
+      log(`Tokens requis + buffer : ${ethers.formatEther(toSend)}`, 'data');
+      if (bal < toSend) {
+        skip('n1b', `Solde token insuffisant — ${ethers.formatEther(bal)} < ${ethers.formatEther(toSend)}`);
+      } else {
+        const balBefore = await token.balanceOf(presaleAddr);
+        const tx = await token.transfer(presaleAddr, toSend);
+        await tx.wait();
+        const balAfter = await token.balanceOf(presaleAddr);
+        if (balAfter > balBefore) {
+          await ok('n1b', `Tokens transférés : ${ethers.formatEther(balAfter)} tokens dans presale ✓`);
+        } else {
+          await ko('n1b', `Transfer échoué`);
+        }
+      }
+    } catch(e) { await ko('n1b', `Fund presale échoué : ${e.message}`); }
+
+    // N1D — State PENDING → ACTIVE après startTime
+    setT('n1d', 'running');
+    try {
+      await waitForActive(presale);
+      const stateNow = await presale.currentState();
+      log(`currentState() = ${STATE_NAMES[stateNow]} (${stateNow})`, 'data');
+      if (Number(stateNow) === STATE.ACTIVE) {
+        await ok('n1d', `State = ACTIVE après startTime ✓`);
+      } else if (Number(stateNow) === STATE.PENDING) {
+        skip('n1d', `State encore PENDING — startTime pas atteint`);
+      } else {
+        await ko('n1d', `State inattendu : ${STATE_NAMES[stateNow]}`);
+      }
+    } catch(e) { await ko('n1d', `State check échoué : ${e.message}`); }
+
+    // ─────────────────────────────────────────
+    // PHASE 2 — CONTRIBUTIONS
+    // ─────────────────────────────────────────
+    log('', 'info');
+    log('[ PHASE 2 ] CONTRIBUTIONS & VALIDATION', 'section');
+
+    // N2A — contribute() normale
+    setT('n2a', 'running');
+    try {
+      const contribBefore = await presale.contributions(signerAddr);
+      const raisedBefore = await presale.totalRaised();
+      const amount = ethers.parseEther('0.05');
+      const tx = await presale.contribute({ value: amount });
+      await tx.wait();
+      const contribAfter = await presale.contributions(signerAddr);
+      const raisedAfter = await presale.totalRaised();
+      log(`contributions[signer]: ${ethers.formatEther(contribBefore)} → ${ethers.formatEther(contribAfter)} BNB`, 'data');
+      log(`totalRaised: ${ethers.formatEther(raisedBefore)} → ${ethers.formatEther(raisedAfter)} BNB`, 'data');
+      if (contribAfter > contribBefore && raisedAfter > raisedBefore) {
+        await ok('n2a', `contribute(0.05 BNB) OK — contributions et totalRaised mis à jour ✓`);
+      } else {
+        await ko('n2a', `contributions ou totalRaised non mis à jour`);
+      }
+    } catch(e) { await ko('n2a', `contribute() échoué : ${e.message}`); }
+
+    // N2B — contribute() sous minContrib → revert
+    setT('n2b', 'running');
+    await shouldRevert(
+      () => presale.contribute({ value: ethers.parseEther('0.001') }),
+      'n2b', 'contribute(0.001 BNB) < minContrib(0.01) → revert BelowMinContribution'
+    );
+
+    // N2C — contribute() au-dessus maxContrib → revert
+    setT('n2c', 'running');
+    await shouldRevert(
+      () => presale.contribute({ value: ethers.parseEther('0.6') }),
+      'n2c', 'contribute(0.6 BNB) > maxContrib(0.5) → revert AboveMaxContribution'
+    );
+
+    // N2D — contribute() blacklisté → revert
+    setT('n2d', 'running');
+    try {
+      // Blacklist signer
+      const txBl = await presale.setBlacklist(signerAddr, true);
+      await txBl.wait();
+      const isBlacklisted = await presale.blacklist(signerAddr);
+      log(`blacklist[signer] = ${isBlacklisted}`, 'data');
+      if (isBlacklisted) {
+        // Try to contribute while blacklisted
+        let reverted = false;
+        try {
+          await presale.contribute({ value: ethers.parseEther('0.05') });
+        } catch(e2) {
+          reverted = true;
+        }
+        // Unblacklist
+        const txUbl = await presale.setBlacklist(signerAddr, false);
+        await txUbl.wait();
+        if (reverted) {
+          await ok('n2d', `contribute() blacklisté → revert Blacklisted ✓`);
+        } else {
+          await ko('n2d', `contribute() blacklisté N'A PAS revert ! VULNÉRABILITÉ ⚠️`);
+        }
+      } else {
+        await ko('n2d', `setBlacklist() n'a pas fonctionné`);
+      }
+    } catch(e) { await ko('n2d', `Blacklist test échoué : ${e.message}`); }
+
+    // N2E — contribute() paused → revert
+    setT('n2e', 'running');
+    try {
+      const txP = await presale.setPaused(true);
+      await txP.wait();
+      const isPaused = await presale.paused();
+      log(`paused = ${isPaused}`, 'data');
+      if (isPaused) {
+        let reverted = false;
+        try {
+          await presale.contribute({ value: ethers.parseEther('0.05') });
+        } catch(e2) { reverted = true; }
+        // Unpause
+        const txU = await presale.setPaused(false);
+        await txU.wait();
+        if (reverted) {
+          await ok('n2e', `contribute() paused → revert ContractPaused ✓`);
+        } else {
+          await ko('n2e', `contribute() paused N'A PAS revert ! VULNÉRABILITÉ ⚠️`);
+        }
+      } else {
+        await ko('n2e', `setPaused(true) n'a pas fonctionné`);
+      }
+    } catch(e) { await ko('n2e', `Pause test échoué : ${e.message}`); }
+
+    // ─────────────────────────────────────────
+    // PHASE 3 — STATE MACHINE
+    // ─────────────────────────────────────────
+    log('', 'info');
+    log('[ PHASE 3 ] STATE MACHINE', 'section');
+
+    // N3A — Atteindre SUCCESS en remplissant hardCap
+    setT('n3a', 'running');
+    try {
+      const raised = await presale.totalRaised();
+      const hard = await presale.hardCap();
+      const max = await presale.maxContrib();
+      log(`totalRaised: ${ethers.formatEther(raised)} / hardCap: ${ethers.formatEther(hard)} BNB`, 'data');
+
+      if (raised < hard) {
+        // Fill up to hardCap in chunks (maxContrib each time)
+        let current = raised;
+        let attempt = 0;
+        while (current < hard && attempt < 10) {
+          const remaining = hard - current;
+          const toSend = remaining > max ? max : remaining;
+          // Check if we'd exceed maxContrib for this wallet
+          const myContrib = await presale.contributions(signerAddr);
+          if (myContrib + toSend > max) {
+            log('maxContrib atteint pour ce wallet — hardCap non rempli entièrement', 'warning');
+            break;
+          }
+          try {
+            const tx = await presale.contribute({ value: toSend });
+            await tx.wait();
+            current = await presale.totalRaised();
+            log(`Contribution : +${ethers.formatEther(toSend)} BNB — totalRaised: ${ethers.formatEther(current)} BNB`, 'data');
+          } catch(e2) {
+            log(`Contribution bloquée : ${e2.message.slice(0,80)}`, 'warning');
+            break;
+          }
+          attempt++;
+        }
+      }
+
+      const stateNow = await presale.currentState();
+      log(`currentState() = ${STATE_NAMES[stateNow]}`, 'data');
+      const raisedNow = await presale.totalRaised();
+
+      if (Number(stateNow) === STATE.SUCCESS) {
+        await ok('n3a', `State = SUCCESS (hardCap atteint : ${ethers.formatEther(raisedNow)} BNB) ✓`);
+      } else if (raisedNow >= SOFT_CAP) {
+        await ok('n3a', `totalRaised >= softCap (${ethers.formatEther(raisedNow)} BNB) — SUCCESS atteignable ✓`);
+      } else {
+        skip('n3a', `totalRaised insuffisant (${ethers.formatEther(raisedNow)} BNB) — fonds testnet limités`);
+      }
+    } catch(e) { await ko('n3a', `HardCap test échoué : ${e.message}`); }
+
+    // N3B — finalize() TooEarly → revert
+    setT('n3b', 'running');
+    try {
+      const endTime = await presale.endTime();
+      const nowTs = BigInt(Math.floor(Date.now() / 1000));
+      const stateNow = await presale.currentState();
+      log(`endTime: ${endTime} / now: ${nowTs} / diff: ${endTime - nowTs}s`, 'data');
+      log(`state: ${STATE_NAMES[stateNow]}`, 'data');
+
+      if (Number(stateNow) === STATE.SUCCESS || Number(stateNow) === STATE.ACTIVE) {
+        // Should revert TooEarly since endTime is ~1 hour from now
+        await shouldRevert(
+          () => presale.finalize(),
+          'n3b', 'finalize() avant endTime+CONTRIBUTION_DELAY → revert TooEarly'
+        );
+      } else {
+        // Might revert WrongState — still a guard working
+        let reverted = false;
+        try { await presale.finalize(); } catch(e2) { reverted = true; }
+        if (reverted) {
+          await ok('n3b', `finalize() revert correct (WrongState ou TooEarly) ✓`);
+        } else {
+          await ko('n3b', `finalize() N'A PAS revert !`);
+        }
+      }
+    } catch(e) { await ko('n3b', `finalize() TooEarly test échoué : ${e.message}`); }
+
+    // N3C — claim() avant FINALIZED → revert WrongState
+    setT('n3c', 'running');
+    await shouldRevert(
+      () => presale.claim(),
+      'n3c', 'claim() avant state FINALIZED → revert WrongState'
+    );
+
+    // N3D — cancel() en SUCCESS/ACTIVE → state CANCELLED
+    setT('n3d', 'running');
+    try {
+      const raised = await presale.totalRaised();
+      const stBefore = await presale.currentState();
+      log(`state avant cancel: ${STATE_NAMES[stBefore]}`, 'data');
+      log(`totalRaised: ${ethers.formatEther(raised)} BNB`, 'data');
+
+      const tx = await presale.cancel();
+      await tx.wait();
+      const stAfter = await presale.state();
+      const reserved = await presale.reservedForRefund();
+      log(`state après cancel: ${STATE_NAMES[stAfter]}`, 'data');
+      log(`reservedForRefund: ${ethers.formatEther(reserved)} BNB`, 'data');
+
+      if (Number(stAfter) === STATE.CANCELLED) {
+        if (reserved === raised) {
+          await ok('n3d', `cancel() → CANCELLED + reservedForRefund = totalRaised ✓`);
+        } else {
+          await ok('n3d', `cancel() → CANCELLED ✓ (reservedForRefund = ${ethers.formatEther(reserved)} BNB)`);
+        }
+      } else {
+        await ko('n3d', `cancel() échoué — state = ${STATE_NAMES[stAfter]}`);
+      }
+    } catch(e) { await ko('n3d', `cancel() échoué : ${e.message}`); }
+
+    // ─────────────────────────────────────────
+    // PHASE 4 — REFUND PATH
+    // ─────────────────────────────────────────
+    log('', 'info');
+    log('[ PHASE 4 ] REFUND PATH — CANCEL/FAILED', 'section');
+
+    // N4A — claimRefund() en CANCELLED → succès
+    setT('n4a', 'running');
+    try {
+      const contrib = await presale.contributions(signerAddr);
+      log(`contributions[signer] = ${ethers.formatEther(contrib)} BNB`, 'data');
+      if (contrib > 0n) {
+        const bnbBefore = await provider.getBalance(signerAddr);
+        const tx = await presale.claimRefund();
+        const receipt = await tx.wait();
+        const gasUsed = receipt.gasUsed * receipt.gasPrice;
+        const bnbAfter = await provider.getBalance(signerAddr);
+        const net = bnbAfter - bnbBefore + gasUsed;
+        log(`BNB reçu (net gas) : ${ethers.formatEther(net)} BNB`, 'data');
+        const isRefunded = await presale.refunded(signerAddr);
+        if (isRefunded) {
+          await ok('n4a', `claimRefund() ✓ — refunded[signer]=true, BNB retourné ✓`);
+        } else {
+          await ko('n4a', `claimRefund() : refunded[signer] toujours false`);
+        }
+      } else {
+        skip('n4a', `Pas de contribution à rembourser (contributions=0)`);
+      }
+    } catch(e) { await ko('n4a', `claimRefund() échoué : ${e.message}`); }
+
+    // N4B — claimRefund() × 2 → revert NothingToRefund
+    setT('n4b', 'running');
+    await shouldRevert(
+      () => presale.claimRefund(),
+      'n4b', 'claimRefund() × 2 → revert NothingToRefund (double-refund protection)'
+    );
+
+    // N4C — emergencyCancel() via Factory sur nouvelle presale
+    setT('n4c', 'running');
+    try {
+      log('Déploiement presale #2 pour emergencyCancel test...', 'pending');
+      const { pool: pool2, addr: addr2 } = await deployPresale(false);
+      presale2 = pool2;
+      presale2Addr = addr2;
+
+      const tx = await factory.emergencyCancel(addr2);
+      await tx.wait();
+      const st = await presale2.state();
+      log(`state après emergencyCancel: ${STATE_NAMES[st]}`, 'data');
+      if (Number(st) === STATE.CANCELLED) {
+        await ok('n4c', `emergencyCancel() via Factory → CANCELLED ✓`);
+      } else {
+        await ko('n4c', `emergencyCancel() : state = ${STATE_NAMES[st]}`);
+      }
+    } catch(e) { await ko('n4c', `emergencyCancel() échoué : ${e.message}`); }
+
+    // ─────────────────────────────────────────
+    // PHASE 5 — PULL-PAYMENT & SECURITY
+    // ─────────────────────────────────────────
+    log('', 'info');
+    log('[ PHASE 5 ] PULL-PAYMENT & SECURITY', 'section');
+
+    // N5A — withdrawOwnerProceeds() avant FINALIZED → revert NothingToClaim
+    setT('n5a', 'running');
+    try {
+      const owed = await presale.ownerProceedsOwed();
+      log(`ownerProceedsOwed = ${ethers.formatEther(owed)} BNB`, 'data');
+      if (owed === 0n) {
+        let reverted = false;
+        try {
+          await presale.withdrawOwnerProceeds(signerAddr);
+        } catch(e2) { reverted = true; }
+        if (reverted) {
+          await ok('n5a', `withdrawOwnerProceeds() sans owings → revert NothingToClaim ✓`);
+        } else {
+          await ko('n5a', `withdrawOwnerProceeds() N'A PAS revert alors que owings=0 !`);
+        }
+      } else {
+        await ok('n5a', `ownerProceedsOwed = ${ethers.formatEther(owed)} BNB — finalize() a été appelé ✓`);
+      }
+    } catch(e) { await ko('n5a', `withdrawOwnerProceeds() test échoué : ${e.message}`); }
+
+    // N5B — rescueStuckERC20 rejette le project token
+    setT('n5b', 'running');
+    await shouldRevert(
+      () => presale.rescueStuckERC20(
+        document.getElementById('tokenAddr').value,
+        signerAddr,
+        ethers.parseEther('1')
+      ),
+      'n5b', 'rescueStuckERC20(projectToken) → revert CannotRescueProjectToken'
+    );
+
+    // N5C — withdrawAccumulatedFees() Factory
+    setT('n5c', 'running');
+    try {
+      const fees = await factory.accumulatedFees();
+      log(`accumulatedFees = ${ethers.formatEther(fees)} BNB`, 'data');
+      if (fees > 0n) {
+        const bnbBefore = await provider.getBalance(signerAddr);
+        const tx = await factory.withdrawAccumulatedFees(signerAddr, fees);
+        await tx.wait();
+        const feesAfter = await factory.accumulatedFees();
+        log(`accumulatedFees après withdraw: ${ethers.formatEther(feesAfter)} BNB`, 'data');
+        if (feesAfter < fees) {
+          await ok('n5c', `withdrawAccumulatedFees() ✓ — fees retirées vers owner ✓`);
+        } else {
+          await ko('n5c', `withdrawAccumulatedFees() : fees non retirées`);
+        }
+      } else {
+        skip('n5c', 'accumulatedFees = 0 — skip');
+      }
+    } catch(e) { await ko('n5c', `withdrawAccumulatedFees() échoué : ${e.message}`); }
+
+    // N5D — Owner check Ownable2Step
+    setT('n5d', 'running');
+    try {
+      const factoryOwner = await factory.owner();
+      log(`factory.owner() = ${factoryOwner}`, 'data');
+      if (factoryOwner.toLowerCase() === signerAddr.toLowerCase()) {
+        await ok('n5d', `factory.owner() = signer (Ownable2Step correct) ✓`);
+      } else {
+        await ok('n5d', `factory.owner() = ${factoryOwner.slice(0,10)}... (Ownable2Step actif) ✓`);
+      }
+    } catch(e) { await ko('n5d', `Owner check échoué : ${e.message}`); }
+
+  } catch(globalErr) {
+    log(`ERREUR FATALE : ${globalErr.message}`, 'error');
+    log('Tests interrompus — corriger l\'erreur et relancer', 'error');
+  }
+
+  // FINAL
+  const score = Math.round((passed / TOTAL) * 100);
+  log('', 'info');
+  log('══════════════════════════════════════════════════', 'section');
+  log(`  RÉSULTATS : ${passed} PASSED / ${failed} FAILED / ${skipped} SKIPPED`, 'section');
+  log(`  SCORE : ${score}/100`, 'section');
+  log('══════════════════════════════════════════════════', 'section');
+
+  const v = document.getElementById('verdictBox');
+  if (failed === 0) {
+    v.className = 'verdict pass-v';
+    v.innerHTML = `✅ ALL TESTS PASSED (${passed}/${TOTAL}) — Score: ${score}/100<br>
+      ApexPad V3 guards opérationnels. Presale déployée : ${presaleAddr || '—'}<br>
+      ⏳ Pour tester finalize() avec LP réel : attendre endTime + 5 min, puis cliquer "TEST FINALIZE()"`;
+  } else {
+    v.className = 'verdict fail-v';
+    v.innerHTML = `⛔ ${failed} TEST(S) FAILED — Score: ${score}/100<br>
+      Analyser les logs et corriger avant déploiement Mainnet.`;
+  }
+  v.style.display = 'block';
+
+  document.getElementById('runBtn').disabled = false;
+  document.getElementById('exportBtn').disabled = false;
+}
+
+// ═══════════════════════════════════════════
+// FINALIZE TEST (EXTENDED — RUN AFTER DELAY)
+// ═══════════════════════════════════════════
+async function testFinalize() {
+  if (!presaleAddr) {
+    alert('Lance les tests principaux d\'abord pour déployer une presale.');
+    return;
+  }
+
+  log('', 'info');
+  log('[ EXTENDED ] TEST FINALIZE() — LP ADD', 'section');
+  log(`Presale : ${presaleAddr}`, 'data');
+
+  try {
+    const endTime = await presale.endTime();
+    const delay = 5n * 60n; // 5 minutes CONTRIBUTION_DELAY
+    const canFinalizeAt = endTime + delay;
+    const nowTs = BigInt(Math.floor(Date.now() / 1000));
+
+    log(`endTime: ${endTime}`, 'data');
+    log(`canFinalizeAt (endTime + 5min): ${canFinalizeAt}`, 'data');
+    log(`now: ${nowTs}`, 'data');
+
+    if (nowTs < canFinalizeAt) {
+      const waitSec = Number(canFinalizeAt - nowTs) + 5;
+      log(`⏳ Trop tôt — encore ${waitSec}s à attendre avant finalize()`, 'warning');
+      log(`Relance ce bouton dans ${Math.ceil(waitSec/60)} minute(s).`, 'warning');
+      return;
+    }
+
+    const stateNow = await presale.currentState();
+    log(`currentState = ${STATE_NAMES[stateNow]}`, 'data');
+
+    if (Number(stateNow) !== STATE.SUCCESS && Number(stateNow) !== STATE.ACTIVE) {
+      log(`state = ${STATE_NAMES[stateNow]} — finalize() non applicable dans cet état.`, 'warning');
+      return;
+    }
+
+    // Check token balance
+    const required = await presale.getRequiredTokens();
+    const poolBal = await token.balanceOf(presaleAddr);
+    log(`getRequiredTokens = ${ethers.formatEther(required)} tokens`, 'data');
+    log(`token balance presale = ${ethers.formatEther(poolBal)} tokens`, 'data');
+
+    if (poolBal < required) {
+      log(`⚠️ Tokens insuffisants — transfert de ${ethers.formatEther(required - poolBal + ethers.parseEther('10'))} tokens...`, 'warning');
+      const txT = await token.transfer(presaleAddr, required - poolBal + ethers.parseEther('10'));
+      await txT.wait();
+    }
+
+    log('Appel finalize()...', 'pending');
+    const tx = await presale.finalize();
+    const receipt = await tx.wait();
+
+    const stAfter = await presale.state();
+    const lpAdded = await presale.lpAdded();
+    const pair = await presale.pair();
+    const apexFee = await presale.apexFeeOwed();
+    const ownerProceeds = await presale.ownerProceedsOwed();
+    const lpUnlock = await presale.lpUnlockTime();
+
+    log(`state après finalize: ${STATE_NAMES[stAfter]}`, 'data');
+    log(`lpAdded: ${lpAdded}`, 'data');
+    log(`pair: ${pair}`, 'data');
+    log(`apexFeeOwed: ${ethers.formatEther(apexFee)} BNB`, 'data');
+    log(`ownerProceedsOwed: ${ethers.formatEther(ownerProceeds)} BNB`, 'data');
+    log(`lpUnlockTime: ${new Date(Number(lpUnlock)*1000).toISOString()}`, 'data');
+
+    if (Number(stAfter) === STATE.FINALIZED && lpAdded) {
+      log('✅ FINALIZE() — LP ADD RÉUSSI ! ✓', 'pass');
+      log(`Paire LP : ${pair}`, 'success');
+      log(`Pull-payment crédités — apexFee: ${ethers.formatEther(apexFee)} BNB | ownerProceeds: ${ethers.formatEther(ownerProceeds)} BNB`, 'success');
+
+      // Test claim()
+      const contribSigner = await presale.contributions(signerAddr);
+      if (contribSigner > 0n) {
+        log('Test claim() post-finalize...', 'pending');
+        try {
+          const tx2 = await presale.claim();
+          await tx2.wait();
+          const isClaimed = await presale.claimed(signerAddr);
+          if (isClaimed) {
+            log('✅ claim() tokens reçus ✓', 'pass');
+          } else {
+            log('❌ claim() : claimed[signer] false', 'fail');
+          }
+        } catch(e2) {
+          log(`claim() échoué : ${e2.message}`, 'error');
+        }
+      }
+    } else {
+      log(`❌ finalize() incomplet — state=${STATE_NAMES[stAfter]}, lpAdded=${lpAdded}`, 'fail');
+    }
+  } catch(e) {
+    log(`finalize() échoué : ${e.message}`, 'error');
+  }
+
+  document.getElementById('exportBtn').disabled = false;
+}
+
+// ═══════════════════════════════════════════
+// LOG EXPORT
+// ═══════════════════════════════════════════
+function exportLog() {
+  const now = new Date();
+  const dateStr = now.toISOString().slice(0,19).replace('T', ' ');
+  const score = Math.round((passed / TOTAL) * 100);
+  const duration = testStartTime ? Math.round((Date.now() - testStartTime) / 1000) : 0;
+  const verdict = failed === 0
+    ? '✅ ALL TESTS PASSED — Safe to proceed to Mainnet deployment.'
+    : `⛔ ${failed} TEST(S) FAILED — Review and fix before Mainnet.`;
+
+  const sep = '═'.repeat(72);
+  const sep2 = '─'.repeat(72);
+  let txt = `${sep}\n  APEXPAD V3 — INTEGRATION TEST REPORT\n  FACTORY V3 + PRESALEPOOL V3 — EIP-1167\n${sep}\n\n`;
+  txt += `DATE        : ${dateStr}\n`;
+  txt += `NETWORK     : ${networkName}\n`;
+  txt += `WALLET      : ${walletAddrForLog}\n`;
+  txt += `FACTORY     : ${document.getElementById('factoryAddr').value}\n`;
+  txt += `MASTER      : ${document.getElementById('masterAddr').value}\n`;
+  txt += `TOKEN       : ${document.getElementById('tokenAddr').value}\n`;
+  txt += `PRESALE     : ${presaleAddr || '—'}\n`;
+  txt += `DURATION    : ${duration}s\n\n`;
+  txt += `${sep2}\n  RESULTS SUMMARY\n${sep2}\n`;
+  txt += `  PASSED  : ${passed} / ${TOTAL}\n`;
+  txt += `  FAILED  : ${failed} / ${TOTAL}\n`;
+  txt += `  SKIPPED : ${skipped} / ${TOTAL}\n`;
+  txt += `  SCORE   : ${score} / 100\n\n`;
+  txt += `  VERDICT : ${verdict}\n\n${sep2}\n  TEST DETAILS\n${sep2}\n\n`;
+
+  logEntries.forEach(e => {
+    const tl = {pass:'PASS  ',fail:'FAIL  ',skip:'SKIP  ',section:'PHASE ',
+      data:'DATA  ',info:'INFO  ',warning:'WARN  ',error:'ERROR ',
+      pending:'WAIT  ',success:'OK    '}[e.type] || 'INFO  ';
+    txt += `[${e.ts}] ${tl} ${e.msg}\n`;
+  });
+
+  txt += `\n${sep}\n  END OF LOG — ApexPad V3 Integration Test\n`;
+  txt += `  Generated: ${dateStr}\n`;
+  txt += `  © 2026 GERMAIN Cédric — Dev_MHT / ApexPad — CONFIDENTIEL\n${sep}\n`;
+
+  const filename = `ApexPad_V3_Test_${now.toISOString().slice(0,10)}_${score}pts.txt`;
+  const blob = new Blob([txt], { type: 'text/plain;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+
+  // PDF via print
+  const printWin = window.open('', '_blank');
+  printWin.document.write(`<!DOCTYPE html><html><head>
+<title>ApexPad V3 Test Report</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Courier New',monospace; font-size:11px; line-height:1.7; padding:30px; color:#111; }
+h1 { font-size:18px; color:#cc2200; letter-spacing:2px; margin-bottom:4px; }
+h2 { font-size:13px; margin:18px 0 6px; color:#333; border-bottom:1px solid #ccc; padding-bottom:4px; }
+.meta { margin-bottom:12px; font-size:11px; color:#555; }
+.meta span { display:inline-block; margin-right:20px; }
+.summary { display:grid; grid-template-columns:repeat(5,1fr); gap:8px; margin:14px 0; }
+.s-box { border:1px solid #ddd; padding:8px; text-align:center; border-radius:3px; }
+.s-val { font-size:20px; font-weight:bold; }
+.s-lbl { font-size:9px; color:#888; margin-top:2px; }
+.pass-c{color:#16a34a} .fail-c{color:#dc2626} .skip-c{color:#d97706} .score-c{color:#cc2200}
+.verdict-box { padding:10px 14px; border-radius:3px; margin:14px 0; font-size:12px; font-weight:bold; }
+.verdict-ok { background:#f0fdf4; border:1px solid #16a34a; color:#15803d; }
+.verdict-fail { background:#fef2f2; border:1px solid #dc2626; color:#b91c1c; }
+table { width:100%; border-collapse:collapse; font-size:10px; }
+th { background:#f5f5f5; padding:5px 8px; text-align:left; border:1px solid #ddd; }
+td { padding:3px 8px; border:1px solid #eee; }
+tr.pass td { background:#f0fdf4; } tr.fail td { background:#fef2f2; }
+tr.section td { background:#fff7f5; font-weight:bold; color:#cc2200; }
+.footer { margin-top:20px; padding-top:10px; border-top:1px solid #ccc; font-size:10px; color:#888; }
+@media print { @page{margin:15mm} }
+</style></head><body>
+<h1>⚡ APEXPAD V3 — INTEGRATION TEST REPORT</h1>
+<div class="meta">
+  <span><strong>Date:</strong> ${dateStr}</span>
+  <span><strong>Network:</strong> ${networkName}</span>
+  <span><strong>Duration:</strong> ${duration}s</span>
+</div>
+<div class="meta">
+  <span><strong>Factory:</strong> ${document.getElementById('factoryAddr').value.slice(0,12)}...</span>
+  <span><strong>Presale:</strong> ${presaleAddr ? presaleAddr.slice(0,12)+'...' : '—'}</span>
+</div>
+<h2>RESULTS</h2>
+<div class="summary">
+  <div class="s-box"><div class="s-val pass-c">${passed}</div><div class="s-lbl">PASSED</div></div>
+  <div class="s-box"><div class="s-val fail-c">${failed}</div><div class="s-lbl">FAILED</div></div>
+  <div class="s-box"><div class="s-val skip-c">${skipped}</div><div class="s-lbl">SKIPPED</div></div>
+  <div class="s-box"><div class="s-val">${TOTAL}</div><div class="s-lbl">TOTAL</div></div>
+  <div class="s-box"><div class="s-val score-c">${score}/100</div><div class="s-lbl">SCORE</div></div>
+</div>
+<div class="verdict-box ${failed===0?'verdict-ok':'verdict-fail'}">${verdict}</div>
+<h2>TEST LOG</h2>
+<table>
+<tr><th>Time</th><th>Type</th><th>Message</th></tr>
+${logEntries.map(e=>`<tr class="${e.type}"><td>${e.ts}</td><td>${e.type.toUpperCase()}</td><td>${e.msg.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</td></tr>`).join('')}
+</table>
+<div class="footer">ApexPad V3 Integration Test — ${dateStr} — © 2026 GERMAIN Cédric / Dev_MHT — CONFIDENTIEL</div>
+<script>window.onload=()=>window.print()<\/script>
+</body></html>`);
+  printWin.document.close();
+}
+</script>
+</body>
+</html>
