@@ -184,9 +184,9 @@ input:focus { outline: none; border-color: var(--fire); }
 
 <div class="info-box">
   ⚠️ <strong>NOTE IMPORTANTE :</strong> ApexPad V3 impose <code>endTime >= now + 1 hour</code> (PresaleTooShort guard).<br>
-  Le test de <strong>finalize()</strong> avec LP add réel nécessite d'attendre <code>endTime + 5 min</code> (~65 min).<br>
-  Les tests couvrent : Factory, clone deploy, contributions, guards, cancel, refund, pull-payment, security.<br>
-  Un <strong>bouton séparé</strong> permet de tester finalize() après le délai requis.
+  Les tests incluent un <strong>délai automatique de ~2 minutes</strong> (PENDING → ACTIVE) — normal, ne pas interrompre.<br>
+  Le test de <strong>finalize()</strong> avec LP add réel nécessite d'attendre <code>endTime + 5 min</code> (~70 min).<br>
+  Les tests couvrent : Factory, clone deploy, contributions, guards, cancel, refund, pull-payment, security.
 </div>
 
 <!-- CONFIG -->
@@ -586,9 +586,10 @@ async function connectWallet() {
 // ═══════════════════════════════════════════
 async function deployPresale(fundIt = false) {
   const now = Math.floor(Date.now() / 1000);
-  // startTime in 5s, endTime in 1 hour + 5 min (minimum for PresaleTooShort)
-  const startTime = BigInt(now + 5);
-  const endTime   = BigInt(now + 3660); // 61 minutes
+  // startTime in 2 min — buffer for MetaMask approval + TX mining on testnet
+  // endTime in 70 min — well above PresaleTooShort (1h) + mining delay
+  const startTime = BigInt(now + 120);  // FIX: was now+5, too tight for testnet TX latency
+  const endTime   = BigInt(now + 4200); // FIX: was now+3660, 70 min for safety
 
   const nums = [
     TOKEN_PRICE,   // tokenPrice: 10000 tokens/BNB
@@ -639,7 +640,7 @@ async function waitForActive(pool) {
   const start = await pool.startTime();
   const now = BigInt(Math.floor(Date.now() / 1000));
   if (start > now) {
-    const waitMs = Number(start - now) * 1000 + 2000;
+    const waitMs = Number(start - now) * 1000 + 5000; // FIX: was +2000, increased to +5000ms buffer
     log(`Attente startTime : ${Math.ceil(waitMs/1000)}s...`, 'pending');
     await sleep(waitMs);
   }
@@ -719,7 +720,7 @@ async function runTests() {
       async () => {
         const now = Math.floor(Date.now() / 1000);
         const nums = [TOKEN_PRICE, SOFT_CAP, HARD_CAP, MIN_CONTRIB, MAX_CONTRIB,
-          BigInt(now+5), BigInt(now+3660), LP_PERCENT, LP_LOCK];
+          BigInt(now+120), BigInt(now+4200), LP_PERCENT, LP_LOCK]; // FIX: same buffer as deployPresale()
         await factory.createPresale(
           document.getElementById('tokenAddr').value,
           nums, 'NoFee', 'x', 'x',
@@ -1030,7 +1031,7 @@ async function runTests() {
         const bnbBefore = await provider.getBalance(signerAddr);
         const tx = await presale.claimRefund();
         const receipt = await tx.wait();
-        const gasUsed = receipt.gasUsed * receipt.gasPrice;
+        const gasUsed = receipt.gasUsed * (receipt.gasPrice ?? receipt.effectiveGasPrice ?? 0n); // FIX: null-safe for EIP-1559
         const bnbAfter = await provider.getBalance(signerAddr);
         const net = bnbAfter - bnbBefore + gasUsed;
         log(`BNB reçu (net gas) : ${ethers.formatEther(net)} BNB`, 'data');
