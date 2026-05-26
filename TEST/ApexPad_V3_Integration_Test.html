@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ApexPad V3 — Integration Test Suite</title>
+<title>ApexPad V3 — Test Suite V4</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.7.0/ethers.umd.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
@@ -175,7 +175,7 @@ input:focus { outline: none; border-color: var(--fire); }
 
 <div class="container">
 
-<h1>⚡ APEXPAD V3 — TEST SUITE
+<h1>⚡ APEXPAD V3 — TEST SUITE · V4
   <span id="networkBadge" class="network-badge unknown">
     <span class="network-dot"></span><span id="networkLabel">—</span>
   </span>
@@ -602,6 +602,25 @@ async function deployPresale(fundIt = false) {
     LP_PERCENT,    // lpPercent: 60%
     LP_LOCK,       // lpLockDuration: 30 days
   ];
+
+  // V4 PRE-FLIGHT DIAGNOSTICS
+  try {
+    const decimals = await token.decimals();
+    log(`Token decimals: ${decimals} ${decimals === 18 ? '✅' : '❌ NOT 18!'}`, 'data');
+    const feeWallet = await factory.feeWallet();
+    const dexRouter = await factory.dexRouter();
+    const flatFeeOnChain = await factory.flatFee();
+    const factoryPaused = await factory.factoryPaused();
+    log(`Factory state — feeWallet: ${feeWallet.slice(0,10)}... | dexRouter: ${dexRouter.slice(0,10)}... | flatFee: ${ethers.formatEther(flatFeeOnChain)} BNB | paused: ${factoryPaused}`, 'data');
+    log(`startTime: now+${Math.round(Number(startTime) - Date.now()/1000)}s | endTime: now+${Math.round(Number(endTime) - Date.now()/1000)}s`, 'data');
+    const blockNum = await provider.getBlockNumber();
+    const block = await provider.getBlock(blockNum);
+    const blockTs = block.timestamp;
+    const nowJs = Math.floor(Date.now() / 1000);
+    log(`block.timestamp: ${blockTs} | JS now: ${nowJs} | drift: ${blockTs - nowJs}s`, 'data');
+    if (blockTs > Number(startTime)) log('⚠️ DRIFT CRITIQUE — startTime déjà dépassé!', 'error');
+    else log(`startTime buffer restant: ${Number(startTime) - blockTs}s ✅`, 'data');
+  } catch(diagErr) { log(`Diagnostics error: ${diagErr.message}`, 'warning'); }
 
   log('Déploiement presale via Factory (flatFee 0.01 BNB)...', 'pending');
   const tx = await factory.createPresale(
