@@ -588,8 +588,8 @@ async function deployPresale(fundIt = false) {
   const now = Math.floor(Date.now() / 1000);
   // startTime in 2 min — buffer for MetaMask approval + TX mining on testnet
   // endTime in 70 min — well above PresaleTooShort (1h) + mining delay
-  const startTime = BigInt(now + 120);  // FIX: was now+5, too tight for testnet TX latency
-  const endTime   = BigInt(now + 4200); // FIX: was now+3660, 70 min for safety
+  const startTime = BigInt(now + 600);  // FIX2: 10 min buffer for BSC testnet timestamp drift  // FIX: was now+5, too tight for testnet TX latency
+  const endTime   = BigInt(now + 5400); // FIX2: 90 min buffer // FIX: was now+3660, 70 min for safety
 
   const nums = [
     TOKEN_PRICE,   // tokenPrice: 10000 tokens/BNB
@@ -720,7 +720,7 @@ async function runTests() {
       async () => {
         const now = Math.floor(Date.now() / 1000);
         const nums = [TOKEN_PRICE, SOFT_CAP, HARD_CAP, MIN_CONTRIB, MAX_CONTRIB,
-          BigInt(now+120), BigInt(now+4200), LP_PERCENT, LP_LOCK]; // FIX: same buffer as deployPresale()
+          BigInt(now+600), BigInt(now+5400), LP_PERCENT, LP_LOCK]; // FIX: same buffer as deployPresale()
         await factory.createPresale(
           document.getElementById('tokenAddr').value,
           nums, 'NoFee', 'x', 'x',
