@@ -1,6 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!--
+  ════════════════════════════════════════════════════════════════
+  SNIPPET DE REDIRECTION — à coller juste après <head> de CHAQUE
+  ancienne page ApexPad (apply.html, ambassador.html, etc.)
+
+  Effet : la page redirige instantanément vers la nouvelle page
+  d'attente (apexpad.io), donc même quelqu'un qui a un vieux lien
+  direct se retrouve sur le bon message.
+
+  Pourquoi 2 méthodes en même temps :
+  - <meta http-equiv="refresh"> fonctionne même si JS est désactivé
+  - le script JS est plus rapide et redirige sans flash de contenu
+  ════════════════════════════════════════════════════════════════
+-->
+<meta http-equiv="refresh" content="0; url=https://apexpad.io/" />
+<script>window.location.replace("https://apexpad.io/");</script>
+  
   <meta name="robots" content="noindex, nofollow">
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
