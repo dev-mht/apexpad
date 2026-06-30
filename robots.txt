@@ -1,6 +1,4 @@
 User-agent: *
 Allow: /
 Disallow: /presale.html
-Disallow: /TEST/
-
 Sitemap: https://apexpad.io/sitemap.xml
