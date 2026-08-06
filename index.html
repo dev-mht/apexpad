@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ApexPad — Currently Focused on Milestone HODL Token ($MHT)</title>
-  <meta name="description" content="ApexPad is concentrating all efforts on launching and growing Milestone HODL Token ($MHT) first. The multi-chain launchpad will open once $MHT proves the model. Visit the live project." />
+  <title>ApexPad — Multi-Chain Meme Coin Launchpad</title>
+  <meta name="description" content="ApexPad is a fair-launch meme coin launchpad: 100% of liquidity locked, no vault, no team allocation. Live now on Robinhood Chain, expanding to more chains soon." />
   <link rel="canonical" href="https://apexpad.io/" />
-  <meta property="og:title" content="ApexPad — Focused on Milestone HODL Token" />
-  <meta property="og:description" content="One project at a time. ApexPad is building Milestone HODL Token ($MHT) first." />
+  <meta property="og:title" content="ApexPad — Multi-Chain Meme Coin Launchpad" />
+  <meta property="og:description" content="100% liquidity-locked, fair-launch meme coin factory. Live now on Robinhood Chain." />
   <meta property="og:url" content="https://apexpad.io" />
 
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-55GLFJLMM8"></script>
@@ -30,13 +30,14 @@
       --gold2:  #ffde7a;
       --text:   #e8ecf4;
       --muted:  #9aa6ba;
+      --green:  #4ade80;
       --mono:   'Space Mono', monospace;
       --display:'Bebas Neue', sans-serif;
       --body:   'Syne', sans-serif;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html, body {
-      height: 100%;
+      min-height: 100%;
       background: var(--bg);
       color: var(--text);
       font-family: var(--body);
@@ -48,7 +49,8 @@
       padding: 24px;
     }
     .card {
-      max-width: 560px;
+      max-width: 720px;
+      width: 100%;
       text-align: center;
       background: var(--bg2);
       border: 1px solid var(--border);
@@ -58,67 +60,140 @@
     .eyebrow {
       display: inline-flex; align-items: center; gap: 8px;
       padding: 6px 16px;
-      border: 1px solid rgba(245,200,66,0.3);
+      border: 1px solid rgba(74,222,128,0.35);
       border-radius: 100px;
-      background: rgba(245,200,66,0.05);
+      background: rgba(74,222,128,0.06);
       font-family: var(--mono); font-size: 10px;
       letter-spacing: 0.12em; text-transform: uppercase;
-      color: var(--gold);
+      color: var(--green);
       margin-bottom: 28px;
     }
     .dot {
       width: 6px; height: 6px; border-radius: 50%;
-      background: var(--gold); box-shadow: 0 0 8px var(--gold);
+      background: var(--green); box-shadow: 0 0 8px var(--green);
     }
     h1 {
       font-family: var(--display);
       font-size: clamp(2rem, 6vw, 2.8rem);
       letter-spacing: 0.02em;
       line-height: 1.1;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
     }
     h1 .gold { color: var(--gold); }
-    p {
+    p.lead {
       font-size: 15px;
       color: var(--muted);
       line-height: 1.7;
       margin-bottom: 32px;
+      max-width: 560px;
+      margin-left: auto;
+      margin-right: auto;
     }
-    p strong { color: var(--text); }
-    .cta {
-      display: inline-flex; align-items: center; gap: 10px;
-      padding: 16px 32px;
-      border-radius: 12px;
-      background: linear-gradient(135deg, var(--gold), var(--gold2));
-      color: #07090e;
-      font-weight: 800; font-size: 15px;
+    p.lead strong { color: var(--text); }
+
+    .chain-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 12px;
+      margin-bottom: 32px;
+    }
+    .chain-btn {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 18px 12px;
+      border-radius: 14px;
       text-decoration: none;
-      letter-spacing: 0.02em;
-      box-shadow: 0 8px 28px rgba(245,200,66,0.3);
+      font-family: var(--body);
       transition: all 0.2s;
     }
-    .cta:hover { transform: translateY(-2px); box-shadow: 0 12px 36px rgba(245,200,66,0.45); }
+    .chain-btn .chain-name {
+      font-weight: 700;
+      font-size: 15px;
+    }
+    .chain-btn .chain-status {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .chain-btn.active {
+      background: linear-gradient(135deg, var(--gold), var(--gold2));
+      color: #07090e;
+      box-shadow: 0 8px 28px rgba(245,200,66,0.3);
+      cursor: pointer;
+    }
+    .chain-btn.active .chain-status { color: rgba(7,9,14,0.65); }
+    .chain-btn.active:hover { transform: translateY(-3px); box-shadow: 0 12px 36px rgba(245,200,66,0.45); }
+
+    .chain-btn.soon {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: var(--muted);
+      cursor: default;
+      opacity: 0.75;
+    }
+    .chain-btn.soon .chain-name { color: #cfd6e4; }
+    .chain-btn.soon .chain-status { color: var(--muted); }
+
     .footer-note {
-      margin-top: 32px;
       font-family: var(--mono);
       font-size: 11px;
       color: var(--muted);
       letter-spacing: 0.04em;
+      line-height: 1.8;
     }
     .footer-note a { color: var(--gold); text-decoration: none; }
+    .footer-note a:hover { text-decoration: underline; }
   </style>
 </head>
 <body>
   <div class="card">
-    <div class="eyebrow"><span class="dot"></span> One project at a time</div>
-    <h1>We're focused on building<br><span class="gold">Milestone HODL Token</span> first.</h1>
-    <p>
-      ApexPad's multi-chain launchpad will open its doors once <strong>$MHT</strong> proves the model end to end.
-      Right now, all our energy goes into making the first project a real success — not stretching ourselves thin across two at once.
+    <div class="eyebrow"><span class="dot"></span> Launchpad live on Robinhood Chain</div>
+    <h1>Fair-launch <span class="gold">meme coin</span> factory.<br>100% liquidity locked.</h1>
+    <p class="lead">
+      Every token launched through ApexPad sends <strong>100% of its supply</strong> into the liquidity pool —
+      no vault, no team allocation, no airdrop. Ownership is renounced on-chain. Live now on Robinhood Chain,
+      expanding chain by chain from here.
     </p>
-    <a class="cta" href="https://milestonehodl.apexpad.io" target="_blank">🔥 Visit Milestone HODL Token →</a>
+
+    <div class="chain-grid">
+      <a class="chain-btn active" href="https://factory.apexpad.io" target="_blank">
+        <span class="chain-name">Robinhood Chain</span>
+        <span class="chain-status">● Live</span>
+      </a>
+      <a class="chain-btn soon" href="javascript:void(0)" aria-disabled="true">
+        <span class="chain-name">BNB Chain</span>
+        <span class="chain-status">Soon (test phase)</span>
+      </a>
+      <a class="chain-btn soon" href="javascript:void(0)" aria-disabled="true">
+        <span class="chain-name">Base</span>
+        <span class="chain-status">Soon (test phase)</span>
+      </a>
+      <a class="chain-btn soon" href="javascript:void(0)" aria-disabled="true">
+        <span class="chain-name">Arbitrum</span>
+        <span class="chain-status">Soon (test phase)</span>
+      </a>
+      <a class="chain-btn soon" href="javascript:void(0)" aria-disabled="true">
+        <span class="chain-name">Polygon</span>
+        <span class="chain-status">Soon (test phase)</span>
+      </a>
+      <a class="chain-btn soon" href="javascript:void(0)" aria-disabled="true">
+        <span class="chain-name">Optimism</span>
+        <span class="chain-status">Soon (test phase)</span>
+      </a>
+      <a class="chain-btn soon" href="javascript:void(0)" aria-disabled="true">
+        <span class="chain-name">Ethereum</span>
+        <span class="chain-status">Soon (test phase)</span>
+      </a>
+    </div>
+
     <div class="footer-note">
-      ApexPad launchpad · Coming after $MHT delivers · <a href="https://t.me/Community_Milestone_hodl" target="_blank">Telegram</a>
+      Also building <a href="https://milestonehodl.apexpad.io" target="_blank">Milestone HODL Token ($MHT)</a> ·
+      <a href="https://t.me/Community_Milestone_hodl" target="_blank">Telegram</a>
     </div>
   </div>
 </body>
