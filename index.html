@@ -141,6 +141,109 @@
     .chain-btn.soon .chain-status { color: var(--muted); }
 
 
+
+    .shell {
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
+      gap: 20px;
+      width: 100%;
+      max-width: 1360px;
+    }
+    .card { flex: 1 1 660px; min-width: 0; }
+
+    .compare {
+      flex: 1 1 620px;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      background: var(--bg2);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 20px;
+      padding: 30px 26px;
+      text-align: left;
+    }
+    .compare-title {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+    .compare-sub {
+      font-size: 12px;
+      color: #6b7688;
+      line-height: 1.5;
+      margin-bottom: 20px;
+    }
+
+    .ctable { flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
+    .crow {
+      display: grid;
+      grid-template-columns: 104px 1fr 1fr 1.05fr;
+      gap: 10px;
+      padding: 13px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      align-items: start;
+    }
+    .crow:last-child { border-bottom: 0; }
+    .crow.head {
+      padding-bottom: 9px;
+      border-bottom: 1px solid rgba(255,255,255,0.14);
+    }
+    .crow.head span {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      line-height: 1.4;
+      color: var(--muted);
+    }
+    .crow.head .us { color: var(--gold); font-weight: 700; }
+
+    .ccrit {
+      font-family: var(--mono);
+      font-size: 8.5px;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: #626d80;
+      line-height: 1.45;
+      padding-top: 1px;
+    }
+    .crow div.them { font-size: 11.5px; line-height: 1.45; color: var(--muted); }
+    .crow div.us {
+      font-size: 11.5px;
+      line-height: 1.45;
+      color: var(--text);
+      font-weight: 600;
+      padding-left: 10px;
+      border-left: 2px solid rgba(245,200,66,0.45);
+    }
+    .crow.head .us { padding-left: 10px; border-left: 2px solid var(--gold); }
+
+    .compare-note {
+      margin-top: 18px;
+      padding-top: 14px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      font-size: 11px;
+      line-height: 1.6;
+      color: var(--muted);
+    }
+    .compare-note strong { color: #cfd6e4; font-weight: 700; }
+    .compare-src { margin-top: 8px; font-family: var(--mono); font-size: 8.5px; letter-spacing: 0.05em; color: #565f70; line-height: 1.6; }
+
+    @media (max-width: 1180px) {
+      .shell { flex-direction: column; align-items: center; }
+      .card, .compare { flex: 1 1 auto; width: 100%; max-width: 720px; }
+    }
+    @media (max-width: 620px) {
+      .crow { grid-template-columns: 1fr; gap: 4px; }
+      .crow.head { display: none; }
+      .crow div.them::before { content: attr(data-col) " — "; color: #626d80; font-family: var(--mono); font-size: 9px; letter-spacing: .06em; text-transform: uppercase; }
+      .crow div.us::before   { content: "ApexPad — "; color: var(--gold); font-family: var(--mono); font-size: 9px; letter-spacing: .06em; text-transform: uppercase; }
+    }
+
     .milestone {
       margin: 0 0 26px;
       padding: 22px 20px;
@@ -211,6 +314,7 @@
   </style>
 </head>
 <body>
+  <div class="shell">
   <div class="card">
     <div class="eyebrow"><span class="dot"></span> Launchpad live on Robinhood Chain, BNB Chain, Arbitrum, Base, Polygon, Optimism and Ethereum</div>
     <h1>Fair-launch <span class="gold">meme coin</span> factory.<br>100% liquidity locked.</h1>
@@ -273,6 +377,84 @@
       <a href="https://x.com/milestone_hodl" target="_blank">X</a> ·
       <a href="https://t.me/Community_Milestone_hodl" target="_blank">Telegram</a>
     </div>
+  </div>
+
+  <aside class="compare">
+    <div class="compare-title">The model, side by side</div>
+    <div class="compare-sub">Published mechanics of eight EVM launchpads, September 2026. No names — read their docs and check for yourself.</div>
+
+    <div class="ctable">
+      <div class="crow head">
+        <span></span>
+        <span>Curve<br>+ graduation</span>
+        <span>Direct pool,<br>no curve</span>
+        <span class="us">ApexPad</span>
+      </div>
+
+      <div class="crow">
+        <div class="ccrit">Liquidity at launch</div>
+        <div class="them" data-col="Curve">Virtual, until a threshold</div>
+        <div class="them" data-col="Direct pool">Real</div>
+        <div class="us">Real, 100% of supply</div>
+      </div>
+
+      <div class="crow">
+        <div class="ccrit">Price</div>
+        <div class="them" data-col="Curve">A curve, then re-listed at another price</div>
+        <div class="them" data-col="Direct pool">Continuous</div>
+        <div class="us">Continuous, one pool</div>
+      </div>
+
+      <div class="crow">
+        <div class="ccrit">Team / creator allocation</div>
+        <div class="them" data-col="Curve">Varies</div>
+        <div class="them" data-col="Direct pool">Often: vaults, vesting, pre-buy</div>
+        <div class="us">None. Zero.</div>
+      </div>
+
+      <div class="crow">
+        <div class="ccrit">The LP</div>
+        <div class="them" data-col="Curve">Migrated at graduation, then burned</div>
+        <div class="them" data-col="Direct pool">Locked or burned</div>
+        <div class="us">Custodian with no withdraw function</div>
+      </div>
+
+      <div class="crow">
+        <div class="ccrit">Creator revenue</div>
+        <div class="them" data-col="Curve">A cut of curve volume</div>
+        <div class="them" data-col="Direct pool">A share of swap fees, perpetual</div>
+        <div class="us">50% of swap fees, perpetual</div>
+      </div>
+
+      <div class="crow">
+        <div class="ccrit">Platform token</div>
+        <div class="them" data-col="Curve">Common</div>
+        <div class="them" data-col="Direct pool">Yes, on every major one</div>
+        <div class="us">None</div>
+      </div>
+
+      <div class="crow">
+        <div class="ccrit">Presale</div>
+        <div class="them" data-col="Curve">Common</div>
+        <div class="them" data-col="Direct pool">Varies</div>
+        <div class="us">None</div>
+      </div>
+
+      <div class="crow">
+        <div class="ccrit">Chains</div>
+        <div class="them" data-col="Curve">Mostly BNB Chain</div>
+        <div class="them" data-col="Direct pool">Mostly Base</div>
+        <div class="us">Seven, same contracts on each</div>
+      </div>
+    </div>
+
+    <div class="compare-note">
+      <strong>What we do not claim:</strong> perpetual creator fees are no longer rare &mdash; several direct-pool launchpads
+      pay them, and some pay a larger share than we do. Where we differ is what sits beside the pool:
+      no platform token, no presale, and not a single token held back from it.
+      <div class="compare-src">Trade-off, honestly: no curve, no graduation event. The price is live from the first block.</div>
+    </div>
+  </aside>
   </div>
 </body>
 </html>
