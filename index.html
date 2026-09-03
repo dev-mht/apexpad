@@ -31,6 +31,7 @@
       --text:   #e8ecf4;
       --muted:  #9aa6ba;
       --green:  #4ade80;
+      --green2: #86efac;
       --mono:   'Space Mono', monospace;
       --display:'Bebas Neue', sans-serif;
       --body:   'Syne', sans-serif;
@@ -139,6 +140,65 @@
     .chain-btn.soon .chain-name { color: #cfd6e4; }
     .chain-btn.soon .chain-status { color: var(--muted); }
 
+
+    .milestone {
+      margin: 0 0 26px;
+      padding: 22px 20px;
+      border-radius: 16px;
+      background: linear-gradient(180deg, rgba(74,222,128,0.06), rgba(74,222,128,0.015));
+      border: 1px solid rgba(74,222,128,0.28);
+    }
+    .milestone-label {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 10px;
+    }
+    .milestone h2 {
+      font-family: var(--display);
+      font-size: clamp(1.3rem, 4vw, 1.7rem);
+      letter-spacing: 0.02em;
+      font-weight: 400;
+      margin-bottom: 8px;
+    }
+    .milestone p {
+      font-size: 13.5px;
+      color: var(--muted);
+      line-height: 1.65;
+      max-width: 520px;
+      margin: 0 auto 18px;
+    }
+    .milestone-links {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 10px;
+    }
+    .ms-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      padding: 16px 12px;
+      border-radius: 12px;
+      text-decoration: none;
+      transition: all 0.2s;
+      background: linear-gradient(135deg, var(--green), var(--green2));
+      color: #07090e;
+      box-shadow: 0 6px 22px rgba(74,222,128,0.22);
+    }
+    .ms-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(74,222,128,0.38); }
+    .ms-btn .ms-name { font-weight: 800; font-size: 15px; letter-spacing: 0.01em; }
+    .ms-btn .ms-sub {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: rgba(7,9,14,0.72);
+    }
+
     .footer-note {
       font-family: var(--mono);
       font-size: 11px;
@@ -152,12 +212,11 @@
 </head>
 <body>
   <div class="card">
-    <div class="eyebrow"><span class="dot"></span> Launchpad live on Robinhood Chain , BNB Chain , Arbitrum , Base , Polygon , Optimism , Ethereum
-</div>
+    <div class="eyebrow"><span class="dot"></span> Launchpad live on Robinhood Chain, BNB Chain, Arbitrum, Base, Polygon, Optimism and Ethereum</div>
     <h1>Fair-launch <span class="gold">meme coin</span> factory.<br>100% liquidity locked.</h1>
     <p class="lead">
       Every token launched through ApexPad sends <strong>100% of its supply</strong> into the liquidity pool —
-      no vault, no team allocation, no airdrop. Ownership is renounced on-chain. Live now on Robinhood Chain , BNB Chain , Arbitrum , Base , Polygon , Optimism , Ethereum
+      no vault, no team allocation, no airdrop. Ownership is renounced on-chain. Live now on Robinhood Chain, BNB Chain, Arbitrum, Base, Polygon, Optimism and Ethereum.
     </p>
 
     <div class="chain-grid">
@@ -191,8 +250,27 @@
       </a>
     </div>
 
+    <div class="milestone">
+      <div class="milestone-label">Also built by the ApexPad team</div>
+      <h2>Milestone HODL</h2>
+      <p>
+        Two milestone-based reward tokens, same principle as the launchpad:
+        liquidity locked, no admin key over your funds, everything verifiable on-chain.
+      </p>
+      <div class="milestone-links">
+        <a class="ms-btn" href="https://rmht.apexpad.io" target="_blank">
+          <span class="ms-name">$RMHT</span>
+          <span class="ms-sub">Robinhood Chain</span>
+        </a>
+        <a class="ms-btn" href="https://milestonehodl.apexpad.io" target="_blank">
+          <span class="ms-name">$MHT</span>
+          <span class="ms-sub">BNB Chain</span>
+        </a>
+      </div>
+    </div>
+
     <div class="footer-note">
-      Also building <a href="https://milestonehodl.apexpad.io" target="_blank">Milestone HODL Token ($MHT)</a> ·
+      <a href="https://x.com/milestone_hodl" target="_blank">X</a> ·
       <a href="https://t.me/Community_Milestone_hodl" target="_blank">Telegram</a>
     </div>
   </div>
