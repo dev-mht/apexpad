@@ -302,6 +302,36 @@
       color: rgba(7,9,14,0.72);
     }
 
+    .proof-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin: -14px auto 30px;
+      padding: 12px 18px;
+      max-width: 560px;
+      border: 1px solid rgba(245,200,66,0.28);
+      border-radius: 12px;
+      background: rgba(245,200,66,0.06);
+    }
+    .proof-bar .pb-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .proof-bar a {
+      font-weight: 700;
+      font-size: 13px;
+      color: var(--gold);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(245,200,66,0.4);
+      padding-bottom: 1px;
+    }
+    .proof-bar a:hover { color: var(--gold2); }
+
     .footer-note {
       font-family: var(--mono);
       font-size: 11px;
@@ -322,6 +352,13 @@
       Every token launched through ApexPad sends <strong>100% of its supply</strong> into the liquidity pool —
       no vault, no team allocation, no airdrop. Ownership is renounced on-chain. Live now on Robinhood Chain, BNB Chain, Arbitrum, Base, Polygon, Optimism and Ethereum.
     </p>
+
+    <div class="proof-bar">
+      <span class="pb-label">Don't trust &mdash; verify</span>
+      <a href="https://factory.apexpad.io/transparency-en.html">Proofs &amp; guarantees &rarr;</a>
+      <span class="pb-label">/</span>
+      <a href="https://factory.apexpad.io/transparency-fr.html">Preuves (FR)</a>
+    </div>
 
     <div class="chain-grid">
       <a class="chain-btn active" href="https://factory.apexpad.io" target="_blank">
@@ -374,6 +411,9 @@
     </div>
 
     <div class="footer-note">
+      <a href="https://factory.apexpad.io/transparency-en.html">Proofs</a> ·
+      <a href="https://factory.apexpad.io/transparency-fr.html">Preuves</a> ·
+      <a href="https://factory.apexpad.io/catalog.html">All launches</a> ·
       <a href="https://x.com/milestone_hodl" target="_blank">X</a> ·
       <a href="https://t.me/Community_Milestone_hodl" target="_blank">Telegram</a>
     </div>
