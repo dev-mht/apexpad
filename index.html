@@ -9,6 +9,12 @@
   <meta property="og:title" content="ApexPad — Multi-Chain Meme Coin Launchpad" />
   <meta property="og:description" content="100% liquidity-locked, fair-launch meme coin factory. Live now on Robinhood Chain." />
   <meta property="og:url" content="https://apexpad.io" />
+  <meta property="og:image" content="https://apexpad.io/assets/apexpad-forge-banner.jpg" />
+  <meta property="og:image:width" content="1794" />
+  <meta property="og:image:height" content="592" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@apexpad_io" />
+  <meta name="twitter:image" content="https://apexpad.io/assets/apexpad-forge-banner.jpg" />
 
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-55GLFJLMM8"></script>
   <script>
@@ -57,6 +63,23 @@
       border: 1px solid var(--border);
       border-radius: 20px;
       padding: 48px 36px;
+    }
+
+    /* Bannière ApexPad Forge : bord à bord en haut de la carte, mêmes
+       arrondis que la carte elle-même. */
+    .forge-banner {
+      margin: -48px -36px 30px;
+      border-radius: 19px 19px 0 0;
+      overflow: hidden;
+      border-bottom: 1px solid var(--border);
+      line-height: 0;
+    }
+    .forge-banner img {
+      display: block;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 1794 / 592;
+      object-fit: cover;
     }
     .eyebrow {
       display: inline-flex; align-items: center; gap: 8px;
@@ -356,6 +379,10 @@
 <body>
   <div class="shell">
   <div class="card">
+    <div class="forge-banner">
+      <img src="assets/apexpad-forge-banner.jpg" width="1794" height="592"
+           alt="ApexPad Forge — multi-EVM-chains meme coin factory" />
+    </div>
     <div class="eyebrow"><span class="dot"></span> Launchpad live on Robinhood Chain, BNB Chain, Arbitrum, Base, Polygon, Optimism and Ethereum</div>
     <h1>Fair-launch <span class="gold">meme coin</span> factory.<br>100% liquidity locked.</h1>
     <p class="lead">
