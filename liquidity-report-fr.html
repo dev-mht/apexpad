@@ -12,8 +12,8 @@
 
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>ApexPad — 180 sur 181, vidés en quelques minutes</title>
-<meta name="description" content="Une trace on-chain de 181 lancements de jetons sur Arc : 180 vidés en quelques minutes par le portefeuille qui les a créés, tous via le même routeur, tous avec le même solde résiduel. Ce que cela signifie pour les badges « liquidité verrouillée », et comment le custodian d'ApexPad ferme la faille." />
+<title>ApexPad — 638 sur 639, vidés en 24 heures</title>
+<meta name="description" content="Une trace on-chain de 639 lancements de jetons sur Arc en 24 heures complètes : 638 vidés par le portefeuille qui les a créés, tous via le même routeur, tous avec le même solde résiduel. Ce que cela signifie pour les badges « liquidité verrouillée », et comment le custodian d'ApexPad ferme la faille." />
 <link rel="canonical" href="https://apexpad.io/liquidity-report-fr.html" />
 <link rel="alternate" hreflang="fr" href="https://apexpad.io/liquidity-report-fr.html" />
 <link rel="alternate" hreflang="en" href="https://apexpad.io/liquidity-report-en.html" />
@@ -107,9 +107,9 @@ footer a{color:var(--muted)}
 <header>
   <div class="lang"><a href="liquidity-report-fr.html" class="on">FR</a><a href="liquidity-report-en.html">EN</a></div>
   <div class="eyebrow" style="margin-top:22px">Preuve on-chain — Arc, septembre 2026</div>
-  <h1>180 sur 181, <span class="accent">vidés en quelques minutes</span></h1>
-  <p class="lede">Tout est parti d'une question : pourquoi un jeton dont la liquidité avait été entièrement retirée affichait-il encore un badge « liquidité verrouillée » sur un agrégateur de prix majeur ? Pour y répondre, il a fallu relire la pool octet par octet — et cette lecture s'est transformée en un scan de tous les lancements passant par un même routeur sur Arc. Cette page, c'est cette trace, et ce qu'elle implique pour quiconque lit un badge « verrouillé » sur une pool Uniswap v4.</p>
-  <div class="stamp">181 lancements vérifiés &nbsp;·&nbsp; <b>180 vidés</b> &nbsp;·&nbsp; 181 portefeuilles distincts, 0 réutilisé &nbsp;·&nbsp; 4 tracés transaction par transaction</div>
+  <h1>638 sur 639, <span class="accent">vidés en 24 heures</span></h1>
+  <p class="lede">Tout est parti d'une question : pourquoi un jeton dont la liquidité avait été entièrement retirée affichait-il encore un badge « liquidité verrouillée » sur un agrégateur de prix majeur ? Pour y répondre, il a fallu relire la pool octet par octet — et cette lecture s'est transformée en un scan de tous les lancements passant par un même routeur sur Arc, sur une fenêtre glissante de 24 heures complètes. Cette page, c'est cette trace, et ce qu'elle implique pour quiconque lit un badge « verrouillé » sur une pool Uniswap v4.</p>
+  <div class="stamp">639 lancements vérifiés &nbsp;·&nbsp; <b>638 vidés</b> &nbsp;·&nbsp; 24 heures complètes, aucune pool réutilisée &nbsp;·&nbsp; 4 tracés transaction par transaction</div>
 </header>
 
 <div class="box warn">
@@ -125,7 +125,7 @@ footer a{color:var(--muted)}
     <li><a href="#mechanics">Un routeur, une fonction, quelques minutes</a></li>
     <li><a href="#cases">Quatre cas, tracés de bout en bout</a></li>
     <li><a href="#signature">Le chiffre qui se répète : 0,00042</a></li>
-    <li><a href="#scan">181 lancements, vérifiés systématiquement</a></li>
+    <li><a href="#scan">639 lancements, vérifiés systématiquement</a></li>
     <li><a href="#elsewhere">Un second mode de défaillance, différent</a></li>
     <li><a href="#apexpad">Ce que nous construisons différemment</a></li>
     <li><a href="#limits">Ce que cette page n'affirme pas</a></li>
@@ -212,7 +212,7 @@ footer a{color:var(--muted)}
     </tbody>
   </table></div>
   <p style="font-size:.85rem;color:var(--muted)"><sup>†</sup> JEANPHIL utilisait une pool plus fine : 95,8 % de l'offre a été brûlée à la création, et seuls 22,69 M jetons (2,3 %) ont été appariés dans la pool. Les achats réels ont fait monter la valeur de la pool pendant les cinq minutes suivantes ; le retrait a reversé 10,56 M jetons — plus que ce qui avait été amorcé — plus la devise native appariée. Même mécanisme, pool de départ plus petite, même issue.</p>
-  <p>Dans les quatre cas : le portefeuille qui a signé la transaction de création est le même que celui qui a signé la transaction de retrait. L'appel de retrait est <code>0xa0f7978d</code> sur le routeur, dans chaque cas. L'écart entre création et retrait va de 3 à 6,5 minutes, dans chaque cas. Aucun de ces quatre portefeuilles n'apparaît comme créateur d'un autre lancement dans l'échantillon de 181 lancements décrit en section 06.</p>
+  <p>Dans les quatre cas : le portefeuille qui a signé la transaction de création est le même que celui qui a signé la transaction de retrait. L'appel de retrait est <code>0xa0f7978d</code> sur le routeur, dans chaque cas. L'écart entre création et retrait va de 3 à 6,5 minutes, dans chaque cas. Aucun de ces quatre portefeuilles n'apparaît comme créateur d'un autre lancement dans l'échantillon de 639 lancements décrit en section 06.</p>
 </section>
 
 <!-- 5 -->
@@ -235,25 +235,26 @@ footer a{color:var(--muted)}
 
 <!-- 6 -->
 <section id="scan">
-  <h2><span class="num">06</span>181 lancements, vérifiés systématiquement</h2>
-  <p class="sub">Au-delà des quatre tracés à la main : à quoi ressemble le routeur à grande échelle ?</p>
-  <p>Quatre cas montrent un schéma. Pour vérifier s'il s'agissait bien du schéma général, nous avons interrogé chaque création de jeton passant par ce même routeur sur une fenêtre définie, et vérifié un seul chiffre pour chacun : combien de jetons le PoolManager Uniswap v4 détient pour ce jeton, à l'instant présent.</p>
+  <h2><span class="num">06</span>639 lancements, vérifiés systématiquement</h2>
+  <p class="sub">Au-delà des quatre tracés à la main : à quoi ressemble le routeur sur une fenêtre de 24 heures complètes ?</p>
+  <p>Quatre cas montrent un schéma. Pour vérifier s'il s'agissait bien du schéma général, nous avons interrogé chaque création de jeton passant par ce même routeur sur une fenêtre glissante de 24 heures, et vérifié un seul chiffre pour chacun : combien de jetons le PoolManager Uniswap v4 détient pour ce jeton, à l'instant présent.</p>
   <div class="tw"><table>
     <thead><tr><th>Fenêtre</th><th>Valeur</th></tr></thead>
     <tbody>
-      <tr><td>Plage horaire (UTC)</td><td>2026-09-19 19:15:43 → 2026-09-20 01:36:09 (6 h 20)</td></tr>
-      <tr><td>Plage de blocs</td><td>21 716 562 → 21 761 562</td></tr>
-      <tr><td>Lancements trouvés</td><td>181</td></tr>
-      <tr><td>Portefeuilles créateurs distincts</td><td>181 — aucun réutilisé</td></tr>
-      <tr><td>Solde de pool sous 0,01 % de l'offre<sup>‡</sup></td><td><strong>180 sur 181 (99,4 %)</strong></td></tr>
+      <tr><td>Plage horaire (UTC)</td><td>2026-09-19 01:12:55 → 2026-09-20 01:12:55 (24 h 00, fenêtre complète)</td></tr>
+      <tr><td>Plage de blocs</td><td>21 588 480 → 21 758 814</td></tr>
+      <tr><td>Lancements trouvés</td><td>639</td></tr>
+      <tr><td>Adresses de pool distinctes</td><td>639 — aucune réutilisée</td></tr>
+      <tr><td>Rythme moyen</td><td>~26,6 lancements/heure (un nouveau toutes les 2 min 15 environ)</td></tr>
+      <tr><td>Solde de pool sous 0,01 % de l'offre<sup>‡</sup></td><td><strong>638 sur 639 (99,8 %)</strong></td></tr>
     </tbody>
   </table></div>
-  <p style="font-size:.85rem;color:var(--muted)"><sup>‡</sup> « Sous 0,01 % de l'offre » signifie que la pool détient moins de 100 000 jetons sur une offre de 1 000 000 000 — fonctionnellement vide. Nous n'avons pas fixé ce seuil à zéro, car une position totalement retirée peut laisser un reliquat d'arrondi minime, non négociable, dans une pool à liquidité concentrée ; les 180 cas sont tous sous ce seuil, et 168 d'entre eux sont à exactement zéro.</p>
+  <p style="font-size:.85rem;color:var(--muted)"><sup>‡</sup> « Sous 0,01 % de l'offre » signifie que la pool détient moins de 100 000 jetons sur une offre de 1 000 000 000 — fonctionnellement vide. Nous n'avons pas fixé ce seuil à zéro, car une position totalement retirée peut laisser un reliquat d'arrondi minime, non négociable, dans une pool à liquidité concentrée ; sur les 638 cas sous ce seuil, 619 ont un reliquat inférieur à 1 000 jetons — de la poussière face à une offre d'un milliard — et les 19 autres restent sous 0,01 % sans descendre à ce niveau.</p>
   <div class="box warn">
     <div class="t">La seule exception</div>
-    <p>Le seul lancement qui n'a pas franchi ce seuil avait 63 secondes d'existence au moment de la lecture — plus jeune que la durée de vie la plus courte parmi les quatre cas tracés (3 min 01 s). Il n'avait pas atteint l'âge auquel le schéma se conclut habituellement. Nous ne le comptons pas comme vidé, et nous ne le comptons pas non plus comme une exception au schéma : il n'a simplement pas eu le temps d'être l'un ou l'autre.</p>
+    <p>Cette fois, ce n'est pas un lancement trop jeune pour avoir eu le temps d'être vidé. Le seul lancement qui n'a pas franchi le seuil (<code class="adr">0x9d91e4c89e2e855b733b8e54ab2526331562e777</code>) avait 16 h 48 d'existence au moment de la lecture — plus vieux que les quatre cas tracés en section 04 — et détenait encore 0,0565 % de l'offre dans le PoolManager. Nous ne l'expliquons pas et nous ne l'excluons pas du dénominateur : c'est un cas réel, à part, que nous signalons tel quel plutôt que de l'écarter.</p>
   </div>
-  <p>Il s'agit d'une vérification indirecte, pas d'une trace transaction par transaction pour les 181 — la distinction compte, et la section 09 est explicite à ce sujet. Ce n'est pas non plus la première fois que nous observons cette forme : les quatre cas tracés en section 04 s'étalent sur deux soirées distinctes, et le schéma se ressemblait déjà les deux fois, avant même que nous ne lancions cette vérification plus large.</p>
+  <p>Il s'agit d'une vérification indirecte, pas d'une trace transaction par transaction pour les 639 — la distinction compte, et la section 09 est explicite à ce sujet. Ce n'est pas non plus la première fois que nous observons cette forme : les quatre cas tracés en section 04 s'étalent sur deux soirées distinctes, et le schéma se ressemblait déjà les deux fois, avant même que nous ne lancions cette vérification plus large.</p>
 </section>
 
 <!-- 7 -->
@@ -292,7 +293,7 @@ footer a{color:var(--muted)}
   <p class="sub">Dit clairement, comme nous aimerions qu'on nous le dise.</p>
   <ul>
     <li><strong>Ce n'est pas un audit.</strong> Les contrats d'ApexPad sont vérifiés on-chain et n'ont pas été revus par un tiers indépendant. « Vérifié » signifie que le code source publié correspond au bytecode déployé — rien de plus.</li>
-    <li><strong>Ce n'est pas une trace complète des 181.</strong> Les sections 04 et 05 sont au niveau transaction, pour quatre cas. La section 06 est une vérification de solde sur 181 lancements — un indicateur solide, pas une confirmation individuelle que le même appel <code>removeLiquidity</code> a eu lieu pour chacun d'eux.</li>
+    <li><strong>Ce n'est pas une trace complète des 639.</strong> Les sections 04 et 05 sont au niveau transaction, pour quatre cas. La section 06 est une vérification de solde sur 639 lancements — un indicateur solide, pas une confirmation individuelle que le même appel <code>removeLiquidity</code> a eu lieu pour chacun d'eux.</li>
     <li><strong>Ce n'est pas une accusation contre une société, un produit ou une personne nommée.</strong> Nous décrivons des transactions on-chain par adresse et par hash, et une limite d'outillage générale dans la façon dont l'état d'une pool v4 est affiché. Nous ne nommons pas l'interface utilisée pour lancer ces jetons, et nous ne nommons pas la plateforme évoquée en section 07.</li>
     <li><strong>Ce n'est pas un conseil en investissement.</strong> Cette page ne dit rien sur le fait qu'un jeton, quel qu'il soit, soit un bon ou un mauvais achat — y compris les jetons lancés via ApexPad. Une pool verrouillée et une offre non diluée suppriment deux risques précis ; elles ne suppriment pas le risque qu'un memecoin tombe à zéro parce que personne n'en veut.</li>
     <li><strong>Une fenêtre de 6 heures, pas une garantie permanente.</strong> La section 06 décrit ce que nous avons trouvé sur une fenêtre définie, sur une chaîne. Nous pensons que c'est représentatif, car les quatre cas tracés à la main s'étalent sur deux soirées distinctes et montrent la même forme — mais une nouvelle fenêtre pourrait donner un résultat différent.</li>
