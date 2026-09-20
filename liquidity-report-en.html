@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-55GLFJLMM8"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-55GLFJLMM8');
+  </script>
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ApexPad — 638 of 639, drained in 24 hours</title>
+<meta name="description" content="An on-chain trace of 639 token launches on Arc over a full 24-hour window: 638 drained by the wallet that created them, all through the same router, all with the same leftover balance. What that means for 'liquidity locked' badges, and how ApexPad's custodian closes the gap." />
+<link rel="canonical" href="https://apexpad.io/liquidity-report-en.html" />
+<link rel="alternate" hreflang="en" href="https://apexpad.io/liquidity-report-en.html" />
+<link rel="alternate" hreflang="fr" href="https://apexpad.io/liquidity-report-fr.html" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --bg:#07090e; --bg2:#0c0f18; --bg3:#111726;
+  --border:rgba(245,200,66,.12); --gold:#f5c842; --gold2:#ffde7a; --gold3:#c8971a;
+  --text:#e8ecf4; --muted:#9aa6ba;
+  --green:#4ade80; --green2:#86efac;
+  --danger:#f0554a; --danger2:#ff8a80;
+  --warn:#ffb020;
+  --mono:'Space Mono',monospace; --display:'Bebas Neue',sans-serif; --body:'Syne',sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; color:var(--text); font-family:var(--body); line-height:1.65;
+  background:
+    radial-gradient(900px 640px at 110% -10%, rgba(245,200,66,.07) 0%, transparent 55%),
+    radial-gradient(900px 700px at -10% 110%, rgba(74,222,128,.06) 0%, transparent 55%),
+    var(--bg);
+  overflow-x:hidden;
+}
+.wrap{max-width:960px;margin:0 auto;padding:0 20px}
+a{color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(245,200,66,.3)}
+a:hover{color:var(--gold2)}
+header{padding:64px 0 28px;text-align:center}
+.eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold3)}
+h1{font-family:var(--display);font-size:clamp(2.4rem,6.4vw,4rem);line-height:.97;margin:.25em 0 .15em;letter-spacing:.02em}
+h1 .accent{color:var(--gold)}
+.lede{max-width:680px;margin:0 auto;color:var(--muted);font-size:1.02rem}
+.stamp{display:inline-block;margin-top:22px;padding:9px 16px;border-radius:999px;border:1px solid var(--border);background:var(--bg2);font-family:var(--mono);font-size:.7rem;letter-spacing:.06em;color:var(--muted)}
+.stamp b{color:var(--danger2);font-weight:700}
+.lang{display:flex;gap:6px;justify-content:center;margin-top:18px}
+.lang a{border:1px solid var(--border);border-radius:999px;padding:5px 15px;background:var(--bg2);font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;color:var(--muted)}
+.lang a.on{background:rgba(245,200,66,.13);border-color:rgba(245,200,66,.45);color:var(--gold)}
+.lang a:hover{color:var(--gold2)}
+nav.toc{margin:40px 0 8px;padding:20px 22px;border:1px solid var(--border);border-radius:14px;background:var(--bg2)}
+nav.toc p{margin:0 0 12px;font-family:var(--mono);font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold3)}
+nav.toc ol{margin:0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:6px 22px;counter-reset:t}
+nav.toc li{counter-increment:t;font-size:.93rem}
+nav.toc li a{border:0;display:block;padding:3px 0;color:var(--text)}
+nav.toc li a::before{content:counter(t,decimal-leading-zero);font-family:var(--mono);font-size:.72rem;color:var(--gold3);margin-right:10px}
+nav.toc li a:hover{color:var(--gold)}
+section{padding:46px 0;border-top:1px solid rgba(245,200,66,.08)}
+section:first-of-type{border-top:0}
+h2{font-family:var(--display);font-size:clamp(1.6rem,3.8vw,2.3rem);letter-spacing:.03em;margin:0 0 6px;color:var(--gold)}
+h2 .num{font-family:var(--mono);font-size:.6em;color:var(--gold3);margin-right:12px;letter-spacing:0}
+h3{font-family:var(--body);font-weight:800;font-size:1.04rem;margin:28px 0 8px;color:var(--gold2)}
+p{margin:0 0 14px}
+.sub{color:var(--muted);margin:-2px 0 22px;font-size:.95rem}
+ul{margin:0 0 14px;padding-left:20px}
+li{margin-bottom:7px}
+code{font-family:var(--mono);font-size:.85em;background:rgba(245,200,66,.09);border:1px solid var(--border);border-radius:5px;padding:1px 6px;color:var(--gold2);word-break:break-word}
+pre{font-family:var(--mono);font-size:.78rem;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:14px 16px;overflow-x:auto;color:var(--gold2);margin:16px 0}
+.box{border:1px solid var(--border);border-left:3px solid var(--gold);border-radius:10px;background:var(--bg2);padding:16px 20px;margin:20px 0}
+.box.warn{border-left-color:var(--warn)}
+.box.ok{border-left-color:var(--green)}
+.box.danger{border-left-color:var(--danger)}
+.box .t{font-family:var(--mono);font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold3);margin-bottom:7px}
+.box.warn .t{color:var(--warn)}
+.box.ok .t{color:var(--green)}
+.box.danger .t{color:var(--danger2)}
+.box p:last-child{margin-bottom:0}
+.tw{overflow-x:auto;margin:20px 0;border:1px solid var(--border);border-radius:12px;background:var(--bg2)}
+table{width:100%;border-collapse:collapse;min-width:600px;font-size:.88rem}
+th,td{padding:11px 14px;text-align:left;vertical-align:top;border-bottom:1px solid rgba(245,200,66,.08)}
+th{font-family:var(--mono);font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold3);white-space:nowrap}
+tr:last-child td{border-bottom:0}
+td strong{color:var(--gold2)}
+.adr{font-family:var(--mono);font-size:.78rem;word-break:break-all}
+.hash{font-family:var(--mono);font-size:.72rem;word-break:break-all;color:var(--muted)}
+ol.steps{list-style:none;padding:0;counter-reset:s;margin:18px 0}
+ol.steps li{counter-increment:s;position:relative;padding:0 0 14px 46px;border-left:1px solid rgba(245,200,66,.16);margin-left:13px}
+ol.steps li:last-child{border-left-color:transparent;padding-bottom:0}
+ol.steps li::before{content:counter(s);position:absolute;left:-13px;top:-2px;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;background:var(--bg3);border:1px solid var(--border);font-family:var(--mono);font-size:.72rem;color:var(--gold)}
+ol.steps b{color:var(--gold2)}
+.sig{font-family:var(--mono);font-size:1.4rem;color:var(--danger2);text-align:center;padding:18px;background:var(--bg3);border:1px solid rgba(240,85,74,.28);border-radius:12px;margin:18px 0}
+.sig small{display:block;font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-top:6px}
+footer{padding:44px 0 60px;border-top:1px solid rgba(245,200,66,.08);color:var(--muted);font-size:.85rem}
+footer a{color:var(--muted)}
+@media(max-width:640px){ header{padding-top:44px} section{padding:34px 0} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="lang"><a href="liquidity-report-fr.html">FR</a><a href="liquidity-report-en.html" class="on">EN</a></div>
+  <div class="eyebrow" style="margin-top:22px">On-chain evidence — Arc, September 2026</div>
+  <h1>638 out of 639, <span class="accent">drained in 24 hours</span></h1>
+  <p class="lede">It started with a question: why did a token whose liquidity had been fully withdrawn still show a "liquidity locked" badge on a major price aggregator? Answering it meant tracing the pool byte by byte — and that trace turned into a scan of every launch through one router on Arc, over a full rolling 24-hour window. This page is that trace, plus what it means for anyone reading a "locked" badge on a Uniswap v4 pool.</p>
+  <div class="stamp">639 launches checked &nbsp;·&nbsp; <b>638 drained</b> &nbsp;·&nbsp; a full 24 hours, no pool reused &nbsp;·&nbsp; 4 traced transaction by transaction</div>
+</header>
+
+<div class="box warn">
+  <div class="t">Before anything else</div>
+  <p>This page does not accuse any company, aggregator or named platform of wrongdoing. Where we mention a tool that misreads a pool's state, that is a description of a technical limitation, not a claim about intent. Every number below is sourced to a transaction hash or a contract read that you can repeat yourself in section 10. Where we are not sure, we say so.</p>
+</div>
+
+<nav class="toc">
+  <p>Contents</p>
+  <ol>
+    <li><a href="#origin">Where this started</a></li>
+    <li><a href="#why">Why a "locked" badge can be wrong</a></li>
+    <li><a href="#mechanics">One router, one function, minutes</a></li>
+    <li><a href="#cases">Four cases, traced end to end</a></li>
+    <li><a href="#signature">The number that repeats: 0.00042</a></li>
+    <li><a href="#scan">639 launches, checked systematically</a></li>
+    <li><a href="#elsewhere">A second, different failure mode</a></li>
+    <li><a href="#apexpad">What we build differently</a></li>
+    <li><a href="#limits">What this page does not claim</a></li>
+    <li><a href="#verify">Check it yourself</a></li>
+  </ol>
+</nav>
+
+<!-- 1 -->
+<section id="origin">
+  <h2><span class="num">01</span>Where this started</h2>
+  <p class="sub">A badge that didn't match the chart.</p>
+  <p>A token on Arc, ticker <strong>NOM</strong>, showed a "liquidity locked" badge on a major aggregator's token page. Its price chart told a different story: flat, no trades, for hours. Reading the pool contract directly settled it — the position had been removed hours earlier, and nothing was locked. The aggregator's badge was simply stale, or reading the wrong thing.</p>
+  <p>That discrepancy is the reason this page exists. Not because one badge was wrong once, but because of what it implies: if a major aggregator can misread a Uniswap v4 pool's state, anyone relying on that badge to judge whether a token is safe to buy is being told something the chain does not actually say.</p>
+</section>
+
+<!-- 2 -->
+<section id="why">
+  <h2><span class="num">02</span>Why a "locked" badge can be wrong</h2>
+  <p class="sub">Uniswap v4 doesn't work like v2, and a lot of tooling still assumes it does.</p>
+  <p>On Uniswap v2 and most v3 deployments, a liquidity position is an ERC-20 or ERC-721 token you can hold, transfer, or send to a burn address — and "locked" or "burned" is something an indexer can check with a single, simple, well-understood call.</p>
+  <p>Uniswap v4 does not work that way. There is a single <strong>PoolManager</strong> contract that holds every pool's tokens for the entire chain — there is no per-pool contract, and no separate LP token. A position is tracked as an entry in the PoolManager's internal accounting, usually wrapped in an NFT held by a position manager contract. Reading "is this locked" now means reading that internal state correctly, for the specific pool, at the current block — not checking a token balance.</p>
+  <div class="box">
+    <div class="t">The practical effect</div>
+    <p>A lot of aggregator and scanner tooling was built for v2/v3. Some of it has not caught up to v4's accounting model, or caches a snapshot that stops refreshing once a position changes shape. The result can be a badge that says "locked" against a pool that has already been fully withdrawn. That is a tooling gap, not evidence that any particular badge was placed in bad faith.</p>
+  </div>
+  <p>The rest of this page is what that gap looks like on-chain, at scale.</p>
+</section>
+
+<!-- 3 -->
+<section id="mechanics">
+  <h2><span class="num">03</span>One router, one function, minutes</h2>
+  <p class="sub">Every launch we traced used the identical shape.</p>
+  <p>Following the NOM discrepancy back to its source led to a router contract that a large number of tokens on Arc are launched through: <code class="adr">0x43d894e229a008c72e96872739719b9cfda941d5</code>. Every launch we examined follows the same shape:</p>
+  <ol class="steps">
+    <li><b>Mint.</b> The router mints the full supply (1,000,000,000 tokens in every case we checked) to itself, in the same transaction that creates the token.</li>
+    <li><b>Burn and distribute.</b> A portion is sent to the dead address, and small amounts are spread across a long list of wallets — dust-sized, in the cases we checked.</li>
+    <li><b>Seed the pool.</b> Most of what's left goes to a wallet that is also, in every case we checked, the address that signed the creation transaction. That wallet forwards its tokens into the Uniswap v4 <strong>PoolManager</strong> at <code class="adr">0x8366a39cc670b4001a1121b8f6a443a643e40951</code>, opening the pool.</li>
+    <li><b>Trade.</b> For a few minutes, real buyers trade against that pool through the router.</li>
+    <li><b>Remove.</b> The same wallet that created the token calls the router's <code>removeLiquidity</code> function (selector <code>0xa0f7978d</code>) on itself, closing the position and paying the underlying tokens back to itself.</li>
+  </ol>
+  <p>Nothing about steps 1–4 is unusual — that is how most direct-pool launches work. Step 5 is the part worth tracing carefully, because it is the same wallet, calling the same function, on the same router, every time.</p>
+</section>
+
+<!-- 4 -->
+<section id="cases">
+  <h2><span class="num">04</span>Four cases, traced end to end</h2>
+  <p class="sub">Not a balance check — every transaction, read individually.</p>
+  <p>For these four, we did not rely on a proxy signal. We pulled the creation transaction, the pool-seeding transaction, and the removal transaction for each one, confirmed the sender matches across all three, and read the timestamps directly from the blocks.</p>
+  <div class="tw"><table>
+    <thead><tr><th>Token</th><th>Contract</th><th>Created (UTC)</th><th>Removed (UTC)</th><th>Lifetime</th><th>Taken back</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>NOM</strong></td>
+        <td class="adr">0x8945…9a777</td>
+        <td>2026-09-19 14:57:16</td>
+        <td>2026-09-19 15:03:46</td>
+        <td>6m 30s</td>
+        <td>794.36M tokens (79.4%)</td>
+      </tr>
+      <tr>
+        <td><strong>xSOL</strong></td>
+        <td class="adr">0x47e1…b4e777</td>
+        <td>2026-09-19 16:24:11</td>
+        <td>2026-09-19 16:30:20</td>
+        <td>6m 09s</td>
+        <td>791.02M tokens (79.1%)</td>
+      </tr>
+      <tr>
+        <td><strong>JEANPHIL</strong></td>
+        <td class="adr">0x377e…73bcb</td>
+        <td>2026-09-20 00:53:54</td>
+        <td>2026-09-20 00:59:31</td>
+        <td>5m 37s</td>
+        <td>10.56M tokens<sup>†</sup></td>
+      </tr>
+      <tr>
+        <td><strong>"stick to this coin"</strong></td>
+        <td class="adr">0x30bd…ed5777</td>
+        <td>2026-09-20 01:09:36</td>
+        <td>2026-09-20 01:12:37</td>
+        <td>3m 01s</td>
+        <td>871.25M tokens (87.1%)</td>
+      </tr>
+    </tbody>
+  </table></div>
+  <p style="font-size:.85rem;color:var(--muted)"><sup>†</sup> JEANPHIL used a thinner pool: 95.8% of supply was burned at creation and only 22.69M tokens (2.3%) were paired into the pool. Real buying pushed the pool's value up over the following five minutes; the removal paid out 10.56M tokens — more than had been seeded — plus the paired native currency. Same mechanism, smaller starting pool, same ending.</p>
+  <p>In every one of the four cases: the wallet that signed the creation transaction is the same wallet that signed the removal transaction. The removal call is <code>0xa0f7978d</code> on the router, in every case. The gap between creation and removal is 3 to 6.5 minutes, in every case. None of these four wallets appears as the creator of any other launch in the 639-launch sample described in section 06.</p>
+</section>
+
+<!-- 5 -->
+<section id="signature">
+  <h2><span class="num">05</span>The number that repeats: 0.00042</h2>
+  <p class="sub">Four different wallets. One identical leftover balance.</p>
+  <p>After paying out, each of the four wallets above still holds a small amount of Arc's native currency — gas left over from the sequence of transactions. We checked all four current balances. They are not close. They are identical, to the last unit:</p>
+  <div class="sig">0.00042<small>native balance, all four wallets, at time of writing</small></div>
+  <div class="tw"><table>
+    <thead><tr><th>Wallet</th><th>Created</th><th>Balance today</th></tr></thead>
+    <tbody>
+      <tr><td class="adr">0xd716…068891</td><td>NOM</td><td>0.00042</td></tr>
+      <tr><td class="adr">0xc550…db9d432</td><td>xSOL</td><td>0.00042</td></tr>
+      <tr><td class="adr">0xcc64…91fbe7</td><td>JEANPHIL</td><td>0.00042</td></tr>
+      <tr><td class="adr">0x90a1…890673f</td><td>"stick to this coin"</td><td>0.00042</td></tr>
+    </tbody>
+  </table></div>
+  <p>Four wallets with no other transaction history in common, launching four different tokens, on two different nights, ending on the exact same fractional balance is not something four independent people do by chance. It is what happens when the same script funds each wallet with a fixed gas budget and executes the identical sequence — create, wait, remove — every time it runs.</p>
+</section>
+
+<!-- 6 -->
+<section id="scan">
+  <h2><span class="num">06</span>639 launches, checked systematically</h2>
+  <p class="sub">Beyond the four we traced by hand: what does the router look like over a full 24-hour window?</p>
+  <p>Four cases show a pattern. To see whether it was the pattern, we queried every token creation through the same router over a rolling 24-hour window, and checked one number for each: how many tokens the Uniswap v4 PoolManager holds for that token right now.</p>
+  <div class="tw"><table>
+    <thead><tr><th>Window</th><th>Value</th></tr></thead>
+    <tbody>
+      <tr><td>Time range (UTC)</td><td>2026-09-19 01:12:55 → 2026-09-20 01:12:55 (24h 00m, full window)</td></tr>
+      <tr><td>Block range</td><td>21,588,480 → 21,758,814</td></tr>
+      <tr><td>Launches found</td><td>639</td></tr>
+      <tr><td>Distinct pool addresses</td><td>639 — none reused</td></tr>
+      <tr><td>Average pace</td><td>~26.6 launches/hour (a new one roughly every 2m 15s)</td></tr>
+      <tr><td>Pool balance under 0.01% of supply<sup>‡</sup></td><td><strong>638 of 639 (99.8%)</strong></td></tr>
+    </tbody>
+  </table></div>
+  <p style="font-size:.85rem;color:var(--muted)"><sup>‡</sup> "Under 0.01% of supply" means the pool holds fewer than 100,000 of the token's 1,000,000,000-unit supply — functionally empty. We did not set this threshold at zero, because a fully-removed position can leave a small, non-tradeable rounding remainder in a concentrated-liquidity pool; of the 638 that fell under this bar, 619 have a remainder under 1,000 tokens — dust against a billion-token supply — and the other 19 stay under 0.01% without reaching that level.</p>
+  <div class="box warn">
+    <div class="t">The one exception</div>
+    <p>This time it is not a launch too young to have had time to drain. The single launch that did not clear the threshold (<code class="adr">0x9d91e4c89e2e855b733b8e54ab2526331562e777</code>) was 16h 48m old when we took this reading — older than any of the four traced cases in section 04 — and still held 0.0565% of supply in the PoolManager. We are not explaining it away and we are not excluding it from the denominator: it is a genuine outlier, reported as-is rather than dropped.</p>
+  </div>
+  <p>This is a proxy check, not a transaction-level trace for all 639 — the distinction matters, and section 09 is explicit about it. It is also not the first time we have seen this shape: the four traced cases in section 04 span two separate nights, and the pattern looked the same both times before we ran this wider check.</p>
+</section>
+
+<!-- 7 -->
+<section id="elsewhere">
+  <h2><span class="num">07</span>A second, different failure mode</h2>
+  <p class="sub">Not every version of this problem looks like a removed pool.</p>
+  <p>We have also looked at launches, on other chains, where the liquidity position itself was never touched — it stayed exactly where it was seeded, held by a burn address, untouchable. On paper, that reads as safe. In practice, a small number of wallets held almost the entire circulating supply outside the pool, and sold into buyers as the price moved. The pool was real and locked; the token was still effectively controlled by a handful of holders who were not the pool.</p>
+  <p>We are not naming a platform here, deliberately — this is a structural pattern, not an incident report, and we have seen it in more than one place. The point is that "liquidity locked" and "safe to buy" are two different claims. A locked pool says nothing about who holds the rest of the supply.</p>
+</section>
+
+<!-- 8 -->
+<section id="apexpad">
+  <h2><span class="num">08</span>What we build differently</h2>
+  <p class="sub">Both failure modes, closed at the same point.</p>
+  <p>Every token launched through ApexPad sends its entire supply — not 79%, not 2.3%, not "most of it" — into the pool at creation. There is no allocation left outside the pool for a small set of wallets to hold and sell into buyers, which closes the failure mode in section 07 by construction: if nobody holds tokens outside the pool, nobody can dump tokens the pool doesn't know about.</p>
+  <p>For the failure mode in sections 03–06, the position itself is held by a purpose-built contract, <code>LiquidityCustodian.sol</code>, not by the creator's wallet. Its permissions are the whole point:</p>
+  <div class="tw"><table>
+    <thead><tr><th>Function</th><th>What it can do</th></tr></thead>
+    <tbody>
+      <tr><td><code>collect()</code></td><td>Permissionless — pays out only <em>accumulated swap fees</em>. Nothing in the contract can ever populate that fee balance from a liquidity decrease.</td></tr>
+      <tr><td><code>setFeeRecipient()</code></td><td>Owner-only.</td></tr>
+      <tr><td><code>renounceOwnership()</code></td><td>Owner-only, one-way.</td></tr>
+      <tr><td><em>Not present, anywhere in the file</em></td><td>No <code>decreaseLiquidity()</code>. No <code>burn()</code>. No function that transfers the position NFT out. No <code>selfdestruct</code>. No proxy pattern to route around any of the above.</td></tr>
+    </tbody>
+  </table></div>
+  <p>The function the four wallets in section 04 called — <code>removeLiquidity</code> — has no equivalent path on the custodian. There is no owner key, no admin function, and no upgrade path that adds one back: ownership renounces on-chain, and the missing function stays missing.</p>
+  <div class="box ok">
+    <div class="t">Live, not theoretical</div>
+    <p>ApexPad's own test launch on Arc, FTF, has its position held by custodian <code class="adr">0x119c502a2886d256b84318a8814ff154ab972953</code>. Reading <code>owner()</code> on that contract right now returns <code>0x0000…0000</code> — renounced — and the position it holds has not moved since it was seeded. You can read both of those yourself; section 10 shows how.</p>
+  </div>
+</section>
+
+<!-- 9 -->
+<section id="limits">
+  <h2><span class="num">09</span>What this page does not claim</h2>
+  <p class="sub">Said plainly, the way we'd want it said to us.</p>
+  <ul>
+    <li><strong>Not an audit.</strong> ApexPad's contracts are verified on-chain and have not been reviewed by an independent third party. "Verified" means the published source matches the deployed bytecode — nothing more.</li>
+    <li><strong>Not a full trace of all 639.</strong> Sections 04 and 05 are transaction-level, for four cases. Section 06 is a balance check across 639 — a strong proxy, not individual confirmation that the same <code>removeLiquidity</code> call happened for every one of them.</li>
+    <li><strong>Not an accusation against a named company, product or person.</strong> We describe on-chain transactions by address and hash, and a general tooling gap in how v4 pool state gets displayed. We do not name the interface used to launch these tokens, and we do not name the platform referenced in section 07.</li>
+    <li><strong>Not investment advice.</strong> This page says nothing about whether any token is a good or bad buy, including tokens launched through ApexPad. A locked pool and undiluted supply remove two specific risks; they do not remove the risk that a memecoin goes to zero because nobody wants it.</li>
+    <li><strong>A 6-hour window, not a permanent guarantee.</strong> Section 06 describes what we found in one defined window on one chain. We believe it is representative, because the four hand-traced cases span two separate nights and show the same shape — but a new window could look different.</li>
+  </ul>
+</section>
+
+<!-- 10 -->
+<section id="verify">
+  <h2><span class="num">10</span>Check it yourself</h2>
+  <p class="sub">Everything above reduces to reads anyone can repeat.</p>
+  <ol class="steps">
+    <li><b>Any of the four tokens</b> — open its contract on <a href="https://explorer.arc.io/" target="_blank" rel="noopener">Arc's explorer</a>, <em>Transfers</em> tab. You'll see the mint, the burn, the pool seed, and the removal, in that order, all within minutes.</li>
+    <li><b>The removal transaction</b> — open it directly. <em>From</em> and the creation transaction's <em>From</em> are the same address. The input data begins <code>0xa0f7978d</code>.</li>
+    <li><b>The residual balance</b> — open any of the four creator wallets in the explorer. The native balance reads 0.00042.</li>
+    <li><b>The PoolManager, for any token</b> — call <code>balanceOf(0x8366a39cc670b4001a1121b8f6a443a643e40951)</code> on the token contract's <em>Read Contract</em> tab. A result near zero against a 1,000,000,000-token supply means the pool is effectively empty.</li>
+    <li><b>ApexPad's custodian</b> — open <code class="adr">0x119c502a2886d256b84318a8814ff154ab972953</code> on Arc's explorer, <em>Read Contract</em>, call <code>owner()</code>. Expected answer: <code>0x0000000000000000000000000000000000000000</code>. Then check <em>Contract</em> for the source: no <code>decreaseLiquidity</code>, no <code>burn</code>, no outbound NFT transfer, anywhere in it.</li>
+  </ol>
+  <div class="box ok">
+    <div class="t">If any of this doesn't check out</div>
+    <p>Then this page is wrong, and you'll have found exactly where. Say so — publicly, with the transaction hash. That is the entire reason for writing this as addresses and hashes instead of a claim to take on faith.</p>
+  </div>
+</section>
+
+<footer>
+  <p><strong>ApexPad — Meme Coin Factory.</strong> Contracts verified, not audited. This page is neither investment advice nor a recommendation to buy or avoid any token. Memecoins are very high-risk assets: only commit what you can afford to lose entirely.</p>
+  <p><a href="index.html">apexpad.io</a> &nbsp;·&nbsp; <a href="https://factory.apexpad.io/transparency-en.html">Factory proofs</a> &nbsp;·&nbsp; <a href="https://x.com/milestone_hodl" target="_blank" rel="noopener">X</a> &nbsp;·&nbsp; <a href="https://t.me/Community_Milestone_hodl" target="_blank" rel="noopener">Telegram</a></p>
+  <p style="font-size:.8rem">Data as of 20 September 2026, 01:36 UTC. French version: <a href="liquidity-report-fr.html">Français</a>.</p>
+</footer>
+
+</div>
+</body>
+</html>
